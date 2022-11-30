@@ -168,10 +168,11 @@ class Checker
                 ]
             );
 
-        } else {
-            return redirect('https://join.whinox.com/accounts');
-
         }
+//        else {
+//            return redirect('https://join.whinox.com/accounts');
+//
+//        }
         return $next($request);
     }
 }
