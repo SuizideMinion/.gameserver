@@ -52,27 +52,27 @@ class Checker
                     $userData = $User->getUserData->pluck('value', 'key');
                     UserData::upsert([
                         [
-                            'user_id' => auth()->user()->id,
+                            'user_id' => $User->id,
                             'key' => 'ress1',
                             'value' => $userData['ress1.proTick'] + $userData['ress1']
                         ],
                         [
-                            'user_id' => auth()->user()->id,
+                            'user_id' => $User->id,
                             'key' => 'ress2',
                             'value' => $userData['ress2.proTick'] + $userData['ress2']
                         ],
                         [
-                            'user_id' => auth()->user()->id,
+                            'user_id' => $User->id,
                             'key' => 'ress3',
                             'value' => $userData['ress3.proTick'] + $userData['ress3']
                         ],
                         [
-                            'user_id' => auth()->user()->id,
+                            'user_id' => $User->id,
                             'key' => 'ress4',
                             'value' => $userData['ress4.proTick'] + $userData['ress4']
                         ],
                         [
-                            'user_id' => auth()->user()->id,
+                            'user_id' => $User->id,
                             'key' => 'ress5',
                             'value' => $userData['ress5.proTick'] + $userData['ress5']
                         ],
