@@ -25,6 +25,9 @@ Route::group(['middleware' => ['web', 'checker']], function () {
             json_decode(auth()->user()->getData->pluck('value', 'key')['testarray'])->kinder[0]->alter,
         );
     });
+    Route::get('/crown', function () {
+        echo 'Finish';
+    });
 
     Route::prefix('admin')->group(function() {
         Route::resource('/', 'App\Http\Controllers\Admin\IndexController', ["as"=>"admin"]);
