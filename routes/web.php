@@ -14,20 +14,31 @@ use Illuminate\Support\Facades\Session;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['middleware' => ['web', 'checker']], function () {
+//Route::group(['middleware' => ['web', 'checker']], function () {
     Route::get('/', function () {
         return view('welcome');
     });
     Route::get('/test', function () {
-        dd(
-            json_decode(auth()->user()->getData->pluck('value', 'key')['testarray'])->name,
-            json_decode(auth()->user()->getData->pluck('value', 'key')['testarray'])->kinder,
-            json_decode(auth()->user()->getData->pluck('value', 'key')['testarray'])->kinder[0]->alter,
-        );
+        $nextTick = 1212122123434;
+        $ticks = 1122112;
+        \App\Models\ServerData::upsert([
+            [
+                'id' => 1,
+                'key' => 'next.wirtschafts.Tick',
+                'value' => $nextTick
+            ],
+            [
+                'id' => 2,
+                'key' => 'wirtschafts.Tick',
+                'value' => $ticks
+            ],
+        ], 'value');
     });
+Route::group(['middleware' => ['web', 'checker']], function () {
     Route::get('/crown', function () {
         echo 'Finish';
     });
+});
 
     Route::prefix('admin')->group(function() {
         Route::resource('/', 'App\Http\Controllers\Admin\IndexController', ["as"=>"admin"]);
@@ -43,7 +54,7 @@ Route::group(['middleware' => ['web', 'checker']], function () {
     });
 
     Route::resource('buildings', 'App\Http\Controllers\BuildingsController');
-});
+//});
 
 Route::get('login/{id}', function($id) {
     $user = \App\Models\User::where('token', $id)->first();

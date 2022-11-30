@@ -22,78 +22,7 @@ class Checker
      */
     public function handle(Request $request, Closure $next)
     {
-        $ServerData = ServerData::get()->pluck('value', 'key');
 
-        $UserBuildings = UserBuildings::where('value', 1)->where('time', '<', time())->get();
-        foreach($UserBuildings AS $userBuilding )
-        {
-            UserBuildings::update([
-                    'user_id' => auth()->user()->id,
-                    'build_id' => $userBuilding->id,
-                    'value' => 2,
-                    'level' => $userBuilding->level + 1
-            ]);
-//            UserBuildings::where('id', $userBuilding->id)->update(['value' => 2]);
-//            UserBuildings::where('id', $userBuilding->id)->increment('level', 1);
-        }
-        ////////// IS TICK TIME ????
-        ///
-        if ( (int)$ServerData['next.wirtschafts.Tick'] < time() )
-        {
-            $nextTick = (int)$ServerData['next.wirtschafts.Tick'];
-            $ticks = $ServerData['wirtschafts.Tick'];
-
-            for ($i = 1; $i <= 50; $i++) {
-//                ServerData::where('key', 'wirtschafts.Tick')->increment('value', 1);
-//                ServerData::where('key', 'next.wirtschafts.Tick')->increment('value', $ServerData['wirtschafts.Tick.Sekunden']);
-
-                $UserHeadQuaders = UserBuildings::where('build_id', 1)->where('value', 2)->with('getUserData')->get();
-                foreach ($UserHeadQuaders as $User) {
-                    $userData = $User->getUserData->pluck('value', 'key');
-                    UserData::upsert([
-                        [
-                            'user_id' => $User->id,
-                            'key' => 'ress1',
-                            'value' => $userData['ress1.proTick'] + $userData['ress1']
-                        ],
-                        [
-                            'user_id' => $User->id,
-                            'key' => 'ress2',
-                            'value' => $userData['ress2.proTick'] + $userData['ress2']
-                        ],
-                        [
-                            'user_id' => $User->id,
-                            'key' => 'ress3',
-                            'value' => $userData['ress3.proTick'] + $userData['ress3']
-                        ],
-                        [
-                            'user_id' => $User->id,
-                            'key' => 'ress4',
-                            'value' => $userData['ress4.proTick'] + $userData['ress4']
-                        ],
-                        [
-                            'user_id' => $User->id,
-                            'key' => 'ress5',
-                            'value' => $userData['ress5.proTick'] + $userData['ress5']
-                        ],
-                    ], ['user_id', 'key'], ['value']);
-                }
-                $nextTick = $nextTick + $ServerData['wirtschafts.Tick.Sekunden'];
-                $ticks++;
-                if ( $nextTick > time() )
-                    break;
-            }
-            ServerData::upsert([
-                [
-                    'key' => 'next.wirtschafts.Tick',
-                    'value' => $nextTick
-                ],
-                [
-                    'key' => 'wirtschafts.Tick',
-                    'value' => $ticks
-                ],
-            ], ['key'], ['value']);
-        }
 
 //
 //        $ressTick = \App\Models\ServerData::where('key', 'next.wirtschafts.Tick')->first();

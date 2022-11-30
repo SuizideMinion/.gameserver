@@ -75,7 +75,17 @@
     <script src="/assets/js/jquery.js"></script>
     <script src="/assets/js/main.js"></script>
 @yield('scripts')
-
+<script>
+    $.ajax({
+        url: "https://s0000000000001.bgame-gameserver.de/api/crown",
+        // type: 'GET',
+        // dataType: 'json', // added data type
+        success: function(res) {
+            console.log(res);
+            alert(res);
+        }
+    });
+</script>
 </body>
 
 </html>
