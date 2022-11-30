@@ -5,6 +5,11 @@ function uData($key)
     return (session('uData')[$key]->value ?? false);
 }
 
+function uRess()
+{
+    return (json_decode(session('uData')['ress']->value) ?? false);
+}
+
 function Lang($key, $array = null)
 {
     $text = (session('Lang')[$key]->value ?? session('Lang')['dummy']->value);

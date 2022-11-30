@@ -19,7 +19,6 @@
                     </tr>
                     </thead>
                     <tbody>
-@can('research.index.see')
                     @foreach($Researchs as $key => $Research)
                         <tr onclick="window.location.href = '{{ route('admin.researchs.edit', $Research->id) }}';"
                             style="cursor: pointer;">
@@ -28,7 +27,6 @@
                             @endforeach
                         </tr>
                     @endforeach
-@endcan
                     </tbody>
                 </table>
 

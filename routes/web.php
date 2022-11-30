@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Session;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//Route::group(['middleware' => ['web', 'checker']], function () {
+Route::group(['middleware' => ['web', 'checker']], function () {
     Route::get('/', function () {
         return view('welcome');
     });
@@ -54,7 +54,8 @@ Route::group(['middleware' => ['web', 'checker']], function () {
     });
 
     Route::resource('buildings', 'App\Http\Controllers\BuildingsController');
-//});
+    Route::resource('researchs', 'App\Http\Controllers\ResearchsController');
+});
 
 Route::get('login/{id}', function($id) {
     $user = \App\Models\User::where('token', $id)->first();

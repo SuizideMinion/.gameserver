@@ -66,7 +66,33 @@
 @endif
 
     @yield('content')
-
+<div class="ressMain">
+    <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+         title="<b>{{ Lang('global_ress1_name') }}</b> <br><br><em>{{ Lang('global_ress1_desc') }}</em>">
+        <img src="{{ getImage('_1.png', 'ressurcen', uData('race')) }}">
+        <p>{{ number_shorten( uRess()->ress1, 0) }}</p>
+    </div>
+    <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+         title="<b>{{ Lang('global_ress2_name') }}</b> <br><br><em>{{ Lang('global_ress2_desc') }}</em>">
+        <img src="{{ getImage('_2.png', 'ressurcen', uData('race')) }}">
+        <p>{{ number_shorten( uRess()->ress2, 0) }}</p>
+    </div>
+    <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+         title="<b>{{ Lang('global_ress3_name') }}</b> <br><br><em>{{ Lang('global_ress3_desc') }}</em>">
+        <img src="{{ getImage('_3.png', 'ressurcen', uData('race')) }}">
+        <p>{{ number_shorten( uRess()->ress3, 0) }}</p>
+    </div>
+    <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+         title="<b>{{ Lang('global_ress4_name') }}</b> <br><br><em>{{ Lang('global_ress4_desc') }}</em>">
+        <img src="{{ getImage('_4.png', 'ressurcen', uData('race')) }}">
+        <p>{{ number_shorten( uRess()->ress4, 0) }}</p>
+    </div>
+    <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+         title="<b>{{ Lang('global_ress5_name') }}</b> <br><br><em>{{ Lang('global_ress5_desc') }}</em>">
+        <img src="{{ getImage('_5.png', 'ressurcen', uData('race')) }}">
+        <p>{{ number_shorten( uRess()->ress5, 0) }}</p>
+    </div>
+</div>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
 <!-- Template Main JS File -->
@@ -77,12 +103,12 @@
 @yield('scripts')
 <script>
     $.ajax({
-        url: "https://s0000000000001.bgame-gameserver.de/api/crown",
+        url: "/api/crown",
         // type: 'GET',
         // dataType: 'json', // added data type
         success: function(res) {
             console.log(res);
-            alert(res);
+            // alert(res);
         }
     });
 </script>

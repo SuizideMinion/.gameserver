@@ -215,60 +215,61 @@
     <div class="scene">
         <div class="carousel">
 
-            @foreach($Buildings as $key => $Building)
-                @if($Building->can()['notDisplay'] == 0 OR uData('show.all.Buildings') == '1')
+            @foreach($Researchs as $key => $Research)
+                @if($Research->can()['notDisplay'] == 0 OR uData('show.all.Researchs') == '1')
                     @set($c, $c + 1)
                     <div class="carousel__cell"
-                         onclick="window.location.href = '{{ route('buildings.edit', $Building->id) }}';"
+                         onclick="window.location.href = '{{ route('researchs.edit', $Research->id) }}';"
                          style="
                              cursor: pointer;
                              background-image:
                              linear-gradient(rgba(0, 0, 0, 0.5),
                              rgba(0, 0, 0, 0.5)),
-                             url('/assets/img/technologies/{{ $Building->pluck()['1.image'] }}');
+                             url('/assets/img/research/{{ $Research->pluck()['image'] ?? '' }}');
                              background-repeat: no-repeat;
                              background-size: contain;
                              ">
                         <br>
                         <h2 class="" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-                            title="<em>{{ Lang('Building.desc.'. $Building->id) }}</em>">
-                            {{ Lang('Building.name.'. $Building->id) }}
+                            title="<em>{{ Lang('Research.desc.'. $Research->id) }}</em>">
+                            {{ Lang('Research.name.'. $Research->id) }}
                         </h2><br>
-                        @if($Building->can()['value'] != 'vollAusGebaut')
+                        @if($Research->can()['value'] != 'vollAusGebaut')
                             <p class=""
-                               style="">{{ Lang('level', [':level' => (session('UserBuildings')[$Building->id]->level ?? 0) + 1]) }}</p>
+                               style="">{{ Lang('level', [':level' => (session('UserResearchs')[$Research->id]->level ?? 0) + 1]) }}</p>
                             <p>{{ Lang('global_ress1_name') }}:
-                                <span class="m">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress1'] ?? 0 }}</span>
+                                <span class="m">{{ $Research->pluck()['ress1'] ?? 0 }}</span>
                             </p>
                             <p>{{ Lang('global_ress2_name') }}:
-                                <span class="d">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress2'] ?? 0 }}</span>
+                                <span class="d">{{ $Research->pluck()['ress2'] ?? 0 }}</span>
                             </p>
                             <p>{{ Lang('global_ress3_name') }}:
-                                <span class="i">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress3'] ?? 0 }}</span>
+                                <span class="i">{{ $Research->pluck()['ress3'] ?? 0 }}</span>
                             </p>
                             <p>{{ Lang('global_ress4_name') }}:
-                                <span class="e">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress4'] ?? 0 }}</span>
+                                <span class="e">{{ $Research->pluck()['ress4'] ?? 0 }}</span>
                             </p>
                             <p>{{ Lang('global_ress5_name') }}:
-                                <span class="t">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress5'] ?? 0 }}</span>
+                                <span class="t">{{ $Research->pluck()['ress5'] ?? 0 }}</span>
                             </p>
                             <p>{{ Lang('Buildtime') }}
-                                : {{ timeconversion($Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
+                                : {{ timeconversion($Research->pluck()['tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
                             <br>
                             <br>
-{{--                            {{$Building->can()['value']}}--}}
-                            @if($BuildingActive)
-                                @if($BuildingActive->build_id == $Building->id)
+
+                            @if($ResearchActive)
+                                @if($ResearchActive->research_id == $Research->id)
+
                                     {{ Lang('tech.imBau') }}
-                                    @set($timeend, session('UserBuildings')[$Building->id]->time - time())
+                                    @set($timeend, session('UserResearch')[$Research->id]->time - time())
                                     <div id="clockdiv">
                                         <span class="Timer"></span>
                                     </div>
                                     @set($rotate, $c)
                                 @endif
                             @else
-                                @if($Building->can()['value'] == 1)
-                                    <button>{{ Lang('tech.Button.Build.'. (session('UserBuildings')[$Building->id]->level ?? 2)) }}</button>
+                                @if($Research->can()['value'] == 1)
+                                    <button>{{ Lang('tech.Button.Build.'. (session('UserResearchs')[$Research->id]->level ?? 2)) }}</button>
                                     {{--                                TODO:: Button fixen !!! --}}
                                 @endif
                             @endif

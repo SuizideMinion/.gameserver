@@ -13,6 +13,7 @@ class UserResearchs extends Model
         'user_id',
         'research_id',
         'value',
-        'time'
+        'time',
+        'level'
     ];
 }

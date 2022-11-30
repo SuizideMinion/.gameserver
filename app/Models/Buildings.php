@@ -43,61 +43,46 @@ class Buildings extends Model
             }
         }
 
-        up:
-
-        if ( isset( $getData[$c .'.build_need'] )) {
-            $keys = json_decode($getData[$c .'.build_need']);
-//            dd($keys, $c, $getData[$c .'.build_need']);
-
-            foreach ($keys as $array) {
-//                dd($keys, $array);
+        if (isset($getData[$c . '.build_need'])) {
+            $keys = json_decode($getData[$c . '.build_need']);
+//            if( $this->id == 14) dd($keys);
+            foreach ($keys as $array)
+            {
                 $id = $array[0]->id;
                 if ($array[0]->art == 1) {
                     // Gebäude
                     if (isset(session('UserBuildings')[$id])) {
-//                        dd(session('UserBuildings')[$id]->level, $array[0]);
-                        if (session('UserBuildings')[$id]->value == 2 and session('UserBuildings')[$id]->level == $array[0]->level) {
-                            $c++;
-                            goto up;
-                        } else {
-//                            return 'gebäudeFehlt -> '. $c;
+                        if (session('UserBuildings')[$id]->value == 2) {
+                            if (session('UserBuildings')[$id]->level < $array[0]->level) return ['notDisplay' => true, 'value' => 'lol1'];
                         }
-                    } else {
-//                        return 'gebäudeFehlt -> '. $c;
-                    }
+                    } else return ['notDisplay' => true, 'value' => 'lol2'];
 
                 } elseif ($array[0]->art == 2) {
                     // Research
                     if (isset(session('UserResearchs')[$id])) {
-                        if (session('UserResearchs')[$id]->value == 2 and session('UserResearchs')[$id]->level == $array[0]->level) {
+                        if (session('UserResearchs')[$id]->value != 2) {
+                            return ['notDisplay' => true, 'value' => 'lol3'];
                             //
-                        } else {
-//                            return 'forschungFehlt -> '. $c;
                         }
-                    }
-                    else {
-//                            return 'forschungFehlt -> '. $c;
-                        }
-                    }
-//                dd($array[0], $key);
+                    } else return ['notDisplay' => true, 'value' => 'lol4'];
                 }
             }
-            $c--;
-            if( $c > 0 )
-            {
-                if (isset($getData[$c .'.ress1']) AND (int)session('uData')['ress1']->value < (int)$getData[$c .'.ress1'])
-                    return ['notDisplay' => false, 'error' => 'M Zuwenig', 'value' => 'lol'];
-                if (isset($getData[$c .'.ress2']) AND (int)session('uData')['ress2']->value < (int)$getData[$c .'.ress2'])
-                    return ['notDisplay' => false, 'error' => 'D Zuwenig', 'value' => 'lol'];
-                if (isset($getData[$c .'.ress3']) AND (int)session('uData')['ress3']->value < (int)$getData[$c .'.ress3'])
-                    return ['notDisplay' => false, 'error' => 'I Zuwenig', 'value' => 'lol'];
-                if (isset($getData[$c .'.ress4']) AND (int)session('uData')['ress4']->value < (int)$getData[$c .'.ress4'])
-                    return ['notDisplay' => false, 'error' => 'E Zuwenig', 'value' => 'lol'];
-                if (isset($getData[$c .'.ress5']) AND (int)session('uData')['ress5']->value < (int)$getData[$c .'.ress5'])
-                    return ['notDisplay' => false, 'error' => 'T Zuwenig', 'value' => 'lol'];
-//                dd((int)session('uData')['ress1']->value, (int)$getData[$c .'.ress1'] );
-                return ['notDisplay' => false, 'value' => 1];
-            }
-            return ['notDisplay' => true, 'value' => 'lol'];
         }
+        $c--;
+        if ($c > 0 OR !isset($getData[$c . '.build_need'])) {
+            if (isset($getData[$c . '.ress1']) and (int)uRess()->ress1 < (int)$getData[$c . '.ress1'])
+                return ['notDisplay' => false, 'error' => 'M Zuwenig', 'value' => 'lol5'];
+            if (isset($getData[$c . '.ress2']) and (int)uRess()->ress2 < (int)$getData[$c . '.ress2'])
+                return ['notDisplay' => false, 'error' => 'D Zuwenig', 'value' => 'lol6'];
+            if (isset($getData[$c . '.ress3']) and (int)uRess()->ress3 < (int)$getData[$c . '.ress3'])
+                return ['notDisplay' => false, 'error' => 'I Zuwenig', 'value' => 'lol7'];
+            if (isset($getData[$c . '.ress4']) and (int)uRess()->ress4 < (int)$getData[$c . '.ress4'])
+                return ['notDisplay' => false, 'error' => 'E Zuwenig', 'value' => 'lol8'];
+            if (isset($getData[$c . '.ress5']) and (int)uRess()->ress5 < (int)$getData[$c . '.ress5'])
+                return ['notDisplay' => false, 'error' => 'T Zuwenig', 'value' => 'lol9'];
+
+            return ['notDisplay' => false, 'value' => 1];
+        }
+        return ['notDisplay' => true, 'value' => 'lol10'];
     }
+}

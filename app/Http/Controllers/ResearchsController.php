@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Buildings;
-use App\Models\UserBuildings;
+use App\Models\Researchs;
+use App\Models\ResearchsData;
 use App\Models\UserData;
+use App\Models\UserResearchs;
 use Illuminate\Http\Request;
 
-class BuildingsController extends Controller
+class ResearchsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +17,15 @@ class BuildingsController extends Controller
      */
     public function index()
     {
-        $Buildings = Buildings::with('getData')->get();
+        $Researchs = Researchs::with('getData')->get();
 
-        $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
+        $ResearchActive = UserResearchs::where('user_id', auth()->user()->id)->where('value', '1')->first();
 
-        $Columns = new Buildings;
+        $Columns = new Researchs;
         $Columns = $Columns->getTableColumns();
         $Columns = array_diff($Columns, ['created_at', 'updated_at']);
 
-        return view('Buildings.index', compact('Buildings', 'Columns', 'BuildingActive'));
+        return view('Researchs.index', compact('Researchs', 'Columns', 'ResearchActive'));
     }
 
     /**
@@ -56,50 +57,57 @@ class BuildingsController extends Controller
      */
     public function show($id)
     {
-        //
+        $Researchs = Researchs::get();
+
+        foreach ($Researchs AS $Research)
+        {
+            $ResearchData = ResearchsData::where('research_id', $Research->id)->get()->pluck('value', 'key');
+
+            print_r(json_decode($ResearchData['build_need']));
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function edit($id)
     {
-        $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
+        $ResearchActive = UserResearchs::where('user_id', auth()->user()->id)->where('value', '1')->first();
 
-        if( !$BuildingActive )
+        if( !$ResearchActive )
         {
-            $Building = Buildings::where('id', $id)->with('getData')->first();
-            if($Building->can()['value'] == 1)
+            $Research = Researchs::where('id', $id)->with('getData')->first();
+            if($Research->can()['value'] == 1)
             {
-                $getData = $Building->getData->pluck('value', 'key');
+                $getData = $Research->getData->pluck('value', 'key');
 
-                UserBuildings::updateOrCreate(
+                UserResearchs::updateOrCreate(
                     [
                         'user_id' => auth()->user()->id,
-                        'build_id' => $id,
+                        'research_id' => $id,
                         'level' => 0
                     ],
                     [
-                        'time' => time() + ($getData[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) . '.tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value),
+                        'time' => time() + ($getData['tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value),
                         'value' => 1,
                     ]
                 );
                 UserData::where('user_id', auth()->user()->id)->where('key', 'ress')->update([
                     'value' => json_encode([
-                        'ress1' => uRess()->ress1 - ($getData[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) . '.ress1'] ?? 0),
-                        'ress2' => uRess()->ress2 - ($getData[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) . '.ress2'] ?? 0),
-                        'ress3' => uRess()->ress3 - ($getData[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) . '.ress3'] ?? 0),
-                        'ress4' => uRess()->ress4 - ($getData[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) . '.ress4'] ?? 0),
-                        'ress5' => uRess()->ress5 - ($getData[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) . '.ress5'] ?? 0),
+                        'ress1' => uRess()->ress1 - ($getData['ress1'] ?? 0),
+                        'ress2' => uRess()->ress2 - ($getData['ress2'] ?? 0),
+                        'ress3' => uRess()->ress3 - ($getData['ress3'] ?? 0),
+                        'ress4' => uRess()->ress4 - ($getData['ress4'] ?? 0),
+                        'ress5' => uRess()->ress5 - ($getData['ress5'] ?? 0),
                     ])
                 ]);
             } else return back()->with('error', 'Dir Fehlen Vorraussetzungen für dieses Gebäude!');
         } else return back()->with('error', 'Du Baust gerade was anderes');
 
-        return redirect('/buildings');
+        return redirect('/researchs');
     }
 
     /**
