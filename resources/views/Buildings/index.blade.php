@@ -1,0 +1,480 @@
+@extends('layout.ingame')
+
+@section('styles')
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        @media screen and (orientation: portrait) {
+
+            body {
+                -ms-transform: rotate(-90deg); /* IE 9 */
+                -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
+                transform: rotate(-90deg);
+                overflow: scroll;
+            }
+        }
+
+        .scene {
+            /*border: 1px solid #CCC;*/
+            position: relative;
+            width: 560px;
+            height: 540px;
+            margin: 80px auto;
+            perspective: 1000px;
+            /*padding-left: 40px;*/
+            top: 100px;
+        }
+
+        @media only screen and (max-height: 600px) {
+            .scene {
+                /*border: 1px solid #CCC;*/
+                position: relative;
+                width: 560px;
+                height: 100vh;
+                margin: 0px auto;
+                perspective: 1000px;
+                top: 0px;
+            }
+        }
+
+        .carousel {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform: translateZ(-288px);
+            transform-style: preserve-3d;
+            transition: transform 1s;
+        }
+
+        .carousel__cell {
+            position: absolute;
+            width: 540px;
+            height: 520px;
+            left: 10px;
+            top: 10px;
+            line-height: 26px;
+            font-size: 20px;
+            font-weight: normal;
+            color: white;
+            text-align: center;
+            transition: transform 1s, opacity 1s;
+            overflow: hidden;
+            transform: rotateY(0deg) translateZ(1031px);
+            border-color: white;
+            border-style: ridge;
+            border-radius: 20px;
+            background: hsla(0, 100%, 0%, 0.8);
+        }
+
+        @media only screen and (max-height: 600px) {
+            .carousel__cell {
+                position: absolute;
+                width: 540px;
+                height: 320px;
+                left: 10px;
+                top: 40px;
+                line-height: 26px;
+                font-size: 20px;
+                font-weight: normal;
+                color: white;
+                text-align: center;
+                transition: transform 1s, opacity 1s;
+                overflow: hidden;
+                transform: rotateY(0deg) translateZ(1031px);
+                border-color: white;
+                border-style: ridge;
+                border-radius: 20px;
+                background: hsla(0, 100%, 0%, 0.8);
+            }
+        }
+
+        .carousel__cell:nth-child(1) {
+            transform: rotateY(0deg) translateZ(288px);
+        }
+
+        .carousel__cell:nth-child(2) {
+            transform: rotateY(40deg) translateZ(288px);
+        }
+
+        .carousel__cell:nth-child(3) {
+            transform: rotateY(80deg) translateZ(288px);
+        }
+
+        .carousel__cell:nth-child(4) {
+            transform: rotateY(120deg) translateZ(288px);
+        }
+
+        .carousel__cell:nth-child(5) {
+            transform: rotateY(160deg) translateZ(288px);
+        }
+
+        .carousel__cell:nth-child(6) {
+            transform: rotateY(200deg) translateZ(288px);
+        }
+
+        .carousel__cell:nth-child(7) {
+            transform: rotateY(240deg) translateZ(288px);
+        }
+
+        .carousel__cell:nth-child(8) {
+            transform: rotateY(280deg) translateZ(288px);
+        }
+
+        .carousel__cell:nth-child(9) {
+            transform: rotateY(320deg) translateZ(288px);
+        }
+
+
+        .carousel-options {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            background: hsla(0, 0%, 100%, 0.8);
+        }
+
+        #pfeill {
+            width: 50px;
+            height: 50px;
+            position: fixed;
+            top: 50%;
+            left: 5px;
+            margin-left: 10px;
+            margin-top: -25px;
+        }
+
+        #pfeilr {
+            width: 50px;
+            height: 50px;
+            position: fixed;
+            top: 50%;
+            right: 5px;
+            margin-left: 10px;
+            margin-top: -25px;
+        }
+
+        .shape1, .shape2 {
+            border-width: 40px;
+            border-style: solid;
+            height: 0;
+            width: 0;
+            border-color: #000 transparent transparent transparent;
+            top: 10px;
+            position: absolute;
+        }
+
+        .shape2 {
+            top: 0px;
+            border-color: #fff transparent transparent transparent;
+        }
+
+        .ressMain {
+            position: fixed;
+            top: 20px;
+            display: flex;
+            left: 50%;
+            margin-left: -325px;
+        }
+
+        @media only screen and (max-height: 600px) {
+            .ressMain {
+                position: fixed;
+                top: 10px;
+                display: flex;
+                left: 50%;
+                margin-left: -325px;
+            }
+        }
+
+        .ress {
+            background-color: white;
+            border-radius: 13px;
+            border: 2px solid dodgerblue;
+            height: 29px;
+            width: 120px;
+            padding: 0px;
+            display: flex;
+            margin-left: 10px;
+        }
+
+        .ress img {
+            height: 25px;
+            border-radius: 15px;
+        }
+
+        .ress p {
+            padding-top: 1px;
+            padding-left: 6px;
+        }
+    </style>
+@endsection
+
+@section('content')
+    @set($c, 0)
+    <div class="scene">
+        <div class="carousel">
+
+            @foreach($Buildings as $key => $Building)
+                @if($Building->can()['notDisplay'] == 0 OR uData('show.all.Buildings') == '1')
+                    @set($c, $c + 1)
+                    <div class="carousel__cell"
+                         onclick="window.location.href = '{{ route('buildings.edit', $Building->id) }}';"
+                         style="
+                             cursor: pointer;
+                             background-image:
+                             linear-gradient(rgba(0, 0, 0, 0.5),
+                             rgba(0, 0, 0, 0.5)),
+                             url('/assets/img/technologies/{{ $Building->pluck()['1.image'] }}');
+                             background-repeat: no-repeat;
+                             background-size: contain;
+                             ">
+                        <br>
+                        <h2 class="" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+                            title="<em>{{ Lang('Building.desc.'. $Building->id) }}</em>">
+                            {{ Lang('Building.name.'. $Building->id) }}
+                        </h2><br>
+                        @if($Building->can()['value'] != 'vollAusGebaut')
+                            <p class=""
+                               style="">{{ Lang('level', [':level' => (session('UserBuildings')[$Building->id]->level ?? 0) + 1]) }}</p>
+                            <p>{{ Lang('global_ress1_name') }}:
+                                <span class="m">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress1'] ?? 0 }}</span>
+                            </p>
+                            <p>{{ Lang('global_ress2_name') }}:
+                                <span class="d">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress2'] ?? 0 }}</span>
+                            </p>
+                            <p>{{ Lang('global_ress3_name') }}:
+                                <span class="i">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress3'] ?? 0 }}</span>
+                            </p>
+                            <p>{{ Lang('global_ress4_name') }}:
+                                <span class="e">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress4'] ?? 0 }}</span>
+                            </p>
+                            <p>{{ Lang('global_ress5_name') }}:
+                                <span class="t">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress5'] ?? 0 }}</span>
+                            </p>
+                            <p>{{ Lang('Buildtime') }}
+                                : {{ timeconversion($Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.tech_build_time']) }}</p>
+                            <br>
+                            <br>
+
+                            @if($BuildingActive)
+                                @if($BuildingActive->build_id == $Building->id)
+                                    {{ Lang('tech.imBau') }}
+                                    @set($timeend, session('UserBuildings')[$Building->id]->time - time())
+                                    <div id="clockdiv">
+                                        <span class="Timer"></span>
+                                    </div>
+                                    @set($rotate, $c)
+                                @endif
+                            @else
+                                @if($Building->can()['value'] == 1)
+                                    <button>{{ Lang('tech.Button.Build.'. (session('UserBuildings')[$Building->id]->level ?? 2)) }}</button>
+                                    {{--                                TODO:: Button fixen !!! --}}
+                                @endif
+                            @endif
+                        @else
+                            <p>Maximum</p>
+                        @endif
+                    </div>
+                @endif
+            @endforeach
+        </div>
+    </div>
+
+    <div class="carousel-options" style="display: none">
+        <input class="cells-range" type="range" min="3" max="15" value="9"/>
+        <input type="radio" name="orientation" value="horizontal" checked/>
+        <input type="radio" name="orientation" value="vertical"/>
+    </div>
+    <div class="ressMain">
+        <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+             title="<b>{{ Lang('global_ress1_name') }}</b> <br><br><em>{{ Lang('global_ress1_desc') }}</em>">
+            <img src="{{ getImage('_1.png', 'ressurcen', uData('race')) }}">
+            <p>{{ number_shorten( (int)uData('ress1'), 0) }}</p>
+        </div>
+        <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+             title="<b>{{ Lang('global_ress2_name') }}</b> <br><br><em>{{ Lang('global_ress2_desc') }}</em>">
+            <img src="{{ getImage('_2.png', 'ressurcen', uData('race')) }}">
+            <p>{{ number_shorten( (int)uData('ress2'), 0) }}</p>
+        </div>
+        <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+             title="<b>{{ Lang('global_ress3_name') }}</b> <br><br><em>{{ Lang('global_ress3_desc') }}</em>">
+            <img src="{{ getImage('_3.png', 'ressurcen', uData('race')) }}">
+            <p>{{ number_shorten( (int)uData('ress3'), 0) }}</p>
+        </div>
+        <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+             title="<b>{{ Lang('global_ress4_name') }}</b> <br><br><em>{{ Lang('global_ress4_desc') }}</em>">
+            <img src="{{ getImage('_4.png', 'ressurcen', uData('race')) }}">
+            <p>{{ number_shorten( (int)uData('ress4'), 0) }}</p>
+        </div>
+        <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+             title="<b>{{ Lang('global_ress5_name') }}</b> <br><br><em>{{ Lang('global_ress5_desc') }}</em>">
+            <img src="{{ getImage('_5.png', 'ressurcen', uData('race')) }}">
+            <p>{{ number_shorten( (int)uData('ress5'), 0) }}</p>
+        </div>
+    </div>
+    <i class="bi bi-caret-left-fill" id="pfeill" style="color: white;font-size: xxx-large;"
+       onclick="leftclick()"></i>
+    <i class="bi bi-caret-right-fill" id="pfeilr" style="color: white;font-size: xxx-large;"
+       onclick="rightclick()"></i>
+@endsection
+
+@section('scripts')
+
+    <script>
+        $('.m').each(function () {
+            if ($(this).text() > {{ uData('ress1') }}) {
+                $(this).css("color", "red");
+            }
+        });
+        $('.d').each(function () {
+            if ($(this).text() > {{ uData('ress2') }}) {
+                $(this).css("color", "red");
+            }
+        });
+        $('.i').each(function () {
+            if ($(this).text() > {{ uData('ress3') }}) {
+                $(this).css("color", "red");
+            }
+        });
+        $('.e').each(function () {
+            if ($(this).text() > {{ uData('ress4') }}) {
+                $(this).css("color", "red");
+            }
+        });
+        $('.t').each(function () {
+            if ($(this).text() > {{ uData('ress5') }}) {
+                $(this).css("color", "red");
+            }
+        });
+    </script>
+
+    <script>
+        var carousel = document.querySelector('.carousel');
+        var cells = carousel.querySelectorAll('.carousel__cell');
+        var cellCount; // cellCount set from cells-range input value
+        var selectedIndex = {{($rotate ?? 1)}} - 1;
+        var cellWidth = carousel.offsetWidth;
+        var cellHeight = carousel.offsetHeight;
+        var isHorizontal = true;
+        var rotateFn = isHorizontal ? 'rotateY' : 'rotateX';
+        var radius, theta;
+
+        // console.log( cellWidth, cellHeight );
+
+        function rotateCarousel() {
+            var angle = theta * selectedIndex * -1;
+            carousel.style.transform = 'translateZ(' + -radius + 'px) ' +
+                rotateFn + '(' + angle + 'deg)';
+        }
+
+        // var prevButton = document.querySelector('.previous-button');
+        // prevButton.addEventListener( 'click', function() {
+        //     selectedIndex--;
+        //     rotateCarousel();
+        // });
+
+        function leftclick() {
+            selectedIndex--;
+            rotateCarousel();
+        };
+
+        // var nextButton = document.querySelector('.next-button');
+        // nextButton.addEventListener('click', function () {
+        //     selectedIndex++;
+        //     rotateCarousel();
+        // });
+
+        function rightclick() {
+            selectedIndex++;
+            rotateCarousel();
+        };
+
+        // var cellsRange = document.querySelector('.cells-range');
+        // cellsRange.addEventListener('change', changeCarousel);
+        // cellsRange.addEventListener('input', changeCarousel);
+
+
+        function changeCarousel() {
+            @php if(isset($c)) $c = ( $c <= 3 ? 3:$c ); @endphp
+                cellCount = {{$c}};
+            theta = 360 / cellCount;
+            var cellSize = isHorizontal ? cellWidth : cellHeight;
+            radius = Math.round((cellSize / 2) / Math.tan(Math.PI / cellCount));
+            for (var i = 0; i < cells.length; i++) {
+                var cell = cells[i];
+                if (i < cellCount) {
+                    // visible cell
+                    cell.style.opacity = 1;
+                    var cellAngle = theta * i;
+                    cell.style.transform = rotateFn + '(' + cellAngle + 'deg) translateZ(' + radius + 'px)';
+                } else {
+                    // hidden cell
+                    cell.style.opacity = 0;
+                    cell.style.transform = 'none';
+                }
+            }
+
+            rotateCarousel();
+        }
+
+        var orientationRadios = document.querySelectorAll('input[name="orientation"]');
+        (function () {
+            for (var i = 0; i < orientationRadios.length; i++) {
+                var radio = orientationRadios[i];
+                radio.addEventListener('change', onOrientationChange);
+            }
+        })();
+
+        function onOrientationChange() {
+            var checkedRadio = document.querySelector('input[name="orientation"]:checked');
+            isHorizontal = checkedRadio.value == 'horizontal';
+            rotateFn = isHorizontal ? 'rotateY' : 'rotateX';
+            changeCarousel();
+        }
+
+        // set initials
+        onOrientationChange();
+    </script>
+    @isset($timeend)
+        <script>
+            function getTimeRemaining(endtime) {
+                const total = Date.parse(endtime) - Date.parse(new Date());
+                const seconds = Math.floor((total / 1000) % 60);
+                const minutes = Math.floor((total / 1000 / 60) % 60);
+                const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+                const days = Math.floor(total / (1000 * 60 * 60 * 24));
+
+                return {
+                    total,
+                    days,
+                    hours,
+                    minutes,
+                    seconds
+                };
+            }
+
+            function initializeClock(id, endtime) {
+                const clock = document.getElementById(id);
+                const Timer = clock.querySelector('.Timer');
+
+                function updateClock() {
+                    const t = getTimeRemaining(endtime);
+
+                    Timer.innerHTML = (t.days !== 0 ? t.days + 'Tage ' : '') + ('0' + t.hours).slice(-2) + ':' + ('0' + t.minutes).slice(-2) + ':' + ('0' + t.seconds).slice(-2);
+
+                    if (t.total <= 0) {
+                        clearInterval(timeinterval);
+                        Timer.innerHTML = 'Fertig!';
+                    }
+                }
+
+                updateClock();
+                const timeinterval = setInterval(updateClock, 1000);
+            }
+
+            //const deadline = new Date(Date.parse(new Date()) + 3600 * 1000);
+            initializeClock('clockdiv', new Date(Date.parse(new Date()) + {{$timeend}} * 1000));
+        </script>
+    @endisset
+@endsection

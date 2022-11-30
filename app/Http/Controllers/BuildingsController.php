@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buildings;
+use App\Models\UserBuildings;
 use Illuminate\Http\Request;
 
 class BuildingsController extends Controller
@@ -9,11 +11,19 @@ class BuildingsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+        $Buildings = Buildings::with('getData')->get();
+
+        $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
+
+        $Columns = new Buildings;
+        $Columns = $Columns->getTableColumns();
+        $Columns = array_diff($Columns, ['created_at', 'updated_at']);
+
+        return view('Buildings.index', compact('Buildings', 'Columns', 'BuildingActive'));
     }
 
     /**
@@ -52,11 +62,34 @@ class BuildingsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function edit($id)
     {
-        //
+        $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
+
+        if( !$BuildingActive )
+        {
+            $Building = Buildings::where('id', $id)->with('getData')->first();
+            if($Building->can()['value'] == 1)
+            {
+                $getData = $Building->getData->pluck('value', 'key');
+
+                UserBuildings::updateOrCreate(
+                    [
+                        'user_id' => auth()->user()->id,
+                        'build_id' => $id,
+                        'level' => 0
+                    ],
+                    [
+                        'time' => time() + ($getData[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) . '.tech_build_time']),
+                        'value' => 1,
+                    ]
+                );
+            } else return back()->with('error', 'Dir Fehlen Vorraussetzungen für dieses Gebäude!');
+        } else return back()->with('error', 'Du Baust gerade was anderes');
+
+        return redirect('/buildings');
     }
 
     /**

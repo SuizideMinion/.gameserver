@@ -5,18 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserData extends Model
+class UserResearchs extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'key',
+        'user_id',
+        'research_id',
         'value',
-        'user_id'
+        'time'
     ];
-
-    public function getData()
-    {
-        return $this->hasMany(UserData::class);
-    }
 }

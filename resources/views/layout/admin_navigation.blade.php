@@ -16,6 +16,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link " href="/admin/researchs">
+                <i class="bi bi-file-earmark-text"></i>
+                <span>Researchs</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link " href="/admin/translate">
                 <i class="bi bi-globe"></i>
                 <span>Translations</span>
@@ -25,6 +31,12 @@
             <a class="nav-link " href="/admin/users">
                 <i class="bi bi-person"></i>
                 <span>Users</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="/admin/server">
+                <i class="bi bi-cpu"></i>
+                <span>Servereinstellungen</span>
             </a>
         </li>
 

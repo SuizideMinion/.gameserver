@@ -5,8 +5,8 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <button type="button" class="btn btn-primary btn-sm float-right" onclick="window.location.href = '{{ route('admin.buildings.create') }}';">Add New Building</button>
-                <button type="button" class="btn btn-danger btn-sm float-right" onclick="window.location.href = '/admin/buildingsadd';">Reload CSV!!</button>
+                <button type="button" class="btn btn-primary btn-sm float-right" onclick="window.location.href = '{{ route('admin.researchs.create') }}';">Add New Research</button>
+                <button type="button" class="btn btn-danger btn-sm float-right" onclick="window.location.href = '/admin/researchsadd';">Reload CSV!!</button>
             </div>
             <div class="card-body">
 
@@ -19,19 +19,16 @@
                     </tr>
                     </thead>
                     <tbody>
-
-                    @foreach($Buildings as $key => $Building)
-                        @if($Building->can()['notDisplay'] == 0)
-{{--                        <tr onclick="window.location.href = '{{ route('admin.buildings.edit', $Building->id) }}';"--}}
-<tr
+@can('research.index.see')
+                    @foreach($Researchs as $key => $Research)
+                        <tr onclick="window.location.href = '{{ route('admin.researchs.edit', $Research->id) }}';"
                             style="cursor: pointer;">
                             @foreach( $Columns AS $Column )
-                                <th scope="col">{{ $Building[$Column] }} {{$Building->can()['notDisplay']}} {{$Building->can()['error'] ?? ''}}</th>
+                                <th scope="col">{{ $Research[$Column] }}</th>
                             @endforeach
                         </tr>
-                        @endif
                     @endforeach
-
+@endcan
                     </tbody>
                 </table>
 

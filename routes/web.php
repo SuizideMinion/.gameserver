@@ -18,14 +18,25 @@ Route::group(['middleware' => ['web', 'checker']], function () {
     Route::get('/', function () {
         return view('welcome');
     });
+    Route::get('/test', function () {
+        dd(
+            json_decode(auth()->user()->getData->pluck('value', 'key')['testarray'])->name,
+            json_decode(auth()->user()->getData->pluck('value', 'key')['testarray'])->kinder,
+            json_decode(auth()->user()->getData->pluck('value', 'key')['testarray'])->kinder[0]->alter,
+        );
+    });
 
     Route::prefix('admin')->group(function() {
-        Route::resource('buildings', 'App\Http\Controllers\Admin\BuildingsController', ["as"=>"admin"]);
         Route::resource('/', 'App\Http\Controllers\Admin\IndexController', ["as"=>"admin"]);
+        Route::resource('server', 'App\Http\Controllers\Admin\ServerController', ["as"=>"admin"]);
         Route::resource('users', 'App\Http\Controllers\Admin\UserController', ["as"=>"admin"]);
-        Route::resource('buildingsdata', 'App\Http\Controllers\Admin\BuildingsDataController', ["as"=>"admin"]);
         Route::resource('translate', 'App\Http\Controllers\Admin\TranslationController', ["as"=>"admin"]);
+        Route::resource('buildings', 'App\Http\Controllers\Admin\BuildingsController', ["as"=>"admin"]);
+        Route::resource('buildingsdata', '\App\Http\Controllers\Admin\BuildingsDataController', ["as"=>"admin"]);
         Route::get('buildingsadd', '\App\Http\Controllers\Admin\BuildingsController@getDataCsv');
+        Route::resource('researchs', '\App\Http\Controllers\Admin\ResearchsController', ["as"=>"admin"]);
+        Route::resource('researchsdata', '\App\Http\Controllers\Admin\ResearchsDataController', ["as"=>"admin"]);
+        Route::get('researchsadd', '\App\Http\Controllers\Admin\ResearchsController@getDataCsv');
     });
 
     Route::resource('buildings', 'App\Http\Controllers\BuildingsController');

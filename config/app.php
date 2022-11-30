@@ -156,6 +156,7 @@ return [
 
     'providers' => [
 
+        'App\Providers\BladeServiceProvider',
         /*
          * Laravel Framework Service Providers...
          */

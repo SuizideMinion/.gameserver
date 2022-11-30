@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Buildings;
-use App\Models\BuildingsData;
+use App\Models\Researchs;
+use App\Models\ResearchsData;
 use App\Models\Translations;
-use App\Models\User;
-use App\Models\UserBuildings;
 use Illuminate\Http\Request;
 
-class BuildingsController extends Controller
+class ResearchsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,13 +17,13 @@ class BuildingsController extends Controller
      */
     public function index()
     {
-        $Buildings = Buildings::with('getData')->get();
+        $Researchs = Researchs::with('getData')->get();
 
-        $Columns = new Buildings;
+        $Columns = new Researchs;
         $Columns = $Columns->getTableColumns();
         $Columns = array_diff($Columns, ['created_at', 'updated_at']);
 
-        return view('admin.buildings.index', compact('Buildings', 'Columns'));
+        return view('admin.researchs.index', compact('Researchs', 'Columns'));
     }
 
     /**
@@ -35,7 +33,7 @@ class BuildingsController extends Controller
      */
     public function create()
     {
-        return view('admin.buildings.create');
+        return view('admin.researchs.create');
     }
 
     /**
@@ -46,11 +44,11 @@ class BuildingsController extends Controller
      */
     public function store(Request $request)
     {
-        Buildings::create([
+        Researchs::create([
             'desc' => $request->desc
         ]);
 
-        return redirect('/admin/buildings');
+        return redirect('/admin/researchs');
     }
 
     /**
@@ -72,12 +70,12 @@ class BuildingsController extends Controller
      */
     public function edit($id)
     {
-        $Building = Buildings::whereId($id)->first();
-//        dd($Building->getData()->pluck('value', 'key'));
-        $BuildingsData = BuildingsData::where('build_id', $id)->get();
-        $BuildingsTrans = Translations::where('key', 'Building.name.' . $id)->orWhere('key', 'Building.desc.' . $id)->orderBy('key')->get();
+        $Research = Researchs::whereId($id)->first();
+//        dd($Research->getData()->pluck('value', 'key'));
+        $ResearchsData = ResearchsData::where('research_id', $id)->get();
+        $ResearchsTrans = Translations::where('key', 'Research.name.' . $id)->orWhere('key', 'Research.desc.' . $id)->orderBy('key')->get();
 
-        return view('admin.buildings.edit', compact('Building', 'BuildingsData', 'BuildingsTrans'));
+        return view('admin.researchs.edit', compact('Research', 'ResearchsData', 'ResearchsTrans'));
     }
 
     /**
@@ -89,11 +87,11 @@ class BuildingsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Buildings::where('id', $id)->update([
+        Researchs::where('id', $id)->update([
             'desc' => $request->desc
         ]);
         if (!empty($request->key) and !empty($request->value))
-            BuildingsData::create([
+            ResearchsData::create([
                 'key' => $request->key,
                 'value' => $request->value,
                 'build_id' => $id
@@ -106,7 +104,7 @@ class BuildingsController extends Controller
                 'lang' => $request->lang
             ]);
 
-        return redirect('/admin/buildings/' . $id . '/edit');
+        return redirect('/admin/researchs/' . $id . '/edit');
     }
 
     /**
@@ -122,7 +120,7 @@ class BuildingsController extends Controller
 
     public function getDataCsv()
     {
-        $file = fopen(storage_path() . '/csv/buildings.csv', 'r');
+        $file = fopen(storage_path() . '/csv/research.csv', 'r');
         $lines = [];
         while (($line = fgetcsv($file)) !== FALSE) {
             $lines[] = $line;
@@ -148,26 +146,26 @@ class BuildingsController extends Controller
 
                 $i++;
             }
-            $keyListData = ['build_need', 'level', 'tech_level', 'tech_build_time', 'ress1', 'ress2', 'ress3', 'ress4', 'ress5', 'max_level', 'image'];
+            $keyListData = ['tech_need', 'research_need1', 'research_need2', 'research_need3', 'research_need4', 'research_need5', 'research_need6', 'research_level', 'tech_build_time', 'ress1', 'ress2', 'ress3', 'ress4', 'ress5', 'image'];
             $keyListTrans = ['name_1', 'name_2', 'name_3', 'name_4', 'name_5', 'desc_1', 'desc_2', 'desc_3', 'desc_4'];
-            Buildings::where('id', '>', 0)->delete();
-            Translations::where('key', 'LIKE', 'Tech%')->orWhere('key', 'LIKE', 'tech%')->orWhere('key', 'LIKE', 'Building%')->delete();
+            Researchs::where('id', '>', 0)->delete();
+            Translations::where('key', 'LIKE', 'Research%')->delete();
             $Return = '';
             if (!empty($array)) {
                 foreach ($array as $a) {
                     if ($a['desc'] != '') {
-                        Buildings::create([
+                        Researchs::create([
                             'id' => $a['id'],
                             'desc' => $a['desc']
                         ]);
-                        $Return .= 'create Building '. $a['desc'] .' -> ';
+                        $Return .= 'create Research '. $a['desc'] .' -> ';
                         foreach ($keyListTrans as $Keys)
                         {
                             $Race = explode('_', $Keys);
                             if ($a[$Keys] != '')
                                 Translations::create([
                                     'lang' => 'DE',
-                                    'key' => 'Building.'. $Race[0] .'.' . $a['id'],
+                                    'key' => 'Research.'. $Race[0] .'.' . $a['id'],
                                     'value' => $a[$Keys],
                                     'race' => $Race[1],
                                 ]);
@@ -178,17 +176,17 @@ class BuildingsController extends Controller
                     foreach ($keyListData as $Keys)
                     {
                         if ($a[$Keys] != '') {
-                            BuildingsData::create([
-                                'build_id' => $a['id'],
-                                'key' => $a['level'] . '.' . $Keys,
+                            ResearchsData::create([
+                                'research_id' => $a['id'],
+                                'key' => $Keys,
                                 'value' => $a[$Keys],
                             ]);
-                            $Return .= 'create Data ' . $a['level'] . '.' . $Keys . '<br >';
+                            $Return .= 'create Data ' . $Keys . '<br >';
                         }
                     }
                 }
             }
         }
-        return view('admin.buildings.csv', compact('Return'));
+        return view('admin.Researchs.csv', compact('Return'));
     }
 }
