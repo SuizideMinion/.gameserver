@@ -17,6 +17,7 @@
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/orbit.css" rel="stylesheet">
     <style>
         .arrow_box {
             position: relative;
@@ -94,6 +95,18 @@
     </div>
 </div>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<div class="race-footerl" style=""></div>
+<div class="race-head" style=""></div>
+<div class="race-footerr" style=""></div>
+<div class="race-icon race-icona" onclick="window.location.href = '{{ route('buildings.index') }}';"><i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+                                     title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i></div>
+<div class="race-icon race-iconb"><i class="bi bi-star-fill"></i></div>
+<div class="race-icon race-iconc"><i class="bi bi-star-fill"></i></div>
+<div class="race-icon race-icond"><i class="bi bi-star-fill"></i></div>
+<div class="race-icon race-icone"><i class="bi bi-star-fill"></i></div>
+<div class="race-icon race-iconf"><i class="bi bi-star-fill"></i></div>
+
 
 <!-- Template Main JS File -->
     <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -80,11 +80,11 @@ class BuildingsController extends Controller
                     [
                         'user_id' => auth()->user()->id,
                         'build_id' => $id,
-                        'level' => 0
                     ],
                     [
                         'time' => time() + ($getData[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) . '.tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value),
                         'value' => 1,
+                        'level' => (session('UserBuildings')[$Building->id]->level ?? 0)
                     ]
                 );
                 UserData::where('user_id', auth()->user()->id)->where('key', 'ress')->update([

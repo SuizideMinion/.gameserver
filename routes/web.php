@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Session;
 |
 */
 Route::group(['middleware' => ['web', 'checker']], function () {
-    Route::get('/', function () {
-        return view('welcome');
-    });
+    Route::resource('/', 'App\Http\Controllers\HomeController');
+//    Route::get('/', function () {
+//        return view('welcome');
+//    });
     Route::get('/test', function () {
         $nextTick = 1212122123434;
         $ticks = 1122112;

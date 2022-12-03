@@ -2,26 +2,26 @@
 
 @section('styles')
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        /** {*/
+        /*    box-sizing: border-box;*/
+        /*}*/
 
-        @media screen and (orientation: portrait) {
+        /*@media screen and (orientation: portrait) {*/
 
-            body {
-                -ms-transform: rotate(-90deg); /* IE 9 */
-                -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
-                transform: rotate(-90deg);
-                overflow: scroll;
-            }
-        }
+        /*    body {*/
+        /*        -ms-transform: rotate(-90deg); !* IE 9 *!*/
+        /*        -webkit-transform: rotate(-90deg); !* Chrome, Safari, Opera *!*/
+        /*        transform: rotate(-90deg);*/
+        /*        overflow: scroll;*/
+        /*    }*/
+        /*}*/
 
         .scene {
             /*border: 1px solid #CCC;*/
             position: relative;
             width: 560px;
             height: 540px;
-            margin: 80px auto;
+            margin: 0px auto;
             perspective: 1000px;
             /*padding-left: 40px;*/
             top: 100px;
@@ -169,48 +169,26 @@
             border-color: #fff transparent transparent transparent;
         }
 
-        .ressMain {
-            position: fixed;
-            top: 20px;
-            display: flex;
-            left: 50%;
-            margin-left: -325px;
-        }
-
-        @media only screen and (max-height: 600px) {
-            .ressMain {
-                position: fixed;
-                top: 10px;
-                display: flex;
-                left: 50%;
-                margin-left: -325px;
-            }
-        }
-
-        .ress {
-            background-color: white;
-            border-radius: 13px;
-            border: 2px solid dodgerblue;
-            height: 29px;
-            width: 120px;
-            padding: 0px;
-            display: flex;
-            margin-left: 10px;
-        }
-
-        .ress img {
-            height: 25px;
-            border-radius: 15px;
-        }
-
-        .ress p {
-            padding-top: 1px;
-            padding-left: 6px;
-        }
     </style>
 @endsection
 
 @section('content')
+    <div class="tab-main" style="margin-top: 65px;">
+        <ul class="nav nav-tabs my-tab-ul" id="myTab" role="tablist">
+            <li></li>
+            <li class="nav-item" role="presentation">
+                <button onclick="window.location.href = '{{ route('buildings.index') }}';" class="nav-link active" id="active-tab" data-bs-toggle="tab" data-bs-target="#active-tab-pane" type="button" role="tab" aria-controls="active-tab-pane" aria-selected="true">
+                    {{ Lang('global_planet_buildings_name') }}
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button onclick="window.location.href = '{{ route('researchs.index') }}';" class="nav-link" id="inactive-tab" data-bs-toggle="tab" data-bs-target="#inactive-tab-pane" type="button" role="tab" aria-controls="inactive-tab-pane" aria-selected="false" tabindex="-1">
+                    {{ Lang('global_planet_research_name') }}
+                </button>
+            </li>
+            <li></li>
+        </ul>
+    </div>
     @set($c, 0)
     <div class="scene">
         <div class="carousel">
@@ -268,7 +246,7 @@
                                 @endif
                             @else
                                 @if($Building->can()['value'] == 1)
-                                    <button>{{ Lang('tech.Button.Build.'. (session('UserBuildings')[$Building->id]->level ?? 2)) }}</button>
+                                    <button class="orbit-btn">{{ Lang('tech.Button.Build.'. (session('UserBuildings')[$Building->id]->level ?? 2)) }}</button>
                                     {{--                                TODO:: Button fixen !!! --}}
                                 @endif
                             @endif
