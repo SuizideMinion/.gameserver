@@ -88,9 +88,9 @@ class ResearchsController extends Controller
                     [
                         'user_id' => auth()->user()->id,
                         'research_id' => $id,
-                        'level' => 0
                     ],
                     [
+                        'level' => 0,
                         'time' => time() + ($getData['tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value),
                         'value' => 1,
                     ]
