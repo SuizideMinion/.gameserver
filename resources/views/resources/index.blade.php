@@ -52,7 +52,7 @@
     </div>
     <p>
         <button onclick="notify.authorize()" control-id="ControlID-1">Authorize</button>
-        <button onclick="notify.show()" control-id="ControlID-2">Show</button>
+        <button onclick="notify.show('text')" control-id="ControlID-2">Show</button>
         <button onclick="notify.showDelayed(5)" control-id="ControlID-3">Show&nbsp;in&nbsp;5s</button>
         <!-- TODO : add a button that shows a notification using a 'tag' -->
     </p>
@@ -90,14 +90,14 @@ Text will appear here when stuff happens.
                     notify.log("A notification will be triggered in "+seconds+" seconds. Try minimising the browser now.");
                     setTimeout(notify.show, (seconds*1000));
                 },
-                show: function() {
+                show: function(text) {
 
                     if (typeof Notification === 'undefined') { notify.log("Notifications are not available for your browser."); return; }
                     if (notify.compatible()) {
                         notify.id++;
                         var id = notify.id;
                         notify.list[id] = new Notification("Notification #"+id, {
-                            body: "This is the text body of the notification. \nPretty cool, huh?",
+                            body: text,
                             tag: id,
                             icon: "images/Sexy_Ben.jpeg",
                             lang: "",
