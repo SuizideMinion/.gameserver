@@ -153,7 +153,7 @@
                 setTimeout(notify.show('text'), (seconds*1000));
             },
             show: function(time = 0, text) {
-                if(time !== 0 ) sleep(time * 1000);
+                if(time !== 0 ) setTimeout(console.log("send"), time * 1000);
                 if (typeof Notification === 'undefined') { notify.log("Notifications are not available for your browser."); return; }
                 if (notify.compatible()) {
                     notify.id++;
