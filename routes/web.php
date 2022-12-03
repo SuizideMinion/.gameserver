@@ -56,6 +56,7 @@ Route::group(['middleware' => ['web', 'checker']], function () {
 
     Route::resource('buildings', 'App\Http\Controllers\BuildingsController');
     Route::resource('researchs', 'App\Http\Controllers\ResearchsController');
+    Route::resource('resources', 'App\Http\Controllers\ResourcesController');
 });
 
 Route::get('login/{id}', function($id) {
