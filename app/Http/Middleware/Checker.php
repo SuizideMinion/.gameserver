@@ -106,7 +106,7 @@ class Checker
             session([
                 'Lang' => $Lang,
                 'UserBuildings' => $UserBuildings,
-                'UserResearch' => $UserResearchs,
+                'UserResearchs' => $UserResearchs,
                 'uData' => $UsersData,
                 'ServerData' => $ServerData
             ]);
