@@ -32,9 +32,9 @@ class Researchs extends Model
     public function can()
     {
         $getData = $this->getData->pluck('value', 'key');
+        dd(session('UserResearchs'));
         if (isset(session('UserResearchs')[$this->id])) {
             if (session('UserResearchs')[$this->id]->value == 2) {
-                dd(session('UserResearchs'));
                 if (1 == session('UserResearchs')[$this->id]->level) return ['notDisplay' => true, 'value' => 'vollAusGebaut'];
             }
             if (session('UserResearchs')[$this->id]->value == 1) {
