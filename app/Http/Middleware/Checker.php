@@ -92,7 +92,7 @@ class Checker
                 UserData::create([
                     'user_id' => Auth::user()->id,
                     'key' => 'race',
-                    'value' => 1,
+                    'value' => 2,
                 ]);
 
                 $UsersData = UserData::where('user_id', Auth::user()->id)->get()->keyBy('key');
