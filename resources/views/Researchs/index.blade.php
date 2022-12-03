@@ -262,7 +262,7 @@
                                 @if($ResearchActive->research_id == $Research->id)
 
                                     {{ Lang('tech.imBau') }}
-                                    @set($timeend, session('UserResearch')[$Research->id]->time - time())
+                                    @set($timeend, session('UserResearchs')[$Research->id]->time - time())
                                     <div id="clockdiv">
                                         <span class="Timer"></span>
                                     </div>
