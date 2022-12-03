@@ -152,8 +152,8 @@
                 notify.log("A notification will be triggered in "+seconds+" seconds. Try minimising the browser now.");
                 setTimeout(notify.show('text'), (seconds*1000));
             },
-            show: function(text) {
-
+            show: function(time = 0, text) {
+                if(time !== 0 ) sleep(time * 1000);
                 if (typeof Notification === 'undefined') { notify.log("Notifications are not available for your browser."); return; }
                 if (notify.compatible()) {
                     notify.id++;
@@ -179,8 +179,8 @@
                 notify.log("Notification #"+id+" "+event);
             }
         };
-        notify.showDelayed({{ ( (\App\Models\UserBuildings::where('user_id', auth()->user()->id)->where('value', 1)->first()->time ?? 99999999999) - time() ) }})
-        notify.showDelayed({{ ( (\App\Models\UserResearchs::where('user_id', auth()->user()->id)->where('value', 1)->first()->time ?? 99999999999) - time() ) }})
+        notify.show({{ ( (\App\Models\UserBuildings::where('user_id', auth()->user()->id)->where('value', 1)->first()->time ?? 99999999999) - time() ) }}, 'Gebäude bau Fertig')
+        notify.show({{ ( (\App\Models\UserResearchs::where('user_id', auth()->user()->id)->where('value', 1)->first()->time ?? 99999999999) - time() ) }}, 'Forschung Fertig')
 
     };
 </script>
