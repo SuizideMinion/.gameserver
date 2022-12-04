@@ -20,24 +20,24 @@
             /*border: 1px solid #CCC;*/
             position: relative;
             width: 560px;
-            height: 540px;
+            height: 70vh;
             margin: 0px auto;
             perspective: 1000px;
             /*padding-left: 40px;*/
             top: 100px;
         }
 
-        @media only screen and (max-height: 600px) {
-            .scene {
-                /*border: 1px solid #CCC;*/
-                position: relative;
-                width: 560px;
-                height: 100vh;
-                margin: 0px auto;
-                perspective: 1000px;
-                top: 0px;
-            }
-        }
+        /*@media only screen and (max-height: 600px) {*/
+        /*    .scene {*/
+        /*        !*border: 1px solid #CCC;*!*/
+        /*        position: relative;*/
+        /*        width: 560px;*/
+        /*        height: 100vh;*/
+        /*        margin: 0px auto;*/
+        /*        perspective: 1000px;*/
+        /*        top: 0px;*/
+        /*    }*/
+        /*}*/
 
         .carousel {
             width: 100%;
@@ -51,7 +51,7 @@
         .carousel__cell {
             position: absolute;
             width: 540px;
-            height: 520px;
+            height: 70vh;
             left: 10px;
             top: 10px;
             line-height: 26px;
@@ -68,27 +68,27 @@
             background: hsla(0, 100%, 0%, 0.8);
         }
 
-        @media only screen and (max-height: 600px) {
-            .carousel__cell {
-                position: absolute;
-                width: 540px;
-                height: 320px;
-                left: 10px;
-                top: 40px;
-                line-height: 26px;
-                font-size: 20px;
-                font-weight: normal;
-                color: white;
-                text-align: center;
-                transition: transform 1s, opacity 1s;
-                overflow: hidden;
-                transform: rotateY(0deg) translateZ(1031px);
-                border-color: white;
-                border-style: ridge;
-                border-radius: 20px;
-                background: hsla(0, 100%, 0%, 0.8);
-            }
-        }
+        /*@media only screen and (max-height: 600px) {*/
+        /*    .carousel__cell {*/
+        /*        position: absolute;*/
+        /*        width: 540px;*/
+        /*        height: 320px;*/
+        /*        left: 10px;*/
+        /*        top: 40px;*/
+        /*        line-height: 26px;*/
+        /*        font-size: 20px;*/
+        /*        font-weight: normal;*/
+        /*        color: white;*/
+        /*        text-align: center;*/
+        /*        transition: transform 1s, opacity 1s;*/
+        /*        overflow: hidden;*/
+        /*        transform: rotateY(0deg) translateZ(1031px);*/
+        /*        border-color: white;*/
+        /*        border-style: ridge;*/
+        /*        border-radius: 20px;*/
+        /*        background: hsla(0, 100%, 0%, 0.8);*/
+        /*    }*/
+        /*}*/
 
         .carousel__cell:nth-child(1) {
             transform: rotateY(0deg) translateZ(288px);
@@ -170,6 +170,13 @@
         }
 
     </style>
+@endsection
+
+@section('settings')
+    <a class="dropdown-item d-flex align-items-center" onclick="uSetting('show.all.Buildings', {{uData('show.all.Buildings') == 1 ? 0:1}})" style="cursor: pointer">
+        <i class="bi bi-person"></i>
+        <span>{{uData('show.all.Buildings') == 1 ? 'nur Baubare Gebäude anzeigen':'alle Gebäude Anzeigen'}}</span>
+    </a>
 @endsection
 
 @section('content')
@@ -256,7 +263,18 @@
 @endsection
 
 @section('scripts')
-
+<script>
+    function uSetting(key, value)
+    {
+        $.ajax({
+            url: "/api/uSettings/{{uData('token')}}/"+ key +"/"+ value,
+            success: function(res) {
+                console.log(res);
+                location.reload();
+            }
+        });
+    }
+</script>
     <script>
         $('.m').each(function () {
             if ($(this).text() > {{ uRess()->ress1 }}) {

@@ -97,6 +97,16 @@ class Checker
 
                 $UsersData = UserData::where('user_id', Auth::user()->id)->get()->keyBy('key');
             }
+            if ( !isset($UsersData['token']) ) // TODO:: Race auswahl seite wenn Race Fehlt !!!
+            {
+                UserData::create([
+                    'user_id' => Auth::user()->id,
+                    'key' => 'token',
+                    'value' => md5(Auth::user()->id + 2555),
+                ]);
+
+                $UsersData = UserData::where('user_id', Auth::user()->id)->get()->keyBy('key');
+            }
 
             $UserBuildings = \App\Models\UserBuildings::where('user_id', Auth::user()->id)->get()->keyBy('build_id');
             $UserResearchs = \App\Models\UserResearchs::where('user_id', Auth::user()->id)->get()->keyBy('research_id');

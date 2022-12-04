@@ -16,7 +16,33 @@ body {
   font-family: "Open Sans", sans-serif;
   background: #f6f9ff;
   color: #444444;
+    width: 100%;
 }
+/*@media screen and (min-height: 500px) {*/
+/*    body {*/
+/*        zoom: 60%;*/
+/*    }*/
+/*}*/
+/*@media screen and (min-height: 600px) {*/
+/*    body {*/
+/*        zoom: 70%;*/
+/*    }*/
+/*}*/
+/*@media screen and (min-height: 700px) {*/
+/*    body {*/
+/*        zoom: 80%;*/
+/*    }*/
+/*}*/
+/*@media screen and (min-height: 800px) {*/
+/*    body {*/
+/*        zoom: 90%;*/
+/*    }*/
+/*}*/
+/*@media screen and (min-height: 900px) {*/
+/*    body {*/
+/*        zoom: 100%;*/
+/*    }*/
+/*}*/
 
 a {
   color: #4154f1;

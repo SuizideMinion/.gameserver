@@ -3,6 +3,7 @@
 use App\Models\ServerData;
 use App\Models\UserBuildings;
 use App\Models\UserData;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['api', 'checker']], function () {
@@ -71,5 +72,6 @@ Route::group(['middleware' => ['api', 'checker']], function () {
             ], 'value');
         }
     });
+    Route::get('uSettings/{token}/{key}/{value}', '\App\Http\Controllers\APIController@saveUserData');
 });
 

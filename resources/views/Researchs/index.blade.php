@@ -6,15 +6,15 @@
             box-sizing: border-box;
         }
 
-        @media screen and (orientation: portrait) {
+        /*@media screen and (orientation: portrait) {*/
 
-            body {
-                -ms-transform: rotate(-90deg); /* IE 9 */
-                -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
-                transform: rotate(-90deg);
-                overflow: scroll;
-            }
-        }
+        /*    body {*/
+        /*        -ms-transform: rotate(-90deg); !* IE 9 *!*/
+        /*        -webkit-transform: rotate(-90deg); !* Chrome, Safari, Opera *!*/
+        /*        transform: rotate(-90deg);*/
+        /*        overflow: scroll;*/
+        /*    }*/
+        /*}*/
 
         .scene {
             /*border: 1px solid #CCC;*/
@@ -210,6 +210,13 @@
     </style>
 @endsection
 
+@section('settings')
+    <a class="dropdown-item d-flex align-items-center" onclick="uSetting('show.all.Researchs', {{uData('show.all.Researchs') == 1 ? 0:1}})" style="cursor: pointer">
+        <i class="bi bi-person"></i>
+        <span>{{uData('show.all.Buildings') == 1 ? 'nur Forschbare Blaupausen anzeigen':'alle Blaupausen Anzeigen'}}</span>
+    </a>
+@endsection
+
 @section('content')
     @include('layout/planet_navi')
     @set($c, 0)
@@ -294,6 +301,18 @@
 @endsection
 
 @section('scripts')
+    <script>
+        function uSetting(key, value)
+        {
+            $.ajax({
+                url: "/api/uSettings/{{uData('token')}}/"+ key +"/"+ value,
+                success: function(res) {
+                    console.log(res);
+                    location.reload();
+                }
+            });
+        }
+    </script>
 
     <script>
         $('.m').each(function () {
