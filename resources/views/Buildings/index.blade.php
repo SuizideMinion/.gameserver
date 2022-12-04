@@ -21,10 +21,10 @@
             position: relative;
             width: 560px;
             height: 70vh;
-            margin: 0px auto;
+            margin: 0px calc(50% - 240px);
             perspective: 1000px;
             /*padding-left: 40px;*/
-            top: 100px;
+            /*top: 100px;*/
         }
 
         /*@media only screen and (max-height: 600px) {*/
@@ -49,9 +49,10 @@
         }
 
         .carousel__cell {
+            zoom: 80%;
             position: absolute;
             width: 540px;
-            height: 70vh;
+            height: 100%;
             left: 10px;
             top: 10px;
             line-height: 26px;

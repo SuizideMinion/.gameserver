@@ -20,24 +20,24 @@
             /*border: 1px solid #CCC;*/
             position: relative;
             width: 560px;
-            height: 540px;
-            margin: 0px auto;
+            height: 70vh;
+            margin: 0px calc(50% - 240px);
             perspective: 1000px;
             /*padding-left: 40px;*/
-            top: 100px;
+            /*top: 100px;*/
         }
 
-        @media only screen and (max-height: 600px) {
-            .scene {
-                /*border: 1px solid #CCC;*/
-                position: relative;
-                width: 560px;
-                height: 100vh;
-                margin: 0px auto;
-                perspective: 1000px;
-                top: 0px;
-            }
-        }
+        /*@media only screen and (max-height: 600px) {*/
+        /*    .scene {*/
+        /*        !*border: 1px solid #CCC;*!*/
+        /*        position: relative;*/
+        /*        width: 560px;*/
+        /*        height: 100vh;*/
+        /*        margin: 0px auto;*/
+        /*        perspective: 1000px;*/
+        /*        top: 0px;*/
+        /*    }*/
+        /*}*/
 
         .carousel {
             width: 100%;
@@ -49,9 +49,10 @@
         }
 
         .carousel__cell {
+            zoom: 80%;
             position: absolute;
             width: 540px;
-            height: 520px;
+            height: 100%;
             left: 10px;
             top: 10px;
             line-height: 26px;
@@ -67,29 +68,6 @@
             border-radius: 20px;
             background: hsla(0, 100%, 0%, 0.8);
         }
-
-        @media only screen and (max-height: 600px) {
-            .carousel__cell {
-                position: absolute;
-                width: 540px;
-                height: 320px;
-                left: 10px;
-                top: 40px;
-                line-height: 26px;
-                font-size: 20px;
-                font-weight: normal;
-                color: white;
-                text-align: center;
-                transition: transform 1s, opacity 1s;
-                overflow: hidden;
-                transform: rotateY(0deg) translateZ(1031px);
-                border-color: white;
-                border-style: ridge;
-                border-radius: 20px;
-                background: hsla(0, 100%, 0%, 0.8);
-            }
-        }
-
         .carousel__cell:nth-child(1) {
             transform: rotateY(0deg) translateZ(288px);
         }
