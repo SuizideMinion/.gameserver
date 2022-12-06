@@ -5,12 +5,12 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <title>test DE:r ingame</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/favicon.ico" rel="icon">
     <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Template Main CSS File -->
@@ -95,20 +95,21 @@
     </div>
 </div>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<div>
+    <div class="race-footerl" style=""></div>
+    <div class="race-head" style=""></div>
+    <div class="race-footerr" style=""></div>
+    <div class="race-icon race-icona" onclick="window.location.href = '{{ route('buildings.index') }}';"><i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+                                         title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i></div>
+    <div class="race-icon race-iconb"><i class="bi bi-star-fill"></i></div>
+    <div class="race-icon race-iconc"><i class="bi bi-star-fill"></i></div>
+    <div class="race-icon race-icond"><i class="bi bi-star-fill"></i></div>
+    <div class="race-icon race-icone"><i class="bi bi-star-fill"></i></div>
+    <div class="race-icon race-iconf"><i class="bi bi-star-fill"></i></div>
+</div>
+<li class="nav-item dropdown pe-3"  style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;">
 
-<div class="race-footerl" style=""></div>
-<div class="race-head" style=""></div>
-<div class="race-footerr" style=""></div>
-<div class="race-icon race-icona" onclick="window.location.href = '{{ route('buildings.index') }}';"><i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-                                     title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i></div>
-<div class="race-icon race-iconb"><i class="bi bi-star-fill"></i></div>
-<div class="race-icon race-iconc"><i class="bi bi-star-fill"></i></div>
-<div class="race-icon race-icond"><i class="bi bi-star-fill"></i></div>
-<div class="race-icon race-icone"><i class="bi bi-star-fill"></i></div>
-<div class="race-icon race-iconf"><i class="bi bi-star-fill"></i></div>
-<li class="nav-item dropdown pe-3">
-
-    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" style="position: fixed;right: 10px;top: 10px;color: aliceblue;">
+    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
         <i class="bi bi-gear"></i>
     </a>
 

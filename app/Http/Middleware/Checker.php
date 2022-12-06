@@ -87,6 +87,19 @@ class Checker
                 $UsersData = UserData::where('user_id', Auth::user()->id)->get()->keyBy('key');
             }
 
+            if ( !isset($UsersData['ress.verteilung']) ) {
+                UserData::create([
+                    'user_id' => Auth::user()->id,
+                    'key' => 'ress.verteilung',
+                    'value' => json_encode([
+                        'ress1' => 100,
+                        'ress2' => 0,
+                        'ress3' => 0,
+                        'ress4' => 0,
+                    ])
+                ]);
+            }
+
             if ( !isset($UsersData['race']) ) // TODO:: Race auswahl seite wenn Race Fehlt !!!
             {
                 UserData::create([

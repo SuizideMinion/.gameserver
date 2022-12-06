@@ -19,9 +19,9 @@
         .scene {
             /*border: 1px solid #CCC;*/
             position: relative;
-            width: 560px;
+            width: 548px;
             height: 70vh;
-            margin: 0px calc(50% - 240px);
+            margin: 0px calc(50% - 274px);
             perspective: 1000px;
             /*padding-left: 40px;*/
             /*top: 100px;*/
@@ -49,9 +49,10 @@
         }
 
         .carousel__cell {
-            zoom: 80%;
+            /*zoom: 80%;*/
             position: absolute;
             width: 540px;
+            max-width: 100%;
             height: 100%;
             left: 10px;
             top: 10px;
@@ -191,7 +192,7 @@
 @section('settings')
     <a class="dropdown-item d-flex align-items-center" onclick="uSetting('show.all.Researchs', {{uData('show.all.Researchs') == 1 ? 0:1}})" style="cursor: pointer">
         <i class="bi bi-person"></i>
-        <span>{{uData('show.all.Buildings') == 1 ? 'nur Forschbare Blaupausen anzeigen':'alle Blaupausen Anzeigen'}}</span>
+        <span>{{uData('show.all.Researchs') == 1 ? 'nur Forschbare Blaupausen anzeigen':'alle Blaupausen Anzeigen'}}</span>
     </a>
 @endsection
 

@@ -305,63 +305,44 @@
     </script>
 
     <script>
-        var carousel = document.querySelector('.carousel');
-        var cells = carousel.querySelectorAll('.carousel__cell');
-        var cellCount; // cellCount set from cells-range input value
-        var selectedIndex = {{($rotate ?? 1)}} - 1;
-        var cellWidth = carousel.offsetWidth;
-        var cellHeight = carousel.offsetHeight;
-        var isHorizontal = true;
-        var rotateFn = isHorizontal ? 'rotateY' : 'rotateX';
-        var radius, theta;
-
-        // console.log( cellWidth, cellHeight );
+        let carousel = document.querySelector('.carousel');
+        let cells = carousel.querySelectorAll('.carousel__cell');
+        let cellCount; // cellCount set from cells-range input value
+        let selectedIndex = {{($rotate ?? 1)}} - 1;
+        let cellWidth = carousel.offsetWidth;
+        let cellHeight = carousel.offsetHeight;
+        let isHorizontal = true;
+        let rotateFn = isHorizontal ? 'rotateY' : 'rotateX';
+        let radius, theta;
 
         function rotateCarousel() {
-            var angle = theta * selectedIndex * -1;
+            let angle = theta * selectedIndex * -1;
             carousel.style.transform = 'translateZ(' + -radius + 'px) ' +
                 rotateFn + '(' + angle + 'deg)';
         }
 
-        // var prevButton = document.querySelector('.previous-button');
-        // prevButton.addEventListener( 'click', function() {
-        //     selectedIndex--;
-        //     rotateCarousel();
-        // });
-
         function leftclick() {
             selectedIndex--;
             rotateCarousel();
-        };
-
-        // var nextButton = document.querySelector('.next-button');
-        // nextButton.addEventListener('click', function () {
-        //     selectedIndex++;
-        //     rotateCarousel();
-        // });
+        }
 
         function rightclick() {
             selectedIndex++;
             rotateCarousel();
-        };
-
-        // var cellsRange = document.querySelector('.cells-range');
-        // cellsRange.addEventListener('change', changeCarousel);
-        // cellsRange.addEventListener('input', changeCarousel);
-
+        }
 
         function changeCarousel() {
             @php if(isset($c)) $c = ( $c <= 3 ? 3:$c ); @endphp
                 cellCount = {{$c}};
             theta = 360 / cellCount;
-            var cellSize = isHorizontal ? cellWidth : cellHeight;
+            let cellSize = isHorizontal ? cellWidth : cellHeight;
             radius = Math.round((cellSize / 2) / Math.tan(Math.PI / cellCount));
-            for (var i = 0; i < cells.length; i++) {
-                var cell = cells[i];
+            for (let i = 0; i < cells.length; i++) {
+                let cell = cells[i];
                 if (i < cellCount) {
                     // visible cell
                     cell.style.opacity = 1;
-                    var cellAngle = theta * i;
+                    let cellAngle = theta * i;
                     cell.style.transform = rotateFn + '(' + cellAngle + 'deg) translateZ(' + radius + 'px)';
                 } else {
                     // hidden cell
@@ -373,16 +354,16 @@
             rotateCarousel();
         }
 
-        var orientationRadios = document.querySelectorAll('input[name="orientation"]');
+        let orientationRadios = document.querySelectorAll('input[name="orientation"]');
         (function () {
-            for (var i = 0; i < orientationRadios.length; i++) {
-                var radio = orientationRadios[i];
+            for (let i = 0; i < orientationRadios.length; i++) {
+                let radio = orientationRadios[i];
                 radio.addEventListener('change', onOrientationChange);
             }
         })();
 
         function onOrientationChange() {
-            var checkedRadio = document.querySelector('input[name="orientation"]:checked');
+            let checkedRadio = document.querySelector('input[name="orientation"]:checked');
             isHorizontal = checkedRadio.value == 'horizontal';
             rotateFn = isHorizontal ? 'rotateY' : 'rotateX';
             changeCarousel();
@@ -394,11 +375,11 @@
     @isset($timeend)
         <script>
             function getTimeRemaining(endtime) {
-                const total = Date.parse(endtime) - Date.parse(new Date());
-                const seconds = Math.floor((total / 1000) % 60);
-                const minutes = Math.floor((total / 1000 / 60) % 60);
-                const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-                const days = Math.floor(total / (1000 * 60 * 60 * 24));
+                let total = Date.parse(endtime) - Date.parse(new Date());
+                let seconds = Math.floor((total / 1000) % 60);
+                let minutes = Math.floor((total / 1000 / 60) % 60);
+                let hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+                let days = Math.floor(total / (1000 * 60 * 60 * 24));
 
                 return {
                     total,
@@ -410,11 +391,11 @@
             }
 
             function initializeClock(id, endtime) {
-                const clock = document.getElementById(id);
-                const Timer = clock.querySelector('.Timer');
+                let clock = document.getElementById(id);
+                let Timer = clock.querySelector('.Timer');
 
                 function updateClock() {
-                    const t = getTimeRemaining(endtime);
+                    let t = getTimeRemaining(endtime);
 
                     Timer.innerHTML = (t.days !== 0 ? t.days + 'Tage ' : '') + ('0' + t.hours).slice(-2) + ':' + ('0' + t.minutes).slice(-2) + ':' + ('0' + t.seconds).slice(-2);
 
@@ -425,10 +406,9 @@
                 }
 
                 updateClock();
-                const timeinterval = setInterval(updateClock, 1000);
+                let timeinterval = setInterval(updateClock, 1000);
             }
 
-            //const deadline = new Date(Date.parse(new Date()) + 3600 * 1000);
             initializeClock('clockdiv', new Date(Date.parse(new Date()) + {{$timeend}} * 1000));
         </script>
     @endisset

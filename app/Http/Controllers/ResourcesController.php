@@ -15,8 +15,9 @@ class ResourcesController extends Controller
     public function index()
     {
         $userData = UserData::where('user_id', auth()->user()->id)->get()->pluck('value', 'key');
+        $ressKey = json_decode($userData['ress.verteilung']);
 
-        return view('resources.index', compact('userData'));
+        return view('resources.index', compact('userData', 'ressKey'));
     }
 
     /**
