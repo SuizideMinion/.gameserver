@@ -31,6 +31,7 @@ class Checker
                 'value' => 2,
                 'level' => $userBuilding->level + 1
             ]);
+            ressCalc($userBuilding->user_id);
         }
         $UserResearchs = UserResearchs::where('value', 1)->where('time', '<', time())->get();
         foreach($UserResearchs AS $UserResearch )

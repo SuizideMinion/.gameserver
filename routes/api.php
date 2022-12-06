@@ -17,6 +17,7 @@ Route::group(['middleware' => ['api', 'checker']], function () {
                 'value' => 2,
                 'level' => $userBuilding->level + 1
             ]);
+            ressCalc($userBuilding->user_id);
         }
 
         if ( (int)$ServerData['next.wirtschafts.Tick'] < time() )
