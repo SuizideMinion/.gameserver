@@ -58,30 +58,21 @@ class Checker
                         'ress5' => $ServerData['Startress.ress5']->value,
                     ])
                 ]);
+                $UsersData = UserData::where('user_id', Auth::user()->id)->get()->keyBy('key');
+            }
+
+            if ( !isset($UsersData['ressProTick']) )
+            {
                 UserData::create([
                     'user_id' => Auth::user()->id,
-                    'key' => 'ress1.proTick',
-                    'value' => $ServerData['Planetar.ress1']->value,
-                ]);
-                UserData::create([
-                    'user_id' => Auth::user()->id,
-                    'key' => 'ress2.proTick',
-                    'value' => $ServerData['Planetar.ress2']->value,
-                ]);
-                UserData::create([
-                    'user_id' => Auth::user()->id,
-                    'key' => 'ress3.proTick',
-                    'value' => $ServerData['Planetar.ress3']->value,
-                ]);
-                UserData::create([
-                    'user_id' => Auth::user()->id,
-                    'key' => 'ress4.proTick',
-                    'value' => $ServerData['Planetar.ress4']->value,
-                ]);
-                UserData::create([
-                    'user_id' => Auth::user()->id,
-                    'key' => 'ress5.proTick',
-                    'value' => $ServerData['Planetar.ress5']->value,
+                    'key' => 'ressProTick',
+                    'value' => json_encode([
+                        'ress1' => json_decode($ServerData['Planetar.ress']->value)->ress1,
+                        'ress2' => json_decode($ServerData['Planetar.ress']->value)->ress2,
+                        'ress3' => json_decode($ServerData['Planetar.ress']->value)->ress3,
+                        'ress4' => json_decode($ServerData['Planetar.ress']->value)->ress4,
+                        'ress5' => json_decode($ServerData['Planetar.ress']->value)->ress5,
+                    ])
                 ]);
 
                 $UsersData = UserData::where('user_id', Auth::user()->id)->get()->keyBy('key');

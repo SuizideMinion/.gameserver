@@ -1,8 +1,61 @@
 <?php
 
+function ressCalc($id = 0)
+{
+    if ( $id == 0) $id = auth()->user()->id;
+
+    // Planetare Energie
+    // -> 1000 , 125 , 75 , 50
+    // WHG 4000 , 500 , 200 , 100
+    $ress1 = json_decode(session('ServerData')['Planetar.ress']->value)->ress1;
+    $ress2 = json_decode(session('ServerData')['Planetar.ress']->value)->ress2;
+    $ress3 = json_decode(session('ServerData')['Planetar.ress']->value)->ress3;
+    $ress4 = json_decode(session('ServerData')['Planetar.ress']->value)->ress4;
+
+    if( hasTech(1, 16) )
+    {
+        $ress1 = $ress1 * 4;
+        $ress2 = $ress2 * 4;
+        $ress3 = $ress3 * 3;
+        $ress4 = $ress4 * 2;
+    }
+    if( hasTech(1, 5, 2) ) $ress1 = $ress1 * 4;
+    if( hasTech(1, 6, 2) ) $ress2 = $ress2 * 4;
+    if( hasTech(1, 7, 2) ) $ress3 = $ress3 * 3;
+    if( hasTech(1, 8, 2) ) $ress4 = $ress4 * 2;
+
+    \App\Models\UserData::where('user_id', $id)->where('key', 'ressProTick')->update([
+        'value' => json_encode([
+            'ress1' => $ress1,
+            'ress2' => $ress2,
+            'ress3' => $ress3,
+            'ress4' => $ress4,
+        ])
+    ]);
+    // M 2:1 | D 4:1 | I 6:1 | E 8:1
+    // Fba+ 1:1 | 2:1 | 3:1 | 4:1
+}
+
+function hasTech($tech, $id, $level = 1, $user_id = 0)
+{
+    if ( $user_id == 0 ) {
+        if ($tech == 1) return ((session('UserBuildings')[$id]->value ?? 0) == 2 and session('UserBuildings')[$id]->level >= $level ? true : false);
+        if ($tech == 2) return ((session('UserResearchs')[$id]->value ?? 0) == 2 and session('UserBuildings')[$id]->level >= $level ? true : false);
+    }
+    if ($tech == 1)
+        return ( \App\Models\UserBuildings::where('user_id', $user_id)->where('build_id', $id)->where('level', '>=', $level)->first() ? true:false);
+    elseif ($tech == 2)
+        return ( \App\Models\UserResearchs::where('user_id', $user_id)->where('research_id', $id)->where('level', '>=', $level)->first() ? true:false);
+}
+
 function uData($key)
 {
     return (session('uData')[$key]->value ?? false);
+}
+
+function JSONuData($key)
+{
+    return json_decode(session('uData')[$key]->value ?? false);
 }
 
 function uRess()

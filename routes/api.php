@@ -31,14 +31,29 @@ Route::group(['middleware' => ['api', 'checker']], function () {
                 foreach ($UserHeadQuaders as $User) {
                     $userData = $User->getUserData->pluck('value', 'key');
 
+                    if ( !isset($userData['ressProTick']) )
+                    {
+                        UserData::create([
+                            'user_id' => $User->user_id,
+                            'key' => 'ressProTick',
+                            'value' => json_encode([
+                                'ress1' => json_decode($ServerData['Planetar.ress'])->ress1,
+                                'ress2' => json_decode($ServerData['Planetar.ress'])->ress2,
+                                'ress3' => json_decode($ServerData['Planetar.ress'])->ress3,
+                                'ress4' => json_decode($ServerData['Planetar.ress'])->ress4,
+                                'ress5' => json_decode($ServerData['Planetar.ress'])->ress5,
+                            ])
+                        ]);
+                        $userData = UserData::where('user_id', $User->user_id)->pluck('value', 'key');
+                    }
                     $userRessOld = json_decode($userData['ress']);
 
                     $userRess[$User->user_id] = [
-                        'ress1' => ($userRess[$User->user_id]['ress1'] ?? $userRessOld->ress1) + $userData['ress1.proTick'],
-                        'ress2' => ($userRess[$User->user_id]['ress2'] ?? $userRessOld->ress2) + $userData['ress2.proTick'],
-                        'ress3' => ($userRess[$User->user_id]['ress3'] ?? $userRessOld->ress3) + $userData['ress3.proTick'],
-                        'ress4' => ($userRess[$User->user_id]['ress4'] ?? $userRessOld->ress4) + $userData['ress4.proTick'],
-                        'ress5' => ($userRess[$User->user_id]['ress5'] ?? $userRessOld->ress5) + $userData['ress5.proTick'],
+                        'ress1' => ($userRess[$User->user_id]['ress1'] ?? $userRessOld->ress1) + json_decode($userData['ressProTick'])->ress1,
+                        'ress2' => ($userRess[$User->user_id]['ress2'] ?? $userRessOld->ress2) + json_decode($userData['ressProTick'])->ress2,
+                        'ress3' => ($userRess[$User->user_id]['ress3'] ?? $userRessOld->ress3) + json_decode($userData['ressProTick'])->ress3,
+                        'ress4' => ($userRess[$User->user_id]['ress4'] ?? $userRessOld->ress4) + json_decode($userData['ressProTick'])->ress4,
+                        'ress5' => ($userRess[$User->user_id]['ress5'] ?? $userRessOld->ress5) + json_decode($userData['ressProTick'])->ress5,
                     ];
 
                 }
