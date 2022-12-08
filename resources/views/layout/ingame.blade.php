@@ -69,27 +69,27 @@
     @yield('content')
 <div class="ressMain">
     <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-         title="<b>{{ Lang('global_ress1_name') }}</b> <br><br><em>{{ Lang('global_ress1_desc') }}</em>">
+         title="<b>{{ Lang('global_ress1_name') }}</b><br>{{number_format(uRess()->ress1, 0, '', '.') }} <br><br><em>{{ Lang('global_ress1_desc') }}</em>">
         <img src="{{ getImage('_1.png', 'ressurcen', uData('race')) }}">
         <p>{{ number_shorten( uRess()->ress1, 0) }}</p>
     </div>
     <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-         title="<b>{{ Lang('global_ress2_name') }}</b> <br><br><em>{{ Lang('global_ress2_desc') }}</em>">
+         title="<b>{{ Lang('global_ress2_name') }}</b><br>{{ number_format(uRess()->ress2, 0, '', '.') }} <br><br><em>{{ Lang('global_ress2_desc') }}</em>">
         <img src="{{ getImage('_2.png', 'ressurcen', uData('race')) }}">
         <p>{{ number_shorten( uRess()->ress2, 0) }}</p>
     </div>
     <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-         title="<b>{{ Lang('global_ress3_name') }}</b> <br><br><em>{{ Lang('global_ress3_desc') }}</em>">
+         title="<b>{{ Lang('global_ress3_name') }}</b><br>{{ number_format(uRess()->ress3, 0, '', '.') }} <br><br><em>{{ Lang('global_ress3_desc') }}</em>">
         <img src="{{ getImage('_3.png', 'ressurcen', uData('race')) }}">
         <p>{{ number_shorten( uRess()->ress3, 0) }}</p>
     </div>
     <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-         title="<b>{{ Lang('global_ress4_name') }}</b> <br><br><em>{{ Lang('global_ress4_desc') }}</em>">
+         title="<b>{{ Lang('global_ress4_name') }}</b><br>{{ number_format(uRess()->ress4, 0, '', '.') }} <br><br><em>{{ Lang('global_ress4_desc') }}</em>">
         <img src="{{ getImage('_4.png', 'ressurcen', uData('race')) }}">
         <p>{{ number_shorten( uRess()->ress4, 0) }}</p>
     </div>
     <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-         title="<b>{{ Lang('global_ress5_name') }}</b> <br><br><em>{{ Lang('global_ress5_desc') }}</em>">
+         title="<b>{{ Lang('global_ress5_name') }}</b><br>{{ number_format(uRess()->ress5, 0, '', '.') }} <br><br><em>{{ Lang('global_ress5_desc') }}</em>">
         <img src="{{ getImage('_5.png', 'ressurcen', uData('race')) }}">
         <p>{{ number_shorten( uRess()->ress5, 0) }}</p>
     </div>
@@ -126,6 +126,10 @@
             <a class="dropdown-item d-flex align-items-center" onclick="notify.authorize()">
                 <i class="bi bi-person"></i>
                 <span>Benarichtigungen bei Gebäude/Forschungen</span>
+            </a>
+            <a class="dropdown-item d-flex align-items-center">
+                <i class="bi bi-person"></i>
+                <span>{{time()}}</span>
             </a>
             @yield('settings')
         </li>

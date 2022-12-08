@@ -20,13 +20,39 @@ Route::group(['middleware' => ['api', 'checker']], function () {
             ressCalc($userBuilding->user_id);
         }
 
-        if ( (int)$ServerData['next.wirtschafts.Tick'] < time() )
+        if ( (int)$ServerData['next.wirtschafts.Tick'] < time() OR ($_GET['testTick'] ?? 0) == 1)
         {
             echo 'TickTime';
             $userRess = [];
             $nextTick = (int)$ServerData['next.wirtschafts.Tick'];
             $ticks = $ServerData['wirtschafts.Tick'];
 
+            // Baue Kollektoren
+
+            $userUnitsBuild = \App\Models\UserUnitsBuild::where('unit_id', '1')->orderBy('time')->with('getUserData')->get()->groupBy('user_id');
+
+            foreach ( $userUnitsBuild AS $User)
+            {
+                $UserData = $User[0]->getUserData->keyBy('key');
+//                dd($User[0], $UserData);
+                if( $User[0]->quantity > 0)
+                {
+                    UserData::where('user_id', $User[0]->user_id)->where('key', 'kollektoren')->update([
+                       'value' => $UserData['kollektoren']->value + 1
+                    ]);
+                    \App\Models\UserUnitsBuild::where('id', $User[0]->id)->update([
+                        'quantity' => $User[0]->quantity - 1
+                    ]);
+                    ressCalc($User[0]->user_id);
+                }
+                if ($User[0]->quantity == 1)
+                {
+                    \App\Models\UserUnitsBuild::where('id', $User[0]->id)->delete();
+                }
+            }
+//            dd($userUnitsBuild);
+
+            // Baue Gebäude
             $UserHeadQuaders = UserBuildings::where('build_id', 1)->where('value', 2)->with('getUserData')->get();
             for ($i = 1; $i <= 50; $i++) {
                 foreach ($UserHeadQuaders as $User) {

@@ -62,6 +62,16 @@ class Checker
                 $UsersData = UserData::where('user_id', Auth::user()->id)->get()->keyBy('key');
             }
 
+            if ( !isset($UsersData['kollektoren']) )
+            {
+                UserData::create([
+                    'user_id' => Auth::user()->id,
+                    'key' => 'kollektoren',
+                    'value' => 0
+                ]);
+                $UsersData = UserData::where('user_id', Auth::user()->id)->get()->keyBy('key');
+            }
+
             if ( !isset($UsersData['ressProTick']) )
             {
                 UserData::create([

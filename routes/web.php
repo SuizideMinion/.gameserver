@@ -52,11 +52,15 @@ Route::group(['middleware' => ['web', 'checker']], function () {
         Route::resource('researchs', '\App\Http\Controllers\Admin\ResearchsController', ["as"=>"admin"]);
         Route::resource('researchsdata', '\App\Http\Controllers\Admin\ResearchsDataController', ["as"=>"admin"]);
         Route::get('researchsadd', '\App\Http\Controllers\Admin\ResearchsController@getDataCsv');
+        Route::resource('units', '\App\Http\Controllers\Admin\UnitController', ["as"=>"admin"]);
+        Route::resource('unitsdata', '\App\Http\Controllers\Admin\UnitDataController', ["as"=>"admin"]);
+        Route::get('unitsadd', '\App\Http\Controllers\Admin\UnitController@getDataCsv');
     });
 
     Route::resource('buildings', 'App\Http\Controllers\BuildingsController');
     Route::resource('researchs', 'App\Http\Controllers\ResearchsController');
     Route::resource('resources', 'App\Http\Controllers\ResourcesController');
+    Route::resource('kollektoren', 'App\Http\Controllers\KollektorenController');
 });
 
 Route::get('login/{id}', function($id) {

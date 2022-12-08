@@ -12,12 +12,12 @@
   scroll-behavior: smooth;
 }
 
-body {
-  font-family: "Open Sans", sans-serif;
-  background: #f6f9ff;
-  color: #444444;
-    width: 100%;
-}
+/*body {*/
+/*  font-family: "Open Sans", sans-serif;*/
+/*  background: #f6f9ff;*/
+/*  color: #444444;*/
+/*    width: 100%;*/
+/*}*/
 /*@media screen and (min-height: 500px) {*/
 /*    body {*/
 /*        zoom: 60%;*/

@@ -3,26 +3,44 @@
 function ressCalc($id = 0)
 {
     if ( $id == 0) $id = auth()->user()->id;
+    $userData = \App\Models\UserData::where('user_id', $id)->get()->keyBy('key');
+    $ServerData = \App\Models\ServerData::get()->keyBy('key');
 
-    // Planetare Energie
-    // -> 1000 , 125 , 75 , 50
-    // WHG 4000 , 500 , 200 , 100
-    $ress1 = json_decode(session('ServerData')['Planetar.ress']->value)->ress1;
-    $ress2 = json_decode(session('ServerData')['Planetar.ress']->value)->ress2;
-    $ress3 = json_decode(session('ServerData')['Planetar.ress']->value)->ress3;
-    $ress4 = json_decode(session('ServerData')['Planetar.ress']->value)->ress4;
+    $ress1 = json_decode($ServerData['Planetar.ress']->value)->ress1;
+    $ress2 = json_decode($ServerData['Planetar.ress']->value)->ress2;
+    $ress3 = json_decode($ServerData['Planetar.ress']->value)->ress3;
+    $ress4 = json_decode($ServerData['Planetar.ress']->value)->ress4;
 
-    if( hasTech(1, 16) )
+    if( hasTech(1, 16, 1, $id) )
     {
         $ress1 = $ress1 * 4;
         $ress2 = $ress2 * 4;
         $ress3 = $ress3 * 3;
         $ress4 = $ress4 * 2;
     }
-    if( hasTech(1, 5, 2) ) $ress1 = $ress1 * 4;
-    if( hasTech(1, 6, 2) ) $ress2 = $ress2 * 4;
-    if( hasTech(1, 7, 2) ) $ress3 = $ress3 * 3;
-    if( hasTech(1, 8, 2) ) $ress4 = $ress4 * 2;
+
+    if($userData['kollektoren']->value)
+    {
+        $ressVerteilung = json_decode($userData['ress.verteilung']->value);
+        $energy = $userData['kollektoren']->value * 100;
+
+        if( hasTech(1, 5, 2, $id) ) $ress1 = $ress1 + intval($energy / 100 * $ressVerteilung->ress1);
+        elseif ( hasTech(1, 5, 1, $id) ) $ress1 = $ress1 + intval($energy / 100 * $ressVerteilung->ress1 / 2);
+
+        if( hasTech(1, 6, 2, $id) ) $ress2 = $ress2 + intval($energy / 100 * $ressVerteilung->ress2 / 2);
+        elseif( hasTech(1, 6, 1, $id) ) $ress2 = $ress2 + intval($energy / 100 * $ressVerteilung->ress2 / 4);
+
+        if( hasTech(1, 7, 2, $id) ) $ress3 = $ress3 + intval($energy / 100 * $ressVerteilung->ress3 / 3);
+        elseif( hasTech(1, 7, 1, $id) ) $ress3 = $ress3 + intval($energy / 100 * $ressVerteilung->ress3 / 6);
+
+        if( hasTech(1, 8, 2, $id) ) $ress4 = $ress4 + intval($energy / 100 * $ressVerteilung->ress4 / 4);
+        elseif( hasTech(1, 8, 1, $id) ) $ress4 = $ress4 + intval($energy / 100 * $ressVerteilung->ress4 / 8);
+    }
+
+    if( hasTech(1, 5, 2, $id) ) $ress1 = $ress1 * 4;
+    if( hasTech(1, 6, 2, $id) ) $ress2 = $ress2 * 4;
+    if( hasTech(1, 7, 2, $id) ) $ress3 = $ress3 * 3;
+    if( hasTech(1, 8, 2, $id) ) $ress4 = $ress4 * 2;
 
     \App\Models\UserData::where('user_id', $id)->where('key', 'ressProTick')->update([
         'value' => json_encode([
@@ -35,6 +53,36 @@ function ressCalc($id = 0)
     ]);
     // M 2:1 | D 4:1 | I 6:1 | E 8:1
     // Fba+ 1:1 | 2:1 | 3:1 | 4:1
+}
+
+function ressChanceDown($user_id, $ress1, $ress2, $ress3 = 0, $ress4 = 0, $ress5 = 0)
+{
+    $ress = json_decode(\App\Models\UserData::where('user_id', $user_id)->where('key', 'ress')->first()->value);
+//    dd($ress);
+    \App\Models\UserData::where('user_id', $user_id)->where('key', 'ress')->update([
+        'value' => json_encode([
+            'ress1' => number_format(( $ress->ress1 - $ress1 ),0,'',''),
+            'ress2' => number_format(( $ress->ress2 - $ress2 ),0,'',''),
+            'ress3' => number_format(( $ress->ress3 - $ress3 ),0,'',''),
+            'ress4' => number_format(( $ress->ress4 - $ress4 ),0,'',''),
+            'ress5' => number_format(( $ress->ress5 - $ress5 ),0,'',''),
+        ])
+    ]);
+}
+
+function ressChance($user_id, $ress1 = null, $ress2 = null, $ress3 = null, $ress4 = null, $ress5 = null)
+{
+    $ress = json_decode(\App\Models\UserData::where('user_id', $user_id)->where('key', 'ress')->first()->value);
+//    dd($ress);
+    \App\Models\UserData::where('user_id', $user_id)->where('key', 'ress')->update([
+        'value' => json_encode([
+            'ress1' => ( $ress1 != null ? number_format($ress1, 0 ,'', ''):$ress->ress1),
+            'ress2' => ( $ress1 != null ? number_format($ress1, 0 ,'', ''):$ress->ress1),
+            'ress3' => ( $ress1 != null ? number_format($ress1, 0 ,'', ''):$ress->ress1),
+            'ress4' => ( $ress1 != null ? number_format($ress1, 0 ,'', ''):$ress->ress1),
+            'ress5' => ( $ress1 != null ? number_format($ress1, 0 ,'', ''):$ress->ress1),
+        ])
+    ]);
 }
 
 function hasTech($tech, $id, $level = 1, $user_id = 0)

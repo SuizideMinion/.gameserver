@@ -17,6 +17,11 @@
                 {{ Lang('global_planet_ressurces_name') }}
             </button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button onclick="window.location.href = '{{ route('kollektoren.index') }}';" class="nav-link {{ request()->is('kollektoren') ? 'active': ''}}" id="inactive-tab" data-bs-toggle="tab" data-bs-target="#inactive-tab-pane" type="button" role="tab" aria-controls="inactive-tab-pane" aria-selected="false" tabindex="-1">
+                {{ Lang('global_planet_kollektoren_name') }}
+            </button>
+        </li>
         <li></li>
     </ul>
 </div>
