@@ -77,10 +77,10 @@ function ressChance($user_id, $ress1 = null, $ress2 = null, $ress3 = null, $ress
     \App\Models\UserData::where('user_id', $user_id)->where('key', 'ress')->update([
         'value' => json_encode([
             'ress1' => ( $ress1 != null ? number_format($ress1, 0 ,'', ''):$ress->ress1),
-            'ress2' => ( $ress1 != null ? number_format($ress1, 0 ,'', ''):$ress->ress1),
-            'ress3' => ( $ress1 != null ? number_format($ress1, 0 ,'', ''):$ress->ress1),
-            'ress4' => ( $ress1 != null ? number_format($ress1, 0 ,'', ''):$ress->ress1),
-            'ress5' => ( $ress1 != null ? number_format($ress1, 0 ,'', ''):$ress->ress1),
+            'ress2' => ( $ress2 != null ? number_format($ress2, 0 ,'', ''):$ress->ress2),
+            'ress3' => ( $ress3 != null ? number_format($ress3, 0 ,'', ''):$ress->ress3),
+            'ress4' => ( $ress4 != null ? number_format($ress4, 0 ,'', ''):$ress->ress4),
+            'ress5' => ( $ress5 != null ? number_format($ress5, 0 ,'', ''):$ress->ress5),
         ])
     ]);
 }
