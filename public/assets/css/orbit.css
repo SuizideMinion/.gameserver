@@ -675,6 +675,8 @@ header .action a {
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
     -o-border-radius: 3px;
+    position: absolute;
+    bottom: 15px;
 }
 
 .message-type-there .search-bar {
@@ -964,6 +966,7 @@ color: #acffff;
     padding: 16px 20px;
     background-color: #0d1e1f;
     border-top: 1px solid rgba(43, 238, 231, 0.2);
+    height: 60vh;
 }
 
 .card-ext h5 {

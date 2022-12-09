@@ -45,7 +45,7 @@ Route::group(['middleware' => ['api', 'checker']], function () {
                     ]);
                     ressCalc($User[0]->user_id);
                 }
-                if ($User[0]->quantity == 1)
+                if ($User[0]->quantity <= 1)
                 {
                     \App\Models\UserUnitsBuild::where('id', $User[0]->id)->delete();
                 }
