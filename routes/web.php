@@ -35,25 +35,25 @@ Route::group(['middleware' => ['web', 'checker']], function () {
             ],
         ], 'value');
     });
-Route::group(['middleware' => ['web', 'checker']], function () {
-    Route::get('/crown', function () {
-        echo 'Finish';
+    Route::group(['middleware' => ['web', 'checker']], function () {
+        Route::get('/crown', function () {
+            echo 'Finish';
+        });
     });
-});
 
-    Route::prefix('admin')->group(function() {
-        Route::resource('/', 'App\Http\Controllers\Admin\IndexController', ["as"=>"admin"]);
-        Route::resource('server', 'App\Http\Controllers\Admin\ServerController', ["as"=>"admin"]);
-        Route::resource('users', 'App\Http\Controllers\Admin\UserController', ["as"=>"admin"]);
-        Route::resource('translate', 'App\Http\Controllers\Admin\TranslationController', ["as"=>"admin"]);
-        Route::resource('buildings', 'App\Http\Controllers\Admin\BuildingsController', ["as"=>"admin"]);
-        Route::resource('buildingsdata', '\App\Http\Controllers\Admin\BuildingsDataController', ["as"=>"admin"]);
+    Route::prefix('admin')->group(function () {
+        Route::resource('/', 'App\Http\Controllers\Admin\IndexController', ["as" => "admin"]);
+        Route::resource('server', 'App\Http\Controllers\Admin\ServerController', ["as" => "admin"]);
+        Route::resource('users', 'App\Http\Controllers\Admin\UserController', ["as" => "admin"]);
+        Route::resource('translate', 'App\Http\Controllers\Admin\TranslationController', ["as" => "admin"]);
+        Route::resource('buildings', 'App\Http\Controllers\Admin\BuildingsController', ["as" => "admin"]);
+        Route::resource('buildingsdata', '\App\Http\Controllers\Admin\BuildingsDataController', ["as" => "admin"]);
         Route::get('buildingsadd', '\App\Http\Controllers\Admin\BuildingsController@getDataCsv');
-        Route::resource('researchs', '\App\Http\Controllers\Admin\ResearchsController', ["as"=>"admin"]);
-        Route::resource('researchsdata', '\App\Http\Controllers\Admin\ResearchsDataController', ["as"=>"admin"]);
+        Route::resource('researchs', '\App\Http\Controllers\Admin\ResearchsController', ["as" => "admin"]);
+        Route::resource('researchsdata', '\App\Http\Controllers\Admin\ResearchsDataController', ["as" => "admin"]);
         Route::get('researchsadd', '\App\Http\Controllers\Admin\ResearchsController@getDataCsv');
-        Route::resource('units', '\App\Http\Controllers\Admin\UnitController', ["as"=>"admin"]);
-        Route::resource('unitsdata', '\App\Http\Controllers\Admin\UnitDataController', ["as"=>"admin"]);
+        Route::resource('units', '\App\Http\Controllers\Admin\UnitController', ["as" => "admin"]);
+        Route::resource('unitsdata', '\App\Http\Controllers\Admin\UnitDataController', ["as" => "admin"]);
         Route::get('unitsadd', '\App\Http\Controllers\Admin\UnitController@getDataCsv');
     });
 
@@ -61,9 +61,11 @@ Route::group(['middleware' => ['web', 'checker']], function () {
     Route::resource('researchs', 'App\Http\Controllers\ResearchsController');
     Route::resource('resources', 'App\Http\Controllers\ResourcesController');
     Route::resource('kollektoren', 'App\Http\Controllers\KollektorenController');
+    Route::resource('messages', 'App\Http\Controllers\MessageController');
+    Route::resource('ranking', 'App\Http\Controllers\RankingController');
 });
 
-Route::get('login/{id}', function($id) {
+Route::get('login/{id}', function ($id) {
     $user = \App\Models\User::where('token', $id)->first();
     if ($user) {
         Auth::loginUsingId($user->id);
@@ -71,9 +73,9 @@ Route::get('login/{id}', function($id) {
     return redirect('/');
 });
 
-    Route::get('logout', function () {
-        Session::flush();
-        Auth::logout();
+Route::get('logout', function () {
+    Session::flush();
+    Auth::logout();
 
-        return Redirect('/');
-    });
+    return Redirect('/');
+});

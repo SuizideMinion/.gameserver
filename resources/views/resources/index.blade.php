@@ -17,7 +17,7 @@
                             <h5 class="card-title" style="color: white;font-weight: bold">{{ Lang('global_ress1_name') }}</h5>
                             <p class="card-text">{{ Lang('global_ress1_desc') }}</p>
 {{--                            <p class="card-text">Kollektor Ertrag: ({{ hasTech(1, 5, 2) ? 1:2 }}:1) <span></span></p>--}}
-                            <p class="card-text">Planetarer Ertrag: <span>{{ hasTech(1, 16) ? 1000:4000 }}</span></p>
+                            <p class="card-text">Planetarer Ertrag: <span>{{ hasTech(1, 16) ? 4000:1000 }}</span></p>
                             <p class="card-text">RessProTick: <span>{{ json_decode(uData('ressProTick'))->ress1 }}</span></p>
                             <div class="message-type-there">
                                 <div class="search-bar">

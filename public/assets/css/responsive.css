@@ -1,0 +1,53 @@
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+
+    /* Extra large device */
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+
+    /* Large device */
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+
+    /* Medium device */
+}
+
+
+@media (max-width: 575.98px) {
+
+    .scene {
+        width: 400px;
+    }
+
+    .carousel__cell {
+        width: 400px;
+        height: 85%;
+        left: 42px;
+        top: 40px;
+        line-height: 25px;
+        font-size: 19px;
+}
+
+    .ressMain {
+        margin-left: -272px;
+    }
+
+    .ress {
+        height: 28px;
+        width: 96px;
+    }
+
+    .ress p {
+        font-size: 14px;
+    }
+
+    .ress img {
+        height: 23px;
+        border-radius: 15px;
+    }
+    /* Small device */
+}

@@ -9,17 +9,15 @@ Version : 01.00
 Padding-Margin  : (The website based on 8pt system.)
 */
 
-/** {*/
-/*    margin: 0;*/
-/*    padding: 0;*/
-/*    outline: 0;*/
-/*    box-sizing: border-box;*/
-/*}*/
+a {
+    color: #2beee7;
+    text-decoration: none;
+}
 
-/*a {*/
-/*    display: inline-block;*/
-/*    text-decoration: none;*/
-/*}*/
+a:hover {
+    color: #114040;
+    text-decoration: none;
+}
 
 ul,
 ol {
@@ -27,23 +25,6 @@ ol {
     margin: 0;
     padding: 0;
 }
-
-/*img {*/
-/*    vertical-align: middle;*/
-/*}*/
-
-/*h1,*/
-/*h2,*/
-/*h3,*/
-/*h4,*/
-/*h5,*/
-/*h6,*/
-/*a,*/
-/*p,*/
-/*span {*/
-/*    margin: 0;*/
-/*    padding: 0;*/
-/*}*/
 
 body {
     color: #2beee7;
@@ -277,8 +258,7 @@ header .action a {
 .orbit-btn {
     text-transform: uppercase;
     font: 300 14px/1.4 'Roboto', sans-serif;
-    padding: 4px 0;
-    width: 120px;
+    padding: 10px 25px;
     text-align: center;
     border: 2px solid #114040;
     background-color: #0d1e1f;
@@ -1440,9 +1420,9 @@ color: #acffff;
     -o-transition: all ease .3s;
 }
 
-.user-message {
-    margin-top: 32px;
-}
+/*.user-message {*/
+/*    margin-top: 32px;*/
+/*}*/
 
 .user-message-one {
     display: flex;
@@ -1556,6 +1536,9 @@ color: #acffff;
     margin-top: 32px;
 }
 
+.upcoming-message {
+    margin-top: 8px;
+}
 .upcoming-message p {
     width: 60%;
     padding: 12px 8px;

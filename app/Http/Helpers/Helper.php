@@ -37,10 +37,10 @@ function ressCalc($id = 0)
         elseif( hasTech(1, 8, 1, $id) ) $ress4 = $ress4 + intval($energy / 100 * $ressVerteilung->ress4 / 8);
     }
 
-    if( hasTech(1, 5, 2, $id) ) $ress1 = $ress1 * 4;
-    if( hasTech(1, 6, 2, $id) ) $ress2 = $ress2 * 4;
-    if( hasTech(1, 7, 2, $id) ) $ress3 = $ress3 * 3;
-    if( hasTech(1, 8, 2, $id) ) $ress4 = $ress4 * 2;
+//    if( hasTech(1, 5, 2, $id) ) $ress1 = $ress1 * 4;
+//    if( hasTech(1, 6, 2, $id) ) $ress2 = $ress2 * 4;
+//    if( hasTech(1, 7, 2, $id) ) $ress3 = $ress3 * 3;
+//    if( hasTech(1, 8, 2, $id) ) $ress4 = $ress4 * 2;
 
     \App\Models\UserData::where('user_id', $id)->where('key', 'ressProTick')->update([
         'value' => json_encode([
@@ -117,9 +117,10 @@ function uRess()
     return (json_decode(session('uData')['ress']->value) ?? false);
 }
 
-function Lang($key, $array = null)
+function Lang($key, $array = null, $plural = null)
 {
-    $text = (session('Lang')[$key]->value ?? session('Lang')['dummy']->value);
+    if( $plural == null OR $plural == 1) $text = (session('Lang')[$key]->value ?? session('Lang')['dummy']->value);
+    else $text = (session('Lang')[$key]->plural ?? session('Lang')['dummy']->value);
 
     if ( $array != null )
     {

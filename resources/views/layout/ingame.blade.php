@@ -18,36 +18,8 @@
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
     <link href="/assets/css/orbit.css" rel="stylesheet">
-    <style>
-        .arrow_box {
-            position: relative;
-            background: #2b6e82;
-            border: 2px solid #c2e1f5;
-        }
-        .arrow_box:after, .arrow_box:before {
-            top: 100%;
-            left: 50%;
-            border: solid transparent;
-            content: "";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-        }
-
-        .arrow_box:after {
-            border-color: rgba(43, 110, 130, 0);
-            border-top-color: #2b6e82;
-            border-width: 30px;
-            margin-left: -30px;
-        }
-        .arrow_box:before {
-            border-color: rgba(194, 225, 245, 0);
-            border-top-color: #c2e1f5;
-            border-width: 33px;
-            margin-left: -33px;
-        }
-    </style>
+    <link href="/assets/css/responsive.css" rel="stylesheet">
+    <link href="/assets/css/carusel.css" rel="stylesheet">
     @yield('styles')
 
 </head>
@@ -99,29 +71,32 @@
     <div class="race-footerl" style=""></div>
     <div class="race-head" style=""></div>
     <div class="race-footerr" style=""></div>
-    <div class="race-icon race-icona" onclick="window.location.href = '{{ route('buildings.index') }}';"><i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-                                         title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i></div>
+    <div class="race-icon race-icona" onclick="window.location.href = '{{ route('buildings.index') }}';">
+        <i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+                                         title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i>
+    </div>
     <div class="race-icon race-iconb"><i class="bi bi-star-fill"></i></div>
     <div class="race-icon race-iconc"><i class="bi bi-star-fill"></i></div>
-    <div class="race-icon race-icond"><i class="bi bi-star-fill"></i></div>
+    <div class="race-icon race-icond" onclick="window.location.href = '{{ route('ranking.index') }}';">
+        <i class="bi bi-ladder" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+           title="<b>{{ Lang('global_ranking_name') }}</b> <br><br><em>{{ Lang('global_ranking_desc') }}</em>"></i>
+    </div>
     <div class="race-icon race-icone"><i class="bi bi-star-fill"></i></div>
     <div class="race-icon race-iconf"><i class="bi bi-star-fill"></i></div>
 </div>
-<li class="nav-item dropdown pe-3"  style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;">
+<li class="nav-item dropdown pe-3"  style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">
+
+    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="margin-right: 10px">
+        <i class="bi bi-chat-left-text"></i>
+    </a><!-- End Messages Icon -->
+    <ul class="dropdown-menu messages" style="background-color: black;width: 350px">
+    </ul><!-- End Messages Dropdown Items -->
 
     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
         <i class="bi bi-gear"></i>
     </a>
 
     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-{{--        <li class="dropdown-header">--}}
-{{--            <h6>{{ auth()->user()->name }}</h6>--}}
-{{--            <span>Admin/Support</span>--}}
-{{--        </li>--}}
-{{--        <li>--}}
-{{--            <hr class="dropdown-divider">--}}
-{{--        </li>--}}
-
         <li>
             <a class="dropdown-item d-flex align-items-center" onclick="notify.authorize()">
                 <i class="bi bi-person"></i>
@@ -166,7 +141,7 @@
 
     </ul><!-- End Profile Dropdown Items -->
 </li><!-- End Profile Nav -->
-
+<div id="modifiersDiv"></div>
 <!-- Template Main JS File -->
     <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/popper.min.js"></script>
@@ -174,6 +149,40 @@
     <script src="/assets/js/main.js"></script>
 @yield('scripts')
 <script>
+    $.get('/api/message/{{ uData('token') }}', function(data) {
+        let obj = JSON.parse(data);
+
+// Define recursive function to print nested values
+        function printValues(obj) {
+            for(var k in obj) {
+                if(obj[k] instanceof Object) {
+                    printValues(obj[k]);
+                } else {
+                    if ( k === 'text') {
+                        // document.write(obj['text'] + " -> " + k + "<br>");
+                        $(".messages").append('<li><a href="/messages/'+ obj['sender_id'] +'" class="user-message-one"><div class="user-text"><h6>'+ obj['name'] +'</h6> <div class="text"> <p>'+ obj['text'].slice(0,50) +'...</p> </div> </div><div class="user-active"><span>4 hrs. ago</span></div></a></li>');
+                        $(".bi-chat-left-text").css("color", "red");
+                    }
+                };
+            }
+        };
+
+        printValues(obj);
+        // $.each(data, function(key, item) {
+        //     var checkBox = "<input type='checkbox' data-price='" + item.Price + "' name='" + item.Name + "' value='" + item.ID + "'/>" + item.Name + "<br/>";
+        //     $(checkBox).appendTo('#modifiersDiv');
+        // });
+        // $('#addModifiers').modal('show');
+    });
+    {{--$.ajax({--}}
+    {{--    url: '/api/message/{{ uData('token') }}',--}}
+    {{--    dataType: 'json',--}}
+    {{--    success: function(data) {--}}
+    {{--        $.each(data, function(i, item) {--}}
+    {{--            alert(data[i].text);--}}
+    {{--        });--}}
+    {{--    }--}}
+    {{--});--}}
     $.ajax({
         url: "/api/crown",
         success: function(res) {

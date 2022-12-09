@@ -12,7 +12,7 @@
                 @csrf
                 <div class="complete-message">
                     <div class="intro">
-                        <h4>{{ Lang('entity_name_1') }}</h4>
+                        <h4>{{ Lang('entity_name_1', plural: 'ja') }}</h4>
                     </div>
                     <div class="body-content">
                         <img src="https://www.die-ewigen.com/degp3v2/g/kollie.gif" alt=""><br>
@@ -20,13 +20,13 @@
                             {{ Lang('entity_desc_1') }}
                         </p>
                         <p>
-                            Vorhandene Kollektoren: {{ uData('kollektoren') }}
+                            Vorhandene {{ Lang('entity_name_1', plural: 'ja') }}: {{ uData('kollektoren') }}
                         </p>
                         <p>
-                            Bauzeit Pro Kollektor: 1 Wirtschafts Tick
+                            Bauzeit Pro {{ Lang('entity_name_1', plural: 'ja') }}: 1 Wirtschafts Tick
                         </p>
                         <p>
-                            Kollektoren im Bau: {{ $kollisImBau }}
+                            {{ Lang('entity_name_1', plural: 'ja') }} im Bau: {{ $kollisImBau }}
                         </p>
                     </div>
                     <div class="actions">

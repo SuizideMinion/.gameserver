@@ -6,6 +6,7 @@ use App\Models\UserData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+
 Route::group(['middleware' => ['api', 'checker']], function () {
     Route::get('/crown', function () {
         $ServerData = ServerData::get()->pluck('value', 'key');
@@ -115,5 +116,6 @@ Route::group(['middleware' => ['api', 'checker']], function () {
         }
     });
     Route::get('uSettings/{token}/{key}/{value}', '\App\Http\Controllers\APIController@saveUserData');
+    Route::get('message/{token}', '\App\Http\Controllers\MessageController@JSON');
 });
 
