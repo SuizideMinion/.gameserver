@@ -20,7 +20,6 @@
                 @if($Research->can()['notDisplay'] == 0 OR uData('show.all.Researchs') == '1')
                     @set($c, $c + 1)
                     <div class="carousel__cell"
-                         onclick="window.location.href = '{{ route('researchs.edit', $Research->id) }}';"
                          style="
                              cursor: pointer;
                              background-image:
@@ -70,7 +69,7 @@
                                 @endif
                             @else
                                 @if($Research->can()['value'] == 1)
-                                    <button class="orbit-btn">{{ Lang('tech.Button.Research') }}</button>
+                                    <button onclick="window.location.href = '{{ route('researchs.edit', $Research->id) }}';" class="orbit-btn">{{ Lang('tech.Button.Research') }}</button>
                                 @endif
                             @endif
                         @else
