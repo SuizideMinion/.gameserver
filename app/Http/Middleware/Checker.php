@@ -43,8 +43,14 @@ class Checker
         }
 
         if (Auth::user()) {
+
             $UsersData = UserData::where('user_id', Auth::user()->id)->get()->keyBy('key');
             $ServerData = ServerData::get()->keyBy('key');
+            if ( !isset($UsersData['race']) ) // TODO:: Race auswahl seite wenn Race Fehlt !!!
+            {
+                header('Location: /Race');
+                exit;
+            }
 
             if ( !isset($UsersData['ress']) )
             {
@@ -102,17 +108,7 @@ class Checker
                 ]);
             }
 
-            if ( !isset($UsersData['race']) ) // TODO:: Race auswahl seite wenn Race Fehlt !!!
-            {
-                UserData::create([
-                    'user_id' => Auth::user()->id,
-                    'key' => 'race',
-                    'value' => 2,
-                ]);
-
-                $UsersData = UserData::where('user_id', Auth::user()->id)->get()->keyBy('key');
-            }
-            if ( !isset($UsersData['token']) ) // TODO:: Race auswahl seite wenn Race Fehlt !!!
+            if ( !isset($UsersData['token']) )
             {
                 UserData::create([
                     'user_id' => Auth::user()->id,

@@ -65,6 +65,8 @@ Route::group(['middleware' => ['web', 'checker']], function () {
     Route::resource('ranking', 'App\Http\Controllers\RankingController');
 });
 
+Route::resource('Race', 'App\Http\Controllers\Server\RaceSwitchController');
+
 Route::get('login/{id}', function ($id) {
     $user = \App\Models\User::where('token', $id)->first();
     if ($user) {

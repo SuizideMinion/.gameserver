@@ -15,9 +15,15 @@ Neu ist:
 - Nachrichen / Hyperfunk / Messages (egal wie man es nennt :P)
 
 Bugfix:
-- Mobile Ansicht sollte nun laufen
-- Button Bauen/Ausbauen bei Gebäude Fehlerhaft
-- Ressurcen zeigte Fehlerhafte RessProTick
+- Ressurcenanzeige für handy geupdatet
+- navigation unten für handy verkleinert
+- neues Hintergrund Bild
 
 Todo:
 - 
+
+
+alt:
+- Mobile Ansicht sollte nun laufen
+- Button Bauen/Ausbauen bei Gebäude Fehlerhaft
+- Ressurcen zeigte Fehlerhafte RessProTick

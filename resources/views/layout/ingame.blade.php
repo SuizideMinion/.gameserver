@@ -17,14 +17,14 @@
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
-    <link href="/assets/css/orbit.css" rel="stylesheet">
+    <link href="/assets/css/{{ uData('race') }}.css" rel="stylesheet">
     <link href="/assets/css/responsive.css" rel="stylesheet">
     <link href="/assets/css/carusel.css" rel="stylesheet">
     @yield('styles')
 
 </head>
 
-<body style="background-image: url('/assets/img/1.png')">
+<body style="">
 
 @if(session()->has('error'))
     <div style="display: flex;
@@ -71,8 +71,8 @@
         class="bi bi-arrow-up-short"></i></a>
 <div class="bottom_navi">
     <div class="race-footerl" style=""></div>
-    <div class="race-head" style=""></div>
     <div class="race-footerr" style=""></div>
+    <div class="race-head" style=""></div>
     <div class="race-icon race-icona" onclick="window.location.href = '{{ route('buildings.index') }}';">
         <i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
            title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i>
