@@ -20,14 +20,16 @@
                             {{ Lang('entity_desc_1') }}
                         </p>
                         <p>
-                            {{ Lang('kollektoren.vorhandene', plural: 'ja') }}Vorhandene {{ Lang('entity_name_1', plural: 'ja') }}: {{ uData('kollektoren') }}
+                            {{ Lang('kollektoren.vorhandene', [':SUM' => uData('kollektoren'), ':NAME' => Lang('entity_name_1', plural: uData('kollektoren'))]) }}
                         </p>
                         <p>
-                            Bauzeit Pro {{ Lang('entity_name_1', plural: '1') }}: 1 Wirtschafts Tick
+                            {{ Lang('kollektoren.bauzeit', [':NAME' => Lang('entity_name_1'), ':WTICK' => Lang('Wirtschafts.Tick')]) }}
                         </p>
-                        <p>
-                            {{ Lang('entity_name_1', plural: 'ja') }} im Bau: {{ $kollisImBau }}
-                        </p>
+                        @if($kollisImBau != 0)
+                            <p>
+                                {{ Lang('kollektoren.im.bau', [':SUM' => $kollisImBau, ':NAME' => Lang('entity_name_1', plural: $kollisImBau)], plural: $kollisImBau) }}
+                            </p>
+                        @endif
                     </div>
                     <div class="actions">
                         <ul>
@@ -36,16 +38,16 @@
                                     <label for="b_col"></label>
                                     <input type="text" id="b_col" name="b_col" value="" placeholder="0" onkeyup="calccolcost({{ uData('kollektoren') + $kollisImBau }});">
                                     <input type="hidden" name="unit" value="1">
-                                    <button type="submit">Bauen</button>
+                                    <button type="submit">{{ Lang('kollektoren.button.bauen') }}</button>
                                 </div>
                             </li>
                             <li>{{ ressCalc() }}
                                 <div class="heading" style="display:flex">
-                                    <p style="width: 20%">Baukosten:</p>
+                                    <p style="width: 20%">{{ Lang('kollektoren.baukosten') }}</p>
                                     <p id="colmcost" style="width: 35%; text-align-last: end;"><font color="#FFFFFF">0</font></p>
-                                    <p id="" style="width: 5%"><font color="#FFFFFF">M</font></p>
+                                    <p id="" style="width: 5%"><font color="#FFFFFF">{{ Lang('global_ress1_name') }}</font></p>
                                     <p id="coldcost" style="width: 35%; text-align-last: end;"><font color="#FFFFFF">0</font></p>
-                                    <p id="" style="width: 5%"><font color="#FFFFFF">D</font></p>
+                                    <p id="" style="width: 5%"><font color="#FFFFFF">{{ Lang('global_ress2_name') }}</font></p>
                                 </div>
                             </li>
                         </ul>
@@ -58,7 +60,9 @@
                         <span class="time">{{ FormatTime($Kollis->time) }}</span>
                         <ul>
                             <li>
-                                <span class="agenda-name">{{ $Kollis->quantity }} in Warteschlange</span>
+                                <span class="agenda-name">
+                                    {{ Lang('kollektoren.Warteschlange', [':NAME' => Lang('entity_name_1', plural: $Kollis->quantity), ':SUM' => $Kollis->quantity]) }}
+                                </span>
                             </li>
                             <li>
                                 <span class="green"><i class="bi bi-dot"></i></span>

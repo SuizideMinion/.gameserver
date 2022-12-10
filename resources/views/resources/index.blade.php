@@ -90,11 +90,6 @@
             </form>
         </div>
     </div>
-    @desktop
-    Desktop
-    @elsedesktop
-    Mobile
-    @enddesktop
 @endsection
 
 @section('scripts')

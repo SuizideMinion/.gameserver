@@ -33,21 +33,39 @@
 }
 
     .ressMain {
-        margin-left: -272px;
+        margin-left: -208px;
     }
 
     .ress {
-        height: 28px;
-        width: 96px;
+        height: 22px;
+        width: 71px;
     }
 
     .ress p {
-        font-size: 14px;
+        font-size: 10px;
     }
 
     .ress img {
-        height: 23px;
+        height: 18px;
         border-radius: 15px;
+    }
+
+    .bottom_navi {
+        zoom: 55%;
+    }
+
+    .back-to-top {
+        position: fixed;
+        visibility: hidden;
+        opacity: 0;
+        right: 15px;
+        bottom: 45px;
+        z-index: 99999;
+        background: #2beee7;
+        width: 25px;
+        height: 25px;
+        border-radius: 4px;
+        transition: all 0.4s;
     }
     /* Small device */
 }

@@ -154,7 +154,7 @@ function FormatTime($timestamp)
     // Past or present
     if ($difference >= 0)
     {
-        $ending = "ago";
+        $ending = Lang('global.ago');
     }
     else
     {
@@ -176,8 +176,8 @@ function FormatTime($timestamp)
     // Make plural if needed
     if($difference != 1)
     {
-        $periods[$j].= "s";
-    }
+        $periods[$j] = Lang('global.'. $periods[$j], plural: 'yes');
+    } else $periods[$j] = Lang('global.'. $periods[$j]);
 
     // Default format
     $text = "$difference $periods[$j] $ending";
