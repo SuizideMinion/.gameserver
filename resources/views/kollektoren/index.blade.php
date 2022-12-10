@@ -20,10 +20,10 @@
                             {{ Lang('entity_desc_1') }}
                         </p>
                         <p>
-                            Vorhandene {{ Lang('entity_name_1', plural: 'ja') }}: {{ uData('kollektoren') }}
+                            {{ Lang('kollektoren.vorhandene', plural: 'ja') }}Vorhandene {{ Lang('entity_name_1', plural: 'ja') }}: {{ uData('kollektoren') }}
                         </p>
                         <p>
-                            Bauzeit Pro {{ Lang('entity_name_1', plural: 'ja') }}: 1 Wirtschafts Tick
+                            Bauzeit Pro {{ Lang('entity_name_1', plural: '1') }}: 1 Wirtschafts Tick
                         </p>
                         <p>
                             {{ Lang('entity_name_1', plural: 'ja') }} im Bau: {{ $kollisImBau }}

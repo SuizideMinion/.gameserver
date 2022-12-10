@@ -20,6 +20,7 @@
                                 <th scope="col">key</th>
                                 <th scope="col">race</th>
                                 <th scope="col">Value</th>
+                                <th scope="col">Plural</th>
                                 <th scope="col">Sprache</th>
                                 <th scope="col">Erstellt</th>
                             </tr>
@@ -41,6 +42,8 @@
                                     </select></td>
                                 <td><input class="form-control" style="background: #fff;" type="text"
                                            name="value" id="value" placeholder="Value"></td>
+                                <td><input class="form-control" style="background: #fff;" type="text"
+                                           name="plural" id="plural" placeholder="Plural"></td>
                                 <td><select name="lang" class="form-select" id="inputGroupSelect"
                                             aria-label="">
                                         <option value="DE" selected>Deutsch</option>
@@ -59,6 +62,7 @@
                                     <td>{{ $Translation->key }}</td>
                                     <td>{{ $Translation->race }}</td>
                                     <td>{{ $Translation->value }}</td>
+                                    <td>{{ $Translation->plural }}</td>
                                     <td>{{ $Translation->lang }}</td>
                                     <td>{{ $Translation->created_at }}</td>
                                 </tr>
