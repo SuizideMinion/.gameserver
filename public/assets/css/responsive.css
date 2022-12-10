@@ -21,6 +21,7 @@
 
     .scene {
         width: 400px;
+        height: 50vh;
     }
 
     .carousel__cell {
@@ -66,6 +67,12 @@
         height: 25px;
         border-radius: 4px;
         transition: all 0.4s;
+    }
+
+    .orbit-btn {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
     }
     /* Small device */
 }
