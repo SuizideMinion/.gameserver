@@ -59,7 +59,7 @@ Route::group(['middleware' => ['api', 'checker']], function () {
 
             // Baue EINHEITEN
 
-            $userUnitsBuild = \App\Models\UserUnitsBuild::where('unit_id', '>', '1')->orderBy('time')->with('getUserData')->get();
+            $userUnitsBuild = \App\Models\UserUnitsBuild::where('unit_id', '>', '1')->where('time', '<', time())->with('getUserData')->get();
 
             foreach ( $userUnitsBuild AS $User)
             {
