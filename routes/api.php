@@ -44,7 +44,7 @@ Route::group(['middleware' => ['api', 'checker']], function () {
                 if( $User[0]->quantity > 0)
                 {
                     UserData::where('user_id', $User[0]->user_id)->where('key', 'kollektoren')->update([
-                       'value' => $UserData['kollektoren']->value + 1
+                        'value' => $UserData['kollektoren']->value + 1
                     ]);
                     \App\Models\UserUnitsBuild::where('id', $User[0]->id)->update([
                         'quantity' => $User[0]->quantity - 1
@@ -55,6 +55,28 @@ Route::group(['middleware' => ['api', 'checker']], function () {
                 {
                     \App\Models\UserUnitsBuild::where('id', $User[0]->id)->delete();
                 }
+            }
+
+            // Baue EINHEITEN
+
+            $userUnitsBuild = \App\Models\UserUnitsBuild::where('unit_id', '>', '1')->orderBy('time')->with('getUserData')->get();
+
+            foreach ( $userUnitsBuild AS $User)
+            {
+//                $UserData = $User->getUserData->keyBy('key');
+                $UserUnit = \App\Models\UserUnits::where('user_id', $User->id)->where('unit_id', $User->unit_id)->where('fleet', 0)->first();
+
+                \App\Models\UserUnits::updateOrCreate(
+                    [
+                    'user_id' => $User->user_id,
+                    'unit_id' => $User->unit_id,
+                    'fleet' => 0
+                    ],[
+                    'value' => $User->quantity + ($UserUnit->value ?? 0)
+                    ]
+                );
+
+                \App\Models\UserUnitsBuild::where('id', $User->id)->delete();
             }
 //            dd($userUnitsBuild);
 
@@ -124,7 +146,7 @@ Route::group(['middleware' => ['api', 'checker']], function () {
             $finish = $time;
             $total_time = round(($finish - $start), 4);
 
-            intoLogs('Wirtschafstick abgearbeitet in '.$total_time.' seconds.');
+            intoLogs('Wirtschafstick abgearbeitet in '.$total_time.' seconds.', link: url()->full());
         }
     });
     Route::get('uSettings/{token}/{key}/{value}', '\App\Http\Controllers\APIController@saveUserData');
