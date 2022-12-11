@@ -63,6 +63,7 @@ Route::group(['middleware' => ['web', 'checker']], function () {
     Route::resource('kollektoren', 'App\Http\Controllers\KollektorenController');
     Route::resource('messages', 'App\Http\Controllers\MessageController');
     Route::resource('ranking', 'App\Http\Controllers\RankingController');
+    Route::resource('units', 'App\Http\Controllers\UnitsController');
 });
 
 Route::resource('Race', 'App\Http\Controllers\Server\RaceSwitchController');

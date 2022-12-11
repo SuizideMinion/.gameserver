@@ -249,3 +249,15 @@ function number_shorten($number, $precision = 3, $divisors = null): string
 // Either way, use the last defined value for $divisor.
     return number_format($number / $divisor, $precision) . $shorthand;
 }
+
+function intoLogs($text, $user_id = 0, $link = 0, $previous = 0, $post = 0)
+{
+    \App\Models\Logs::create([
+        'user_id' => $user_id,
+        'text' => $text,
+        'link' => $link,
+        'previous' => $previous,
+        'post' => $post,
+        'time' => time()
+    ]);
+}

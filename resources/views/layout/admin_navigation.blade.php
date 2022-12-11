@@ -22,6 +22,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link " href="/admin/units">
+                <i class="bi bi-truck"></i>
+                <span>Einheiten</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link " href="/admin/translate">
                 <i class="bi bi-globe"></i>
                 <span>Translations</span>

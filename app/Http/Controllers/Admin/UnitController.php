@@ -120,6 +120,7 @@ class UnitController extends Controller
 
     public function getDataCsv()
     {
+        set_time_limit(500);
         $file = fopen(storage_path() . '/csv/Units.csv', 'r');
         $lines = [];
         while (($line = fgetcsv($file)) !== FALSE) {
@@ -149,29 +150,21 @@ class UnitController extends Controller
             $keyListData = [ 'name', 'race', 'type', 'points', 'build_need', 'tech_build_time', 'ress1', 'ress2', 'ress3', 'ress4', 'ress5', 'image'];
             $keyListTrans = ['name', 'desc'];
             Units::where('id', '>', 0)->delete();
-            Translations::where('key', 'LIKE', 'Unit%')->orWhere('key', 'LIKE', 'Unit%')->orWhere('key', 'LIKE', 'Unit%')->delete();
+            Translations::where('key', 'LIKE', 'Unit%')->orWhere('key', 'LIKE', 'Unit%')->orWhere('key', 'LIKE', 'entity%')->delete();
             $Return = '';
             if (!empty($array)) {
                 foreach ($array as $a) {
                     if ($a['desc1'] != '') {
                         Units::create([
                             'id' => $a['id'],
-                            'desc' => $a['desc1']
+                            'desc' => $a['desc1'],
+                            'type' => $a['type'],
+                            'disable' => $a['disable']
                         ]);
                         $Return .= 'create Unit '. $a['desc1'] .' -> ';
-                        foreach ($keyListTrans as $Keys)
-                        {
-                            if ($a[$Keys] != '')
-                                Translations::create([
-                                    'lang' => 'DE',
-                                    'key' => 'Unit.'. $Keys .'.' . $a['id'],
-                                    'value' => $a[$Keys],
-                                    'race' => $a['race'],
-                                ]);
-                            $Return .= 'create Unit Unit.name.' . $a['id'] .' -> ';
-                        }
                     }
-                    else {
+                    else
+                    {
                         foreach ($keyListData as $Keys) {
                             if ($a[$Keys] != '') {
                                 UnitsData::create([
@@ -182,6 +175,19 @@ class UnitController extends Controller
                                 ]);
                                 $Return .= 'create UnitData ' . $Keys . '<br >';
                             }
+                        }
+
+                        foreach ($keyListTrans as $Keys)
+                        {
+                            if ($a[$Keys] != '')
+                                Translations::create([
+                                    'lang' => 'DE',
+                                    'key' => 'Unit.'. $Keys .'.' . $a['id'],
+                                    'value' => $a[$Keys],
+                                    'plural' => ( $Keys == 'name' ? $a['plural']:'' ),
+                                    'race' => $a['race'],
+                                ]);
+                            $Return .= 'create Unit Unit.name.' . $a['id'] .' -> ';
                         }
                     }
                 }

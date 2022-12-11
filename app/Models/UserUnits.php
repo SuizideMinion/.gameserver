@@ -12,6 +12,7 @@ class UserUnits extends Model
     protected $fillable = [
         'user_id',
         'unit_id',
-        'value'
+        'value',
+        'fleet'
     ];
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('unit_id');
+            $table->unsignedBigInteger('fleet');
             $table->bigInteger('value');
             $table->timestamps();
 

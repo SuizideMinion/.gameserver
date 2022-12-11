@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('units', function (Blueprint $table) {
             $table->id();
             $table->string('desc');
+            $table->bigInteger('type');
+            $table->bigInteger('disable');
             $table->timestamps();
         });
     }

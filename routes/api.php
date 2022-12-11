@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['api', 'checker']], function () {
     Route::get('/crown', function () {
+        $time = microtime();
+        $time = explode(' ', $time);
+        $time = $time[1] + $time[0];
+        $start = $time;
+
         $ServerData = ServerData::get()->pluck('value', 'key');
 
         $UserBuildings = UserBuildings::where('value', 1)->where('time', '<', time())->get();
@@ -113,6 +118,13 @@ Route::group(['middleware' => ['api', 'checker']], function () {
                     'value' => $ticks
                 ],
             ], 'value');
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $finish = $time;
+            $total_time = round(($finish - $start), 4);
+
+            intoLogs('Wirtschafstick abgearbeitet in '.$total_time.' seconds.');
         }
     });
     Route::get('uSettings/{token}/{key}/{value}', '\App\Http\Controllers\APIController@saveUserData');

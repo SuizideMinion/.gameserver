@@ -11,11 +11,18 @@ class Units extends Model
 
     protected $fillable = [
         'id',
-        'desc'
+        'desc',
+        'type',
+        'disable'
     ];
 
     public function getTableColumns()
     {
         return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
+    }
+
+    public function getData()
+    {
+        return $this->hasMany(UnitsData::class, 'unit_id', 'id');
     }
 }

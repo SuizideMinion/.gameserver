@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-header">
                 <button type="button" class="btn btn-primary btn-sm float-right" onclick="window.location.href = '{{ route('admin.units.create') }}';">Add New Unit</button>
-                <button type="button" class="btn btn-danger btn-sm float-right" onclick="window.location.href = '/admin/Unitsadd';">Reload CSV!!</button>
+                <button type="button" class="btn btn-danger btn-sm float-right" onclick="window.location.href = '/admin/unitsadd';">Reload CSV!!</button>
             </div>
             <div class="card-body">
 
@@ -21,15 +21,15 @@
                     <tbody>
 
                     @foreach($Units as $key => $Unit)
-                        @if($Unit->can()['notDisplay'] == 0)
+{{--                        @if($Unit->can()['notDisplay'] == 0)--}}
 {{--                        <tr onclick="window.location.href = '{{ route('admin.units.edit', $Unit->id) }}';"--}}
 <tr
                             style="cursor: pointer;">
                             @foreach( $Columns AS $Column )
-                                <th scope="col">{{ $Unit[$Column] }} {{$Unit->can()['notDisplay']}} {{$Unit->can()['error'] ?? ''}}</th>
+                                <th scope="col">{{ $Unit[$Column] }} </th>
                             @endforeach
                         </tr>
-                        @endif
+{{--                        @endif--}}
                     @endforeach
 
                     </tbody>

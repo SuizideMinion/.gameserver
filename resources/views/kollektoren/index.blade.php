@@ -12,22 +12,22 @@
                 @csrf
                 <div class="complete-message">
                     <div class="intro">
-                        <h4>{{ Lang('entity_name_1', plural: 'ja') }}</h4>
+                        <h4>{{ Lang('Unit.name.1', plural: 'ja') }}</h4>
                     </div>
                     <div class="body-content">
                         <img src="https://www.die-ewigen.com/degp3v2/g/kollie.gif" alt=""><br>
                         <p>
-                            {{ Lang('entity_desc_1') }}
+                            {{ Lang('Unit.desc.1') }}
                         </p>
                         <p>
-                            {{ Lang('kollektoren.vorhandene', [':SUM' => uData('kollektoren'), ':NAME' => Lang('entity_name_1', plural: uData('kollektoren'))]) }}
+                            {{ Lang('kollektoren.vorhandene', [':SUM' => uData('kollektoren'), ':NAME' => Lang('Unit.name.1', plural: uData('kollektoren'))]) }}
                         </p>
                         <p>
-                            {{ Lang('kollektoren.bauzeit', [':NAME' => Lang('entity_name_1'), ':WTICK' => Lang('Wirtschafts.Tick')]) }}
+                            {{ Lang('kollektoren.bauzeit', [':NAME' => Lang('Unit.name.1'), ':WTICK' => Lang('Wirtschafts.Tick')]) }}
                         </p>
                         @if($kollisImBau != 0)
                             <p>
-                                {{ Lang('kollektoren.im.bau', [':SUM' => $kollisImBau, ':NAME' => Lang('entity_name_1', plural: $kollisImBau)], plural: $kollisImBau) }}
+                                {{ Lang('kollektoren.im.bau', [':SUM' => $kollisImBau, ':NAME' => Lang('Unit.name.1', plural: $kollisImBau)], plural: $kollisImBau) }}
                             </p>
                         @endif
                     </div>
@@ -41,7 +41,7 @@
                                     <button type="submit">{{ Lang('kollektoren.button.bauen') }}</button>
                                 </div>
                             </li>
-                            <li>{{ ressCalc() }}
+                            <li>
                                 <div class="heading" style="display:flex">
                                     <p style="width: 20%">{{ Lang('kollektoren.baukosten') }}</p>
                                     <p id="colmcost" style="width: 35%; text-align-last: end;"><font color="#FFFFFF">0</font></p>
@@ -61,7 +61,7 @@
                         <ul>
                             <li>
                                 <span class="agenda-name">
-                                    {{ Lang('kollektoren.Warteschlange', [':NAME' => Lang('entity_name_1', plural: $Kollis->quantity), ':SUM' => $Kollis->quantity]) }}
+                                    {{ Lang('kollektoren.Warteschlange', [':NAME' => Lang('Unit.name.1', plural: $Kollis->quantity), ':SUM' => $Kollis->quantity]) }}
                                 </span>
                             </li>
                             <li>

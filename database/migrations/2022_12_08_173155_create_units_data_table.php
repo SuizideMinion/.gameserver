@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('units_data', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('unit_id');;
+            $table->unsignedBigInteger('unit_id');
             $table->unsignedBigInteger('race');
             $table->string('key');
             $table->text('value');
