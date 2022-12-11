@@ -16,7 +16,7 @@ class BugController extends Controller
     public function index()
     {
         $Bugs = Bugs::with('getUser')->get();
-
+dd($Bugs);
         return view('server.bugs.index', compact('Bugs'));
     }
 
