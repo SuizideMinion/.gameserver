@@ -64,7 +64,7 @@ Route::group(['middleware' => ['api', 'checker']], function () {
             foreach ( $userUnitsBuild AS $User)
             {
 //                $UserData = $User->getUserData->keyBy('key');
-                $UserUnit = \App\Models\UserUnits::where('user_id', $User->id)->where('unit_id', $User->unit_id)->where('fleet', 0)->first();
+                $UserUnit = \App\Models\UserUnits::where('user_id', $User->user_id)->where('unit_id', $User->unit_id)->where('fleet', 0)->first();
 
                 \App\Models\UserUnits::updateOrCreate(
                     [
@@ -72,7 +72,7 @@ Route::group(['middleware' => ['api', 'checker']], function () {
                     'unit_id' => $User->unit_id,
                     'fleet' => 0
                     ],[
-                    'value' => $User->quantity + ($UserUnit->value ?? 0)
+                    'value' => ($User->quantity + ($UserUnit->value ?? 0))
                     ]
                 );
 

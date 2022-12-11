@@ -78,7 +78,10 @@
            title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i>
     </div>
     <div class="race-icon race-iconb"><i class="bi bi-star-fill"></i></div>
-    <div class="race-icon race-iconc"><i class="bi bi-star-fill"></i></div>
+    <div class="race-icon race-iconc" onclick="window.location.href = '{{ route('units.index') }}';">
+        <i class="bi bi-chevron-double-up" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+           title="<b>{{ Lang('global_military_name') }}</b> <br><br><em>{{ Lang('global_military_desc') }}</em>"></i>
+    </div>
     <div class="race-icon race-icond" onclick="window.location.href = '{{ route('ranking.index') }}';">
         <i class="bi bi-ladder" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
            title="<b>{{ Lang('global_ranking_name') }}</b> <br><br><em>{{ Lang('global_ranking_desc') }}</em>"></i>

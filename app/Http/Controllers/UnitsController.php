@@ -18,7 +18,7 @@ class UnitsController extends Controller
     public function index()
     {
         $userData = UserData::where('user_id', auth()->user()->id)->first()->pluck('value', 'key');
-        $userUnitsBuilds = UserUnitsBuild::where('user_id', auth()->user()->id)->where('unit_id', 2)->get();
+        $userUnitsBuilds = UserUnitsBuild::where('user_id', auth()->user()->id)->get();
         $Units = Units::where('type', 2)->where('disable', 0)->with('getData')->get();
 
         return view('units.index', compact('Units', 'userData', 'userUnitsBuilds'));
@@ -38,11 +38,59 @@ class UnitsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        $Units = Units::where('type', 2)->where('disable', 0)->with('getData')->get();
+//        if( $request->1 >= 0 AND $request->2 >= 0 AND $request->3 >= 0 AND $request->4 >= 0) {
+
+        $mcost = 0;
+        $dcost = 0;
+        $icost = 0;
+        $ecost = 0;
+        $tcost = 0;
+
+        foreach($Units AS $Unit)
+        {
+            if($request[$Unit->id] > 0)
+            {
+                $getData = $Unit->getData->where('race', uData('race'))->pluck('value', 'key');
+                $mcost = $mcost + ($request[$Unit->id] * $getData['ress1']);
+                $dcost = $dcost + ($request[$Unit->id] * $getData['ress2']);
+                $icost = $icost + ($request[$Unit->id] * $getData['ress3']);
+                $ecost = $ecost + ($request[$Unit->id] * $getData['ress4']);
+                $tcost = $tcost + ($request[$Unit->id] * $getData['ress5']);
+            }
+        }
+
+        if($mcost > uRess()->ress1) return back()->with('error', 'Zu Wenig Ressurcen');
+        if($dcost > uRess()->ress2) return back()->with('error', 'Zu Wenig Ressurcen');
+        if($icost > uRess()->ress3) return back()->with('error', 'Zu Wenig Ressurcen');
+        if($ecost > uRess()->ress4) return back()->with('error', 'Zu Wenig Ressurcen');
+        if($tcost > uRess()->ress5) return back()->with('error', 'Zu Wenig Ressurcen');
+
+        ressChanceDown(auth()->user()->id, $mcost, $dcost, $icost, $ecost, $tcost);
+
+        foreach($Units AS $Unit)
+        {
+            if($request[$Unit->id] > 0)
+            {
+                $getData = $Unit->getData->where('race', uData('race'))->pluck('value', 'key');
+                //auftrag Starten
+                UserUnitsBuild::create([
+                    'user_id' => auth()->user()->id,
+                    'unit_id' => $Unit->id,
+                    'value' => $request[$Unit->id],
+                    'time' => time() + ( 180 * $getData['tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value),
+                    'quantity' => ltrim($request[$Unit->id])
+                ]);
+            }
+        }
+
+        return back();
+
+        dd($request,$mcost,$dcost,$icost,$ecost,$tcost);
     }
 
     /**

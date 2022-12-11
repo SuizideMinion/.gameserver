@@ -2,7 +2,6 @@ body {
     color: #db1212;
     font-family: 'Roboto', sans-serif;
     background-image: url('/assets/img/3.png');
-    background-repeat: no-repeat;
     background-size: auto;
     position: relative;
     top: 0;
@@ -2262,18 +2261,18 @@ header .action a {
     top: 20px;
     display: flex;
     left: 50%;
-    margin-left: -325px;
+    margin-left: -275px;
 }
 
-@media only screen and (max-height: 600px) {
-    .ressMain {
-        position: fixed;
-        top: 10px;
-        display: flex;
-        left: 50%;
-        margin-left: -325px;
-    }
-}
+/*@media only screen and (max-height: 600px) {*/
+/*    .ressMain {*/
+/*        position: fixed;*/
+/*        top: 10px;*/
+/*        display: flex;*/
+/*        left: 50%;*/
+/*        margin-left: -325px;*/
+/*    }*/
+/*}*/
 
 .ress {
     /*background-color: white;*/
@@ -2404,4 +2403,22 @@ header .action a {
     -moz-border-radius: 25px;
     -ms-border-radius: 25px;
     -o-border-radius: 25px;
+}
+
+.orbit-small {
+    text-transform: uppercase;
+    font: 300 14px/1.4 'Roboto', sans-serif;
+    padding: 8px 0;
+    width: 120px;
+    text-align: center;
+    border: 2px solid rgba(181, 15, 15, 1);
+    background-color: #390606;
+    color: #e71313;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    /* box-shadow: 2px 2px 3px 0px rgb(43 238 231 / 50%); */
+    background-image: linear-gradient(to bottom right, rgba(181, 15, 15, 1), #390606);
 }
