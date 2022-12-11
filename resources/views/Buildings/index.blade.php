@@ -34,7 +34,7 @@
                             title="<em>{{ Lang('Building.desc.'. $Building->id) }}</em>">
                             {{ Lang('Building.name.'. $Building->id) }}
                         </h2><br>
-                        @if($Building->can()['value'] != 'vollAusGebaut')
+                        @if($Building->can()['value'] != Lang('tech.finish'))
                             <p class=""
                                style="">{{ Lang('level', [':level' => (session('UserBuildings')[$Building->id]->level ?? 0) + 1], plural: (session('UserBuildings')[$Building->id]->level ?? 0) + 1) }}</p>
                             <p>{{ Lang('global_ress1_name') }}:

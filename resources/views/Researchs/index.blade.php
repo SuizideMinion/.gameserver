@@ -34,9 +34,9 @@
                             title="<em>{{ Lang('Research.desc.'. $Research->id) }}</em>">
                             {{ Lang('Research.name.'. $Research->id) }}
                         </h2><br>
-                        @if($Research->can()['value'] != 'vollAusGebaut')
+                        @if($Research->can()['value'] != Lang('research.fertig'))
                             <p class=""
-                               style="">{{ Lang('level', [':level' => (session('UserResearchs')[$Research->id]->level ?? 0) + 1]) }}</p>
+                               style="">{{ Lang('research.erforschen') }}</p>
                             <p>{{ Lang('global_ress1_name') }}:
                                 <span class="m">{{ $Research->pluck()['ress1'] ?? 0 }}</span>
                             </p>
@@ -60,7 +60,7 @@
                             @if($ResearchActive)
                                 @if($ResearchActive->research_id == $Research->id)
 
-                                    {{ Lang('tech.imBau') }}
+                                    {{ Lang('research.imBau') }}
                                     @set($timeend, session('UserResearchs')[$Research->id]->time - time())
                                     <div id="clockdiv">
                                         <span class="Timer"></span>
