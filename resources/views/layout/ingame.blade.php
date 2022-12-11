@@ -92,6 +92,10 @@
 <li class="nav-item dropdown pe-3"
     style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">
 
+    <a class="nav-link nav-icon" href="/bugs" style="margin-right: 10px">
+        <i class="bi bi-bug"></i>
+    </a><!-- End Bugs Icon -->
+
     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="margin-right: 10px">
         <i class="bi bi-chat-left-text"></i>
     </a><!-- End Messages Icon -->

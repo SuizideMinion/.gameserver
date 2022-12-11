@@ -36,7 +36,7 @@
                         </h2><br>
                         @if($Building->can()['value'] != 'vollAusGebaut')
                             <p class=""
-                               style="">{{ Lang('level', [':level' => (session('UserBuildings')[$Building->id]->level ?? 0) + 1]) }}</p>
+                               style="">{{ Lang('level', [':level' => (session('UserBuildings')[$Building->id]->level ?? 0) + 1, ':MAX' => session('UserBuildings')[1]->max_level], plural: (session('UserBuildings')[$Building->id]->level ?? 0) + 1) }}</p>
                             <p>{{ Lang('global_ress1_name') }}:
                                 <span class="m">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress1'] ?? 0 }}</span>
                             </p>
