@@ -1256,5 +1256,5 @@ h6 {
 .container {
     max-width: 1170px;
     margin: 60px auto;
-    margin-bottom: 250px;
+    /*margin-bottom: 250px;*/
 }

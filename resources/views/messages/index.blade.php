@@ -215,16 +215,17 @@
                 @endforeach
                 <div class="lastElement"></div>
             </div>
-            <div class="type_msg">
-                <div class="input_msg_write">
-                    <form class="row g-3" method="post" action="{{ route('messages.update', $id) }}">
-                        @csrf
-                        @method('PUT')
-                        <input type="text" name="text" class="write_msg" placeholder="Type a message"/>
-                        <button class="msg_send_btn" type="button"><i class="bi bi-cursor" aria-hidden="true"></i>
-                        </button>
-                    </form>
-                </div>
+            <div class="message-type">
+                <form method="post" action="{{ route('messages.update', $id) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="message-type-one">
+                        <div class="text-btn">
+                            <input type="text" name="text" placeholder="Message">
+                            <button type="submit">send</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         {{--            </div>--}}
