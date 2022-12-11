@@ -31,10 +31,10 @@
                     <div class="card-body">
                         <h5 class="card-title" style="color: white;font-weight: bold"></h5>
                         <label>
-                            <input type="text" placeholder="Spielername" value="" name="name">
+                            <input type="text" placeholder="Spielername" value="{{ auth()->user()->name }}" name="name">
                         </label>
                         <label>
-                            <input type="text" placeholder="Planetname" value="" name="pname">
+                            <input type="text" placeholder="Planetname" value="{{ uData('planet.name') }}" name="pname">
                         </label>
                     </div>
                     <div class="row">

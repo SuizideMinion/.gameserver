@@ -2309,12 +2309,12 @@ header .action a {
 .race-icon {
     position: fixed;
     font-size: xx-large;
+    color: #05c6ff;
+    cursor: pointer;
 }
 .race-icona {
     left: calc(50% - 150px);
     bottom: 100px;
-    color: #05c6ff;
-    cursor: pointer;
 }
 .race-iconb {
     left: calc( 50% - 200px );

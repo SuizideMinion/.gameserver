@@ -15,7 +15,7 @@ class TranslationController extends Controller
      */
     public function index(): Renderable
     {
-        $Translations = Translations::orderBy('updated_at', 'DESC')->get();
+        $Translations = Translations::where('key', 'NOT LIKE', 'Unit%')->where('key', 'NOT LIKE', 'Building%')->where('key', 'NOT LIKE', 'Research%')->orderBy('updated_at', 'DESC')->get();
 
         return view('admin.translations.index', compact('Translations'));
     }

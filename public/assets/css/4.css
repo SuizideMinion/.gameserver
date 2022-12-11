@@ -2322,13 +2322,13 @@ header .action a {
 .race-icon {
     position: fixed;
     font-size: xx-large;
+    color: #2be901;
+    cursor: pointer;
 }
 
 .race-icona {
     left: calc(50% - 150px);
     bottom: 100px;
-    color: #2be901;
-    cursor: pointer;
 }
 .race-iconb {
     left: calc( 50% - 200px );

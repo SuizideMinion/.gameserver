@@ -206,7 +206,7 @@
         {{--                    </div>--}}
         {{--                </div>--}}
         <div class="mesgs">
-            <div class="msg_history ">
+            <div class="msg_history " style="overflow-x: hidden;">
                 @foreach( $Messages AS $Message)
                     <div
                         class="{{ ( $Message->sender_id == auth()->user()->id ? 'outgoing-message':'upcoming-message') }}">

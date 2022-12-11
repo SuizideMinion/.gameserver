@@ -46,7 +46,8 @@ Route::group(['middleware' => ['web', 'checker']], function () {
         Route::resource('server', 'App\Http\Controllers\Admin\ServerController', ["as" => "admin"]);
         Route::resource('users', 'App\Http\Controllers\Admin\UserController', ["as" => "admin"]);
         Route::resource('translate', 'App\Http\Controllers\Admin\TranslationController', ["as" => "admin"]);
-        Route::resource('buildings', 'App\Http\Controllers\Admin\BuildingsController', ["as" => "admin"]);
+        Route::resource('translate', 'App\Http\Controllers\Admin\TranslationController', ["as" => "admin"]);
+        Route::resource('messages', 'App\Http\Controllers\Admin\MessageController', ["as" => "admin"]);
         Route::resource('buildingsdata', '\App\Http\Controllers\Admin\BuildingsDataController', ["as" => "admin"]);
         Route::get('buildingsadd', '\App\Http\Controllers\Admin\BuildingsController@getDataCsv');
         Route::resource('researchs', '\App\Http\Controllers\Admin\ResearchsController', ["as" => "admin"]);

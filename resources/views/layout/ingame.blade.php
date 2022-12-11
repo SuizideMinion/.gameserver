@@ -77,7 +77,7 @@
         <i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
            title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i>
     </div>
-    <div class="race-icon race-iconb"><i class="bi bi-star-fill"></i></div>
+    <div class="race-icon race-iconb" style="color: gray"><i class="bi bi-star-fill"></i></div>
     <div class="race-icon race-iconc" onclick="window.location.href = '{{ route('units.index') }}';">
         <i class="bi bi-chevron-double-up" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
            title="<b>{{ Lang('global_military_name') }}</b> <br><br><em>{{ Lang('global_military_desc') }}</em>"></i>
@@ -86,8 +86,8 @@
         <i class="bi bi-ladder" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
            title="<b>{{ Lang('global_ranking_name') }}</b> <br><br><em>{{ Lang('global_ranking_desc') }}</em>"></i>
     </div>
-    <div class="race-icon race-icone"><i class="bi bi-star-fill"></i></div>
-    <div class="race-icon race-iconf"><i class="bi bi-star-fill"></i></div>
+    <div class="race-icon race-icone" style="color: gray"><i class="bi bi-star-fill"></i></div>
+    <div class="race-icon race-iconf" style="color: gray"><i class="bi bi-star-fill"></i></div>
 </div>
 <li class="nav-item dropdown pe-3"
     style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">

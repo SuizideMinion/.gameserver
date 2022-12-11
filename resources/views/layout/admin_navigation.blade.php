@@ -40,6 +40,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link " href="/admin/messages">
+                <i class="bi bi-envelope"></i>
+                <span>Hf an alle Spieler</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link " href="/admin/server">
                 <i class="bi bi-cpu"></i>
                 <span>Servereinstellungen</span>

@@ -15,6 +15,7 @@ Neu ist:
 - Nachrichen / Hyperfunk / Messages (egal wie man es nennt :P)
 
 Bugfix:
+- Messages Button gefixt
 - Ressurcenanzeige für handy geupdatet
 - navigation unten für handy verkleinert
 - neues Hintergrund Bild
