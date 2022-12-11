@@ -230,6 +230,7 @@
                     if (t.total <= 0) {
                         clearInterval(timeinterval);
                         Timer.innerHTML = 'Fertig!';
+                        window.location.reload();
                     }
                 }
 

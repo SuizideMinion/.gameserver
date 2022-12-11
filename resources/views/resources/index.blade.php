@@ -84,9 +84,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="display: none">
-                    <button type="submit"></button>
-                </div>
+                    <button class="orbit-btn" type="submit">Ressurcenschlüssel ändern</button>
             </form>
         </div>
     </div>
