@@ -68,8 +68,9 @@ class Buildings extends Model
                 }
             }
         }
-        if ($c > 2 ) $c--;
-        if (!isset($getData[$c . '.build_need'])) {
+        $c--;
+        if ( $c == 0 ) $c = 1;
+        if (isset($getData[$c . '.build_need'])) {
             if ((int)uRess()->ress1 < (int)$getData[$c . '.ress1'])
                 return ['notDisplay' => false, 'error' => 'M Zuwenig', 'value' => 'lol5'];
             if ((int)uRess()->ress2 < (int)$getData[$c . '.ress2'])
@@ -80,7 +81,6 @@ class Buildings extends Model
                 return ['notDisplay' => false, 'error' => 'E Zuwenig', 'value' => 'lol8'];
             if ((int)uRess()->ress5 < (int)$getData[$c . '.ress5'])
                 return ['notDisplay' => false, 'error' => 'T Zuwenig', 'value' => 'lol9'];
-//            dd($getData[$c . '.ress1'], (int)uRess()->ress1 , (int)$getData[$c . '.ress1']);
 
             return ['notDisplay' => false, 'value' => 1];
         }

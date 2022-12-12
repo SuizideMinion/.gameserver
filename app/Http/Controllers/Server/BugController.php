@@ -15,7 +15,7 @@ class BugController extends Controller
      */
     public function index()
     {
-        $Bugs = Bugs::with('getUser')->orderBy('status')->get();
+        $Bugs = Bugs::with('getUser')->orderBy('status')->orderBy('created_at')->get();
 
         return view('Server.bugs.index', compact('Bugs'));
     }
