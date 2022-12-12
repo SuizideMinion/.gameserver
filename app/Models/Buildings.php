@@ -80,7 +80,7 @@ class Buildings extends Model
                 return ['notDisplay' => false, 'error' => 'E Zuwenig', 'value' => 'lol8'];
             if ((int)uRess()->ress5 < (int)$getData[$c . '.ress5'])
                 return ['notDisplay' => false, 'error' => 'T Zuwenig', 'value' => 'lol9'];
-            dd($getData[$c . '.ress1'], (int)uRess()->ress1 , (int)$getData[$c . '.ress1']);
+//            dd($getData[$c . '.ress1'], (int)uRess()->ress1 , (int)$getData[$c . '.ress1']);
 
             return ['notDisplay' => false, 'value' => 1];
         }
