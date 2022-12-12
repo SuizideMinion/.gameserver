@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('bugs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('text');
+            $table->text('text');
             $table->unsignedBigInteger('user_id');
             $table->bigInteger('status');
             $table->timestamps();

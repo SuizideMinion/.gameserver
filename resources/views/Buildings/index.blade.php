@@ -52,11 +52,14 @@
                             <p>{{ Lang('global_ress5_name') }}:
                                 <span class="t">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress5'] ?? 0 }}</span>
                             </p>
+                            <p>
+                                <span class="t">{{$Building->can()['value']}}</span>
+                            </p>
                             <p>{{ Lang('Buildtime') }}
                                 : {{ timeconversion($Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
                             <br>
                             <br>
-{{--                            {{$Building->can()['value']}}--}}
+{{--                            --}}
                             @if($BuildingActive)
                                 @if($BuildingActive->build_id == $Building->id)
                                     {{ Lang('tech.imBau') }}

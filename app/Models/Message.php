@@ -19,4 +19,13 @@ class Message extends Model
         'read_sender',
         'read_retriever'
     ];
+
+    public function getUserS()
+    {
+        return $this->hasOne(User::class, 'id', 'sender_id');
+    }
+    public function getUserR()
+    {
+        return $this->hasOne(User::class, 'id', 'retriever_id');
+    }
 }

@@ -181,6 +181,7 @@
         let obj = JSON.parse(data);
 
 // Define recursive function to print nested values
+        let c = 0;
         function printValues(obj) {
             for (var k in obj) {
                 if (obj[k] instanceof Object) {
@@ -188,8 +189,12 @@
                 } else {
                     if (k === 'text') {
                         // document.write(obj['text'] + " -> " + k + "<br>");
-                        $(".messages").append('<li><a href="/messages/' + obj['sender_id'] + '" class="user-message-one"><div class="user-text"><h6>' + obj['name'] + '</h6> <div class="text"> <p>' + obj['text'].slice(0, 50) + '...</p> </div> </div><div class="user-active"><span>4 hrs. ago</span></div></a></li>');
-                        $(".bi-chat-left-text").css("color", "red");
+                        if ( c < 5) {
+                            $(".messages").append('<li><a href="/messages/' + obj['id'] + '" class="user-message-one"><div class="user-text"><h6>' + obj['name'] + '</h6> <div class="text"> <p>' + obj['text'].slice(0, 50) + '...</p> </div> </div><div class="user-active"><span>4 hrs. ago</span></div></a></li>');
+                            $(".bi-chat-left-text").css("color", "red");
+                            c++;
+                            // alert(c);
+                        }
                     }
                 }
                 ;

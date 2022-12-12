@@ -16,7 +16,14 @@ class MessageController extends Controller
      */
     public function index()
     {
-        //
+        $Messagess = Message::where('sender_id', auth()->user()->id);
+
+        $Messages = Message::where('retriever_id', auth()->user()->id)
+            ->union($Messagess)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return view('messages.index', compact('Messages'));
     }
 
     /**
@@ -64,7 +71,7 @@ class MessageController extends Controller
             'read_retriever' => 1,
         ]);
 
-        return view('messages.index', compact('Messages', 'id'));
+        return view('messages.show', compact('Messages', 'id'));
     }
 
     /**
@@ -120,13 +127,37 @@ class MessageController extends Controller
     public function JSON($token)
     {
         $uData = UserData::where('value', $token)->first();
+//
+//        $Messages = Message::select('sender_id', 'text', 'users.name')
+//            ->where('retriever_id', $uData->user_id)
+//            ->where('read_retriever', 0)
+//            ->join('users', 'users.id', 'messages.sender_id')
+//            ->get();//->groupBy('sender_id');
 
-        $Messages = Message::select('sender_id', 'text', 'users.name')
-            ->where('retriever_id', $uData->user_id)
-            ->where('read_retriever', 0)
-            ->join('users', 'users.id', 'messages.sender_id')
-            ->get();//->groupBy('sender_id');
+        $Messagess = Message::where('sender_id', $uData->user_id)->with('getUserR');
 
-        echo json_encode($Messages);
+        $Messages = Message::where('retriever_id', $uData->user_id)
+            ->with('getUserS')
+            ->union($Messagess)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+
+        $ids = [];
+        $c = 0;
+        foreach( $Messages AS $Message)
+        {
+            if (!isset($ids['s'. ($Message->retriever_id != $uData->user_id ? $Message->retriever_id : $Message->sender_id)])) {
+                $ids['s'. ($Message->retriever_id != $uData->user_id ? $Message->retriever_id : $Message->sender_id)] =
+                    [
+                        'text' => $Message->text,
+                        'id' => ($Message->retriever_id != $uData->user_id ? $Message->retriever_id : $Message->sender_id),
+                        'name' => 'huhu',
+                        'read' => '?'
+                    ];
+            }
+        }
+
+        echo json_encode($ids);
     }
 }

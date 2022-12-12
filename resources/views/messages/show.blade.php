@@ -207,18 +207,25 @@
         {{--                </div>--}}
         <div class="mesgs">
             <div class="msg_history " style="overflow-x: hidden;">
-                @php $ids = []; @endphp
                 @foreach( $Messages AS $Message)
-                    @if (!in_array(( $Message->retriever_id != auth()->user()->id ? $Message->retriever_id:$Message->sender_id), $ids))
-                        <div
-                            class="{{ ( $Message->sender_id == auth()->user()->id ? 'outgoing-message':'upcoming-message') }}">
-                            <p><span class="time">{{ $Message->created_at }}</span><br>{{ $Message->text }}</p>
-                        </div>
-                        {{array_push($ids, ( $Message->retriever_id != auth()->user()->id ? $Message->retriever_id:$Message->sender_id))}}
-                    @endif
+                    <div
+                        class="{{ ( $Message->sender_id == auth()->user()->id ? 'outgoing-message':'upcoming-message') }}">
+                        <p><span class="time">{{ $Message->created_at }}</span><br>{{ $Message->text }}</p>
+                    </div>
                 @endforeach
-                {{dd($ids)}}
                 <div class="lastElement"></div>
+            </div>
+            <div class="message-type">
+                <form method="post" action="{{ route('messages.update', $id) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="message-type-one">
+                        <div class="text-btn">
+                            <input type="text" name="text" placeholder="Message">
+                            <button type="submit">send</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         {{--            </div>--}}

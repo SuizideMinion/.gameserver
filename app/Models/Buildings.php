@@ -68,18 +68,19 @@ class Buildings extends Model
                 }
             }
         }
-        $c--;
-        if ($c > 0 OR !isset($getData[$c . '.build_need'])) {
-            if (isset($getData[$c . '.ress1']) and (int)uRess()->ress1 < (int)$getData[$c . '.ress1'])
+        if ($c > 2 ) $c--;
+        if (!isset($getData[$c . '.build_need'])) {
+            if ((int)uRess()->ress1 < (int)$getData[$c . '.ress1'])
                 return ['notDisplay' => false, 'error' => 'M Zuwenig', 'value' => 'lol5'];
-            if (isset($getData[$c . '.ress2']) and (int)uRess()->ress2 < (int)$getData[$c . '.ress2'])
+            if ((int)uRess()->ress2 < (int)$getData[$c . '.ress2'])
                 return ['notDisplay' => false, 'error' => 'D Zuwenig', 'value' => 'lol6'];
-            if (isset($getData[$c . '.ress3']) and (int)uRess()->ress3 < (int)$getData[$c . '.ress3'])
+            if ((int)uRess()->ress3 < (int)$getData[$c . '.ress3'])
                 return ['notDisplay' => false, 'error' => 'I Zuwenig', 'value' => 'lol7'];
-            if (isset($getData[$c . '.ress4']) and (int)uRess()->ress4 < (int)$getData[$c . '.ress4'])
+            if ((int)uRess()->ress4 < (int)$getData[$c . '.ress4'])
                 return ['notDisplay' => false, 'error' => 'E Zuwenig', 'value' => 'lol8'];
-            if (isset($getData[$c . '.ress5']) and (int)uRess()->ress5 < (int)$getData[$c . '.ress5'])
+            if ((int)uRess()->ress5 < (int)$getData[$c . '.ress5'])
                 return ['notDisplay' => false, 'error' => 'T Zuwenig', 'value' => 'lol9'];
+            dd($getData[$c . '.ress1'], (int)uRess()->ress1 , (int)$getData[$c . '.ress1']);
 
             return ['notDisplay' => false, 'value' => 1];
         }
