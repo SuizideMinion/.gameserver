@@ -35,7 +35,7 @@ class Buildings extends Model
         $c = 1;
         if (isset(session('UserBuildings')[$this->id])) {
             if (session('UserBuildings')[$this->id]->value == 2) {
-                if ($getData['1.max_level'] == session('UserBuildings')[$this->id]->level) return ['notDisplay' => true, 'value' => 'vollAusGebaut'];
+                if ($getData['1.max_level'] == session('UserBuildings')[$this->id]->level) return ['notDisplay' => true, 'value' => Lang('tech.finish')];
                 $c = session('UserBuildings')[$this->id]->level + 1;
             }
             if (session('UserBuildings')[$this->id]->value == 1) {

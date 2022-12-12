@@ -15,10 +15,14 @@ Neu ist:
 - Nachrichen / Hyperfunk / Messages (egal wie man es nennt :P)
 
 Bugfix:
-- Messages Button gefixt
-- Ressurcenanzeige für handy geupdatet
-- navigation unten für handy verkleinert
-- neues Hintergrund Bild
+- Gebäude bauen 500Bug Entfernt
+- 7 Ressanzeige Kollektor/Produktion gefixt
+- 8&18 Produktion Warteschlage Fehlerhafte anzeige (Kollektoren)
+- 17 Einheiten Preis wird auch bei klick berechnet 
+- 22 Sitemap eingebaut
+
+
+
 
 Todo:
 - 

@@ -47,7 +47,7 @@
                             <span>
                                 <div class="text-form mt-0">
                                     <div class="password">
-                                        <input onkeyup="calccolcost()" type="number" value="" placeholder="0"
+                                        <input onkeyup="calccolcost()" onclick="calccolcost()" type="number" value="" placeholder="0"
                                                style="appearance: none;" name="{{ $Unit->id }}"
                                                id="value-{{ $Unit->id }}">
                                     </div>
@@ -56,29 +56,39 @@
                         </div>
                     </div>
                 @endforeach
-                <div class="heading align-items-center" style="display:flex">
-                    <p style="width: 20%">Baukosten:</p>
-                    <p id="mcost" style="width: 35%; text-align-last: end;"><font color="#FFFFFF">0</font></p>
-                    <p id="" style="width: 5%"><font color="#FFFFFF">{{ Lang('global_ress1_name') }}</font></p>
-                    <p id="dcost" style="width: 35%; text-align-last: end;"><font color="#FFFFFF">0</font></p>
-                    <p id="" style="width: 5%"><font color="#FFFFFF">{{ Lang('global_ress2_name') }}</font></p>
-                    <p id="icost" style="width: 35%; text-align-last: end;"><font color="#FFFFFF">0</font></p>
-                    <p id="" style="width: 5%"><font color="#FFFFFF">{{ Lang('global_ress3_name') }}</font></p>
-                    <p id="ecost" style="width: 35%; text-align-last: end;"><font color="#FFFFFF">0</font></p>
-                    <p id="" style="width: 5%"><font color="#FFFFFF">{{ Lang('global_ress4_name') }}</font></p>
-                    <p id="tcost" style="width: 35%; text-align-last: end;"><font color="#FFFFFF">0</font></p>
-                    <p id="" style="width: 5%"><font color="#FFFFFF">{{ Lang('global_ress5_name') }}</font></p>
-                    <p>
-                    <div class="btn-model-one" style="zoom: 65%;margin-left: 20px;">
-                        <ul>
-                            <li>
-                                <button class="orbit-small" type="submit">
-                                    Produzieren
-                                </button>
-                            </li>
-                        </ul>
+                <div class="row heading align-items-center" style="display:flex">
+                    <p class="col-12">Baukosten:</p>
+                    <div class="col-6 d-flex" style="justify-content: right">
+                        <p id="mcost"><font color="#FFFFFF">0</font></p>
+                        <p class="ms-1"><font color="#FFFFFF">{{ Lang('global_ress1_name') }}</font></p>
                     </div>
-                    </p>
+                    <div class="col-6 d-flex" style="justify-content: right">
+                        <p id="dcost"><font color="#FFFFFF">0</font></p>
+                        <p class="ms-1"><font color="#FFFFFF">{{ Lang('global_ress2_name') }}</font></p>
+                    </div>
+                    <div class="col-6 d-flex" style="justify-content: right">
+                        <p id="icost"><font color="#FFFFFF">0</font></p>
+                        <p class="ms-1"><font color="#FFFFFF">{{ Lang('global_ress3_name') }}</font></p>
+                    </div>
+                    <div class="col-6 d-flex" style="justify-content: right">
+                        <p id="ecost"><font color="#FFFFFF">0</font></p>
+                        <p class="ms-1"><font color="#FFFFFF">{{ Lang('global_ress4_name') }}</font></p>
+                    </div>
+                    <div class="col-6 d-flex" style="justify-content: right">
+                        <p id="tcost"><font color="#FFFFFF">0</font></p>
+                        <p class="ms-1"><font color="#FFFFFF">{{ Lang('global_ress5_name') }}</font></p>
+                    </div>
+                    <div class="col-6 d-flex" style="justify-content: right">
+                        <div class="btn-model-one" style="zoom: 65%;margin-left: 20px;">
+                            <ul>
+                                <li>
+                                    <button class="orbit-small" type="submit">
+                                        Produzieren
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="agenda">
@@ -88,7 +98,7 @@
                             <ul>
                                 <li>
                                 <span class="agenda-name">
-                                    {{ Lang('kollektoren.Warteschlange', [':NAME' => Lang('Unit.name.1', plural: $Kollis->quantity), ':SUM' => $Kollis->quantity]) }}
+                                    {{ Lang('kollektoren.Warteschlange', [':NAME' => Lang('Unit.name.'. $Kollis->unit_id, plural: $Kollis->quantity), ':SUM' => $Kollis->quantity]) }}
                                 </span>
                                 </li>
                                 <li>

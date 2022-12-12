@@ -102,6 +102,39 @@
     <ul class="dropdown-menu messages" style="background-color: black;width: 350px">
     </ul><!-- End Messages Dropdown Items -->
 
+
+    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="margin-right: 10px">
+        <i class="bi bi-diagram-3"></i>
+    </a><!-- End sitemap Icon -->
+    <ul class="dropdown-menu sitemap" style="">
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="/buildings">
+               Planet -> Gebäude
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="/researchs">
+                Planet -> Forschungen
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="/resources">
+                Planet -> Ressourcen
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="/kollektoren">
+                Planet -> Kollektoren
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="/units">
+                Militär -> Einheiten
+            </a>
+        </li>
+    </ul><!-- End sitemap Dropdown Items -->
+
+
     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
         <i class="bi bi-gear"></i>
     </a>

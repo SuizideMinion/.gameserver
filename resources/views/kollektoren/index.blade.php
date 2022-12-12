@@ -34,7 +34,7 @@
                     <div class="actions">
                         <ul>
                             <li>
-                                <div class="heading message-input-btn">
+                                <div class="heading message-input-btn" style="height: 80px;">
                                     <label for="b_col"></label>
                                     <input type="text" id="b_col" name="b_col" value="" placeholder="0" onkeyup="calccolcost({{ uData('kollektoren') + $kollisImBau }});">
                                     <input type="hidden" name="unit" value="1">
@@ -42,12 +42,12 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="heading" style="display:flex">
-                                    <p style="width: 20%">{{ Lang('kollektoren.baukosten') }}</p>
-                                    <p id="colmcost" style="width: 35%; text-align-last: end;"><font color="#FFFFFF">0</font></p>
-                                    <p id="" style="width: 5%"><font color="#FFFFFF">{{ Lang('global_ress1_name') }}</font></p>
-                                    <p id="coldcost" style="width: 35%; text-align-last: end;"><font color="#FFFFFF">0</font></p>
-                                    <p id="" style="width: 5%"><font color="#FFFFFF">{{ Lang('global_ress2_name') }}</font></p>
+                                <div class="heading row m-0 justify-content-end">
+                                    <p class="col-12 m-0" style="text-align-last: left;">{{ Lang('kollektoren.baukosten') }}</p>
+                                    <p class="col-8 m-0" id="colmcost" style="text-align-last: end;"><font color="#FFFFFF">0</font></p>
+                                    <p class="col-4 m-0"><font color="#FFFFFF">{{ Lang('global_ress1_name') }}</font></p>
+                                    <p class="col-8 m-0" id="coldcost" style="text-align-last: end;"><font color="#FFFFFF">0</font></p>
+                                    <p class="col-4 m-0"><font color="#FFFFFF">{{ Lang('global_ress2_name') }}</font></p>
                                 </div>
                             </li>
                         </ul>
