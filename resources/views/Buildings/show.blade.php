@@ -6,17 +6,21 @@
             height: 100vh;
         }
         #zoom {
-            width: 5000px;
-            height: 5000px;
+            width: 20000px;
+            height: 10000px;
             transform-origin: 0px 0px;
-            transform: scale(0.2) translate(0px, 0px);
+            transform: scale(0.1) translate(-8500px, -3500px);
             cursor: grab;
+            position: absolute;
+        }
+        .Planet {
+            width: 2048px;
+            height: 2048px;
             background-image: url("/assets/img/planets/3.png");
             background-repeat: no-repeat;
-            background-size: 50%;
-            background-position: center;
             position: absolute;
-            left: calc(50% - 500px);
+            left: calc(50% - 1000px);
+            top: calc(50% - 1000px);
         }
         div#zoom > img {
             width: 100%;
@@ -42,6 +46,7 @@
                     {{ $Building->desc }}
                 @endif
             @endforeach
+            <div class="Planet"></div>
         </div>
 @endsection
 
@@ -87,13 +92,16 @@
     </script>
 
     <script>
-        var scale = 0.2,
+        let width = window.innerWidth;
+        var scale = 0.1,
             panning = false,
-            pointX = 10,
+            pointX = ( 0 - (
+                1800 - width )) ,
             pointY = 0,
-            start = { x: 0, y: 0 },
+            start = { x: 8500, y: 0 },
             zoom = document.getElementById("zoom");
-
+        // alert(width);
+        setTransform();
         function setTransform() {
             zoom.style.transform = "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")";
         }

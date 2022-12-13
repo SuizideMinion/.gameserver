@@ -46,8 +46,8 @@ class BugController extends Controller
         ]);
 
         Bugs::create([
-            'title' => strip_tags($validated->title),
-            'text' => strip_tags($validated->text),
+            'title' => strip_tags($validated['title']),
+            'text' => strip_tags($validated['text']),
             'status' => 1,
             'user_id' => auth()->user()->id
         ]);
