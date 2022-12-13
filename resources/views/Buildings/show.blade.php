@@ -4,6 +4,7 @@
     <style>
         body {
             height: 100vh;
+            overflow: hidden;
         }
         #zoom {
             width: 20000px;
@@ -16,7 +17,7 @@
         .Planet {
             width: 2048px;
             height: 2048px;
-            background-image: url("/assets/img/planets/3.png");
+            background-image: url("{{getImage('.png', path: 'planets', race: uData('race'))}}");
             background-repeat: no-repeat;
             position: absolute;
             left: calc(50% - 1000px);
@@ -25,6 +26,13 @@
         div#zoom > img {
             width: 100%;
             height: auto;
+        }
+
+        .geb {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            background-color: aliceblue;
         }
     </style>
 @endsection
@@ -40,13 +48,38 @@
     @include('layout/planet_navi')
     @set($c, 0)
 
-        <div id="zoom" style='background-color: red;'>
+        <div id="zoom">
             @foreach($Buildings as $key => $Building)
                 @if($Building->can()['notDisplay'] == 0 OR uData('show.all.Buildings') == '1')
                     {{ $Building->desc }}
                 @endif
             @endforeach
             <div class="Planet"></div>
+                <div class="geb geb1" style="top: 5000px;left: 9200px;"></div>
+                <div class="geb geb2" style="top: 4389px;left: 9260px;"></div>
+                <div class="geb geb3" style="top: 4082px;left: 9770px;"></div>
+                <div class="geb geb4" style="top: 4855px;left: 10868px;"></div>
+                <div class="geb geb5" style="top: 4768px;left: 10589px;"></div>
+                <div class="geb geb6" style="top: 4950px;left: 9828px;"></div>
+                <div class="geb geb7" style="top: 4549px;left: 10097px;"></div>
+                <div class="geb geb8" style="top: 4637px;left: 9553px;"></div>
+                <div class="geb geb9" style="top: 5861px;left: 10063px;"></div>
+                <div class="geb geb10" style="top: 5271px;left: 10504px;"></div>
+                <div class="geb geb11" style="top: 5619px;left: 10603px;"></div>
+                <div class="geb geb12" style="top: 5157px;left: 9626px;"></div>
+                <div class="geb geb13" style="top: 5334px;left: 9134px;"></div>
+                <div class="geb geb14" style="top: 5334px;left: 9842px;"></div>
+                <div class="geb geb15" style="top: 5624px;left: 9654px;"></div>
+                <div class="geb geb16" style="top: 4376px;left: 9742px;"></div>
+                <div class="geb geb17" style="top: 4872px;left: 10160px;"></div>
+                <div class="geb geb18" style="top: 5477px;left: 9498px;"></div>
+                <div class="geb geb19" style="top: 5449px;left: 10254px;"></div>
+                <div class="geb geb20" style="top: 5058px;left: 10318px;"></div>
+                <div class="geb geb21" style="top: 5126px;left: 10751px;"></div>
+                <div class="geb geb22" style="top: 4717px;left: 10273px;"></div>
+                <div class="geb geb23" style="top: 4211px;left: 10307px;"></div>
+                <div class="geb geb24" style="top: 5346px;left: 10361px;"></div>
+                <div class="geb geb25" style="top: 4612px;left: 10772px;"></div>
         </div>
 @endsection
 
@@ -95,12 +128,12 @@
         let width = window.innerWidth;
         var scale = 0.1,
             panning = false,
-            pointX = ( 0 - (
-                1800 - width )) ,
+
+            pointX = ( 0 - ( 1000 + width / 2 - width )),
             pointY = 0,
             start = { x: 8500, y: 0 },
             zoom = document.getElementById("zoom");
-        // alert(width);
+
         setTransform();
         function setTransform() {
             zoom.style.transform = "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")";
@@ -128,14 +161,16 @@
 
         zoom.onwheel = function (e) {
             e.preventDefault();
-            var xs = (e.clientX - pointX) / scale,
-                ys = (e.clientY - pointY) / scale,
-                delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
-            (delta > 0) ? (scale *= 1.2) : (scale /= 1.2);
-            pointX = e.clientX - xs * scale;
-            pointY = e.clientY - ys * scale;
+                var xs = (e.clientX - pointX) / scale,
+                    ys = (e.clientY - pointY) / scale,
+                    delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
+            if (delta < 0 && scale > 0.2 || delta > 0) {
+                (delta > 0) ? (scale *= 1.2) : (scale /= 1.2);
+                pointX = e.clientX - xs * scale;
+                pointY = e.clientY - ys * scale;
+            }
 
-            setTransform();
+                setTransform();
         }
     </script>
     @isset($timeend)

@@ -144,7 +144,7 @@ class MessageController extends Controller
 
         $NewMessage = Message::where('retriever_id', $uData->user_id)
             ->where('read_retriever', 0)
-            ->get();
+            ->first();
 
         $ids = [];
 
@@ -157,7 +157,7 @@ class MessageController extends Controller
                         'id' => ($Message->retriever_id != $uData->user_id ? $Message->retriever_id : $Message->sender_id),
                         'name' => 'huhu',
                         'read' => ($Message->retriever_id == $uData->user_id ? $Message->read_retriever : $Message->read_sender),
-                        'new' => ( $NewMessage ? 'ja':'nein')
+                        'new' => ( $NewMessage->text ? 'ja':'nein')
                     ];
             }
         }
