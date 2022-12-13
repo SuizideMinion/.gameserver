@@ -56,7 +56,15 @@ class BuildingsController extends Controller
      */
     public function show($id)
     {
-        //
+        $Buildings = Buildings::with('getData')->get();
+
+        $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
+
+        $Columns = new Buildings;
+        $Columns = $Columns->getTableColumns();
+        $Columns = array_diff($Columns, ['created_at', 'updated_at']);
+
+        return view('Buildings.show', compact('Buildings', 'Columns', 'BuildingActive'));
     }
 
     /**

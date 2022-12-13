@@ -20,8 +20,8 @@
                 @if($Building->can()['notDisplay'] == 0 OR uData('show.all.Buildings') == '1')
                     @set($c, $c + 1)
                     <div class="carousel__cell"
+                         onclick="window.location.href = '{{ route('buildings.edit', $Building->id) }}';"
                          style="
-                             cursor: pointer;
                              background-image:
                              linear-gradient(rgba(0, 0, 0, 0.5),
                              rgba(0, 0, 0, 0.5)),
@@ -71,7 +71,9 @@
                                 @endif
                             @else
                                 @if($Building->can()['value'] == 1)
-                                    <button onclick="window.location.href = '{{ route('buildings.edit', $Building->id) }}';" class="orbit-btn">{{ Lang('tech.Button.Build.1', plural: (((session('UserBuildings')[$Building->id]->level ?? 0) + 1))) }}</button>
+                                    <a href="{{ route('buildings.edit', $Building->id) }}" class="orbit-btn">
+                                        {{ Lang('tech.Button.Build.1', plural: (((session('UserBuildings')[$Building->id]->level ?? 0) + 1))) }}
+                                    </a>
                                 @endif
                             @endif
                         @else

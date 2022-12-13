@@ -190,8 +190,8 @@
                     if (k === 'text') {
                         // document.write(obj['text'] + " -> " + k + "<br>");
                         if ( c < 5) {
-                            $(".messages").append('<li><a href="/messages/' + obj['id'] + '" class="user-message-one"><div class="user-text"><h6>' + obj['name'] + '</h6> <div class="text"> <p>' + obj['text'].slice(0, 50) + '...</p> </div> </div><div class="user-active"><span>4 hrs. ago</span></div></a></li>');
-                            $(".bi-chat-left-text").css("color", "red");
+                            $(".messages").append('<li><a href="/messages/' + obj['id'] + '" class="user-message-one"><div class="user-text"><h6>' + obj['name'] + '</h6> <div class="text"> <p>'+ (obj['read'] === 0 ? 'Neu:':'') +' ' + obj['text'].slice(0, 50) + '...</p> </div> </div><div class="user-active"><span>4 hrs. ago</span></div></a></li>');
+                            if (obj['new'] === 'ja') $(".bi-chat-left-text").css("color", "red");
                             c++;
                             // alert(c);
                         }

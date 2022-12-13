@@ -15,9 +15,11 @@ class BugController extends Controller
      */
     public function index()
     {
-        $Bugs = Bugs::with('getUser')->orderBy('status')->orderBy('created_at')->get();
+        $Bugs = Bugs::where('status', 1)->with('getUser')->orderBy('created_at', 'DESC')->get();
+        $BugsB = Bugs::where('status', 2)->with('getUser')->orderBy('created_at', 'DESC')->get();
+        $BugsF = Bugs::where('status', 3)->with('getUser')->orderBy('created_at', 'DESC')->get();
 
-        return view('Server.bugs.index', compact('Bugs'));
+        return view('Server.bugs.index', compact('Bugs', 'BugsB', 'BugsF'));
     }
 
     /**
@@ -44,8 +46,8 @@ class BugController extends Controller
         ]);
 
         Bugs::create([
-            'title' => $request->title,
-            'text' => $request->text,
+            'title' => strip_tags($validated->title),
+            'text' => strip_tags($validated->text),
             'status' => 1,
             'user_id' => auth()->user()->id
         ]);

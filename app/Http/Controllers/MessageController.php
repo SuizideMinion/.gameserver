@@ -97,7 +97,7 @@ class MessageController extends Controller
         if($request->text != '')
         {
             Message::create([
-                'text' => $request->text,
+                'text' => strip_tags($request->text),
                 'status' => 0,
                 'sender_id' => auth()->user()->id,
                 'retriever_id' => $id,
@@ -142,9 +142,12 @@ class MessageController extends Controller
             ->orderBy('created_at', 'DESC')
             ->get();
 
+        $NewMessage = Message::where('retriever_id', $uData->user_id)
+            ->where('read_retriever', 0)
+            ->get();
 
         $ids = [];
-        $c = 0;
+
         foreach( $Messages AS $Message)
         {
             if (!isset($ids['s'. ($Message->retriever_id != $uData->user_id ? $Message->retriever_id : $Message->sender_id)])) {
@@ -153,7 +156,8 @@ class MessageController extends Controller
                         'text' => $Message->text,
                         'id' => ($Message->retriever_id != $uData->user_id ? $Message->retriever_id : $Message->sender_id),
                         'name' => 'huhu',
-                        'read' => '?'
+                        'read' => ($Message->retriever_id == $uData->user_id ? $Message->read_retriever : $Message->read_sender),
+                        'new' => ( $NewMessage ? 'ja':'nein')
                     ];
             }
         }
