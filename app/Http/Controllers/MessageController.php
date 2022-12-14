@@ -157,7 +157,7 @@ class MessageController extends Controller
                         'id' => ($Message->retriever_id != $uData->user_id ? $Message->retriever_id : $Message->sender_id),
                         'name' => 'huhu',
                         'read' => ($Message->retriever_id == $uData->user_id ? $Message->read_retriever : $Message->read_sender),
-                        'new' => ( $NewMessage->text ? 'ja':'nein')
+                        'new' => ( isset($NewMessage->text) ? 'ja':'nein')
                     ];
             }
         }

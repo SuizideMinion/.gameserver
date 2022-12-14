@@ -1,6 +1,73 @@
 @extends('layout.ingame')
 
 @section('styles')
+    <style>
+        body {
+            overflow: hidden;
+        }
+        #zoom {
+            width: 20000px;
+            height: 10000px;
+            transform-origin: 0px 0px;
+            transform: scale(0.1) translate(-8500px, -3500px);
+            cursor: grab;
+            position: absolute;
+        }
+        .Planet {
+            width: 2048px;
+            height: 2048px;
+            background-image: url("{{getImage('.png', path: 'planets', race: uData('race'))}}");
+            background-repeat: no-repeat;
+            position: absolute;
+            left: calc(50% - 1000px);
+            top: calc(50% - 1000px);
+        }
+        .Moon {
+            width: 800px;
+            height: 800px;
+            background-image: url("{{getImage('Moon.png', path: 'planets')}}");
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: absolute;
+            left: calc(50% + 1500px);
+            top: calc(50% - 2000px);
+        }
+        div#zoom > img {
+            width: 100%;
+            height: auto;
+        }
+
+        .geb {
+            width: 200px;
+            height: 150px;
+            position: absolute;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .geb:hover {
+            border-radius: 80px;
+            box-shadow: white 0px 0px 32px;
+        }
+
+        #gebactive {
+            border-radius: 80px;
+            box-shadow: green 0px 0px 32px;
+            color: green;
+            font-size: 30px;
+            text-align: center;
+        }
+
+
+        .modal-content {
+            background-color: transparent !important;
+        }
+
+        .modal-body {
+            width: 500px;
+            height: 500px;
+        }
+    </style>
 @endsection
 
 @section('settings')
@@ -11,104 +78,86 @@
 @endsection
 
 @section('content')
-    @include('layout/planet_navi')
-    @set($c, 0)
-    <div class="scene">
-        <div class="carousel">
-
-            @foreach($Buildings as $key => $Building)
-                @if($Building->can()['notDisplay'] == 0 OR uData('show.all.Buildings') == '1')
-                    @set($c, $c + 1)
-                    <div class="carousel__cell"
-                         onclick="window.location.href = '{{ route('buildings.edit', $Building->id) }}';"
-                         style="
-                             background-image:
-                             linear-gradient(rgba(0, 0, 0, 0.5),
-                             rgba(0, 0, 0, 0.5)),
-                             url('/assets/img/technologies/{{ $Building->pluck()['1.image'] }}');
-                             background-repeat: no-repeat;
-                             background-size: contain;
-                             ">
-                        <br>
-                        <h2 class="" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-                            title="<em>{{ Lang('Building.desc.'. $Building->id) }}</em>">
-                            {{ Lang('Building.name.'. $Building->id) }}
-                        </h2><br>
-                        @if($Building->can()['value'] != Lang('tech.finish'))
-                            <p class=""
-                               style="">{{ Lang('level', [':level' => (session('UserBuildings')[$Building->id]->level ?? 0) + 1], plural: (session('UserBuildings')[$Building->id]->level ?? 0) + 1) }}</p>
-                            <p>{{ Lang('global_ress1_name') }}:
-                                <span class="m">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress1'] ?? 0 }}</span>
-                            </p>
-                            <p>{{ Lang('global_ress2_name') }}:
-                                <span class="d">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress2'] ?? 0 }}</span>
-                            </p>
-                            <p>{{ Lang('global_ress3_name') }}:
-                                <span class="i">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress3'] ?? 0 }}</span>
-                            </p>
-                            <p>{{ Lang('global_ress4_name') }}:
-                                <span class="e">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress4'] ?? 0 }}</span>
-                            </p>
-                            <p>{{ Lang('global_ress5_name') }}:
-                                <span class="t">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress5'] ?? 0 }}</span>
-                            </p>
-                            <p>
-                                <span class="t">{{$Building->can()['value']}}</span>
-                            </p>
-                            <p>{{ Lang('Buildtime') }}
-                                : {{ timeconversion($Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
-                            <br>
-                            <br>
-{{--                            --}}
-                            @if($BuildingActive)
-                                @if($BuildingActive->build_id == $Building->id)
-                                    {{ Lang('tech.imBau') }}
-                                    @set($timeend, session('UserBuildings')[$Building->id]->time - time())
-                                    <div id="clockdiv">
-                                        <span class="Timer"></span>
-                                    </div>
-                                    @set($rotate, $c)
-                                @endif
-                            @else
-                                @if($Building->can()['value'] == 1)
-                                    <a href="{{ route('buildings.edit', $Building->id) }}" class="orbit-btn">
-                                        {{ Lang('tech.Button.Build.1', plural: (((session('UserBuildings')[$Building->id]->level ?? 0) + 1))) }}
-                                    </a>
-                                @endif
-                            @endif
-                        @else
-                            <p>Maximum</p>
-                        @endif
-                    </div>
-                @endif
-            @endforeach
+    <div id="zoom">
+        {{--            Planetrarer Schild: --}}
+        {{--                top: 4052px;--}}
+        {{--                left: 9022px;--}}
+        {{--                width: 1975px;--}}
+        {{--                height: 1975px;--}}
+        {{--                border-radius: 1000px;--}}
+        {{--                box-shadow: white 0px 0px 116px;--}}
+        <div class="Planet"></div>
+        <div class="Moon"></div>
+        @foreach($Builds as $Build)
+            <div id="{{ (($BuildingActive->build_id ?? 0) == $Build['id'] ? 'gebactive':'') }}" class="geb geb1"
+                 onclick="showDialog('{{ $Build['id'] }}')"
+                 style="
+                     top: {{ $Build['kordX'] }}px;
+                     left: {{ $Build['kordY'] }}px;
+                     background-image: url('{{ getImage($Build['image'], 'technologies') }}')
+                     "
+            >
+                <span class="Timer"></span>
+            </div>
+        @endforeach
+    <!-- Button trigger modal -->
+        {{--                <div class="geb geb16" style="top: 4376px;left: 9742px;"></div>--}}
+        {{--                <div class="geb geb17" style="top: 4872px;left: 10160px;"></div>--}}
+        {{--                <div class="geb geb18" style="top: 5477px;left: 9498px;"></div>--}}
+        {{--                <div class="geb geb19" style="top: 5449px;left: 10254px;"></div>--}}
+        {{--                <div class="geb geb20" style="top: 5058px;left: 10318px;"></div>--}}
+        {{--                <div class="geb geb21" style="top: 5126px;left: 10751px;"></div>--}}
+        {{--                <div class="geb geb22" style="top: 4717px;left: 10273px;"></div>--}}
+        {{--                <div class="geb geb23" style="top: 4211px;left: 10307px;"></div>--}}
+        {{--                <div class="geb geb24" style="top: 5346px;left: 10361px;"></div>--}}
+        {{--                <div class="geb geb25" style="top: 4612px;left: 10772px;"></div>--}}
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="showDialog" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showDialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    ...
+                </div>
+{{--                <button type="button" class="btn-close" onclick="closeDialog()" style="position: absolute;right: 10px;top: 10px;"></button>--}}
+            </div>
         </div>
     </div>
-
-    <div class="carousel-options" style="display: none">
-        <input class="cells-range" type="range" min="3" max="15" value="9"/>
-        <input type="radio" name="orientation" value="horizontal" checked/>
-        <input type="radio" name="orientation" value="vertical"/>
-    </div>
-    <i class="bi bi-caret-left-fill" id="pfeill" style="color: white;font-size: xxx-large;"
-       onclick="leftclick()"></i>
-    <i class="bi bi-caret-right-fill" id="pfeilr" style="color: white;font-size: xxx-large;"
-       onclick="rightclick()"></i>
 @endsection
 
+
 @section('scripts')
-<script>
-    function uSetting(key, value)
-    {
-        $.ajax({
-            url: "/api/uSettings/{{uData('token')}}/"+ key +"/"+ value,
-            success: function(res) {
-                console.log(res);
-                location.reload();
-            }
-        });
-    }
-</script>
+    <script>
+        function showDialog(id)
+        {
+            let myModal = new bootstrap.Modal(document.getElementById('showDialog'), {
+                keyboard: false
+            })
+            $(".modal-body").html(
+                '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+            $(document).ready(function() {
+                $('.modal-body').load('/buildings/'+ id);
+            })
+            myModal.show()
+        }
+        function closeDialog()
+        {
+            let myModal = new bootstrap.Modal(document.getElementById('showDialog'), {
+                keyboard: false
+            })
+            myModal.hide()
+        }
+        function uSetting(key, value)
+        {
+            $.ajax({
+                url: "/api/uSettings/{{uData('token')}}/"+ key +"/"+ value,
+                success: function(res) {
+                    console.log(res);
+                    location.reload();
+                }
+            });
+        }
+    </script>
     <script>
         $('.m').each(function () {
             if ($(this).text() > {{ uRess()->ress1 }}) {
@@ -138,74 +187,75 @@
     </script>
 
     <script>
-        let carousel = document.querySelector('.carousel');
-        let cells = carousel.querySelectorAll('.carousel__cell');
-        let cellCount; // cellCount set from cells-range input value
-        let selectedIndex = {{($rotate ?? 1)}} - 1;
-        let cellWidth = carousel.offsetWidth;
-        let cellHeight = carousel.offsetHeight;
-        let isHorizontal = true;
-        let rotateFn = isHorizontal ? 'rotateY' : 'rotateX';
-        let radius, theta;
+        let width = window.innerWidth;
+        let scale = 0.1,
+            panning = false,
 
-        function rotateCarousel() {
-            let angle = theta * selectedIndex * -1;
-            carousel.style.transform = 'translateZ(' + -radius + 'px) ' +
-                rotateFn + '(' + angle + 'deg)';
+            pointX = ( 0 - ( 1000 + width / 2 - width )),
+            pointY = 0,
+            start = { x: 0, y: 0 },
+            zoom = document.getElementById("zoom");
+
+        setTransform();
+        function setTransform() {
+            zoom.style.transform = "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")";
         }
 
-        function leftclick() {
-            selectedIndex--;
-            rotateCarousel();
+        zoom.onmousedown = function (e) {
+            e.preventDefault();
+            start = { x: e.clientX - pointX, y: e.clientY - pointY };
+            panning = true;
         }
 
-        function rightclick() {
-            selectedIndex++;
-            rotateCarousel();
+        zoom.onmouseup = function (e) {
+            panning = false;
         }
 
-        function changeCarousel() {
-            @php if(isset($c)) $c = ( $c <= 3 ? 3:$c ); @endphp
-                cellCount = {{$c}};
-            theta = 360 / cellCount;
-            let cellSize = isHorizontal ? cellWidth : cellHeight;
-            radius = Math.round((cellSize / 2) / Math.tan(Math.PI / cellCount));
-            for (let i = 0; i < cells.length; i++) {
-                let cell = cells[i];
-                if (i < cellCount) {
-                    // visible cell
-                    cell.style.opacity = 1;
-                    let cellAngle = theta * i;
-                    cell.style.transform = rotateFn + '(' + cellAngle + 'deg) translateZ(' + radius + 'px)';
-                } else {
-                    // hidden cell
-                    cell.style.opacity = 0;
-                    cell.style.transform = 'none';
+        zoom.onmousemove = function (e) {
+            e.preventDefault();
+            if (!panning) {
+                return;
+            }
+            pointX = (e.clientX - start.x);
+            pointY = (e.clientY - start.y);
+            setTransform();
+        }
+
+        zoom.onwheel = function (e) {
+            e.preventDefault();
+            var xs = (e.clientX - pointX) / scale,
+                ys = (e.clientY - pointY) / scale,
+                delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
+            if (delta < 0 && scale > 0.2 || delta > 0) {
+                (delta > 0) ? (scale *= 1.2) : (scale /= 1.2);
+                pointX = e.clientX - xs * scale;
+                pointY = e.clientY - ys * scale;
+            }
+
+            zoom.ontouchstart = function (e) {
+                e.preventDefault();
+                start = { x: e.clientX - pointX, y: e.clientY - pointY };
+                panning = true;
+            }
+
+            zoom.ontouchend = function (e) {
+                panning = false;
+            }
+
+            zoom.ontouchmove = function (e) {
+                e.preventDefault();
+                if (!panning) {
+                    return;
                 }
+                pointX = (e.clientX - start.x);
+                pointY = (e.clientY - start.y);
+                setTransform();
             }
 
-            rotateCarousel();
+            setTransform();
         }
-
-        let orientationRadios = document.querySelectorAll('input[name="orientation"]');
-        (function () {
-            for (let i = 0; i < orientationRadios.length; i++) {
-                let radio = orientationRadios[i];
-                radio.addEventListener('change', onOrientationChange);
-            }
-        })();
-
-        function onOrientationChange() {
-            let checkedRadio = document.querySelector('input[name="orientation"]:checked');
-            isHorizontal = checkedRadio.value == 'horizontal';
-            rotateFn = isHorizontal ? 'rotateY' : 'rotateX';
-            changeCarousel();
-        }
-
-        // set initials
-        onOrientationChange();
     </script>
-    @isset($timeend)
+    @isset($BuildingActive->time)
         <script>
             function getTimeRemaining(endtime) {
                 let total = Date.parse(endtime) - Date.parse(new Date());
@@ -235,15 +285,14 @@
                     if (t.total <= 0) {
                         clearInterval(timeinterval);
                         Timer.innerHTML = 'Fertig!';
-                        window.location.reload();
+                        // window.location.reload();
                     }
                 }
 
                 updateClock();
                 let timeinterval = setInterval(updateClock, 1000);
             }
-
-            initializeClock('clockdiv', new Date(Date.parse(new Date()) + {{$timeend}} * 1000));
+            initializeClock('gebactive', new Date({{$BuildingActive->time * 1000}} ));
         </script>
     @endisset
 @endsection

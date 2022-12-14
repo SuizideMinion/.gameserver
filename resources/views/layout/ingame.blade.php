@@ -24,7 +24,7 @@
 
 </head>
 
-<body style="">
+<body>
 
 @if(session()->has('error'))
     <div style="display: flex;

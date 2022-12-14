@@ -20,11 +20,29 @@ class BuildingsController extends Controller
 
         $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
 
+        $Builds = [];
+
+        foreach ( $Buildings as $Building )
+        {
+            $getData = $Building->getData->pluck('value', 'key');
+            if ( ($getData['1.disable'] ?? 0) != 1 ) {
+                $Builds[$Building->id] = [
+                    'id' => $Building->id,
+                    'name' => Lang('Building.name.' . $Building->id),
+                    'desc' => Lang('Building.desc.' . $Building->id),
+                    'kordX' => ($getData['1.kordx'] ?? ''),
+                    'kordY' => ($getData['1.kordy'] ?? ''),
+                    'image' => ($getData['1.image'] ?? '')
+                ];
+            }
+
+        }
+
         $Columns = new Buildings;
         $Columns = $Columns->getTableColumns();
         $Columns = array_diff($Columns, ['created_at', 'updated_at']);
 
-        return view('Buildings.index', compact('Buildings', 'Columns', 'BuildingActive'));
+        return view('Buildings.index', compact('Builds', 'Columns', 'BuildingActive'));
     }
 
     /**
@@ -52,19 +70,14 @@ class BuildingsController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
-        $Buildings = Buildings::with('getData')->get();
-
+        $Building = Buildings::where('id', $id)->first();
         $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
 
-        $Columns = new Buildings;
-        $Columns = $Columns->getTableColumns();
-        $Columns = array_diff($Columns, ['created_at', 'updated_at']);
-
-        return view('Buildings.show', compact('Buildings', 'Columns', 'BuildingActive'));
+        return view('Buildings.show', compact('Building', 'BuildingActive'));
     }
 
     /**
