@@ -18,6 +18,7 @@
             height: 2048px;
             background-image: url("{{getImage('.png', path: 'planets', race: uData('race'))}}");
             background-repeat: no-repeat;
+            background-size: cover;
             position: absolute;
             left: calc(50% - 1000px);
             top: calc(50% - 1000px);
