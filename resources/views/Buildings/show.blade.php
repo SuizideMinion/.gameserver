@@ -36,6 +36,10 @@
             border-style: ridge;
             border-radius: 20px;
         }
+        p {
+            margin: 0px !important;
+            margin-bottom: 0px !important;
+        }
     </style>
 
 </head>
@@ -59,30 +63,30 @@
     @if($Building->can()['value'] != Lang('tech.finish'))
         <p class=""
            style="">{{ Lang('level', [':level' => (session('UserBuildings')[$Building->id]->level ?? 0) + 1], plural: (session('UserBuildings')[$Building->id]->level ?? 0) + 1) }}</p>
-        <p>{{ Lang('global_ress1_name') }}:
+        <p class="m-0">{{ Lang('global_ress1_name') }}:
             <span
                 class="m">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress1'] ?? 0 }}</span>
         </p>
-        <p>{{ Lang('global_ress2_name') }}:
+        <p class="m-0">{{ Lang('global_ress2_name') }}:
             <span
                 class="d">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress2'] ?? 0 }}</span>
         </p>
-        <p>{{ Lang('global_ress3_name') }}:
+        <p class="m-0">{{ Lang('global_ress3_name') }}:
             <span
                 class="i">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress3'] ?? 0 }}</span>
         </p>
-        <p>{{ Lang('global_ress4_name') }}:
+        <p class="m-0">{{ Lang('global_ress4_name') }}:
             <span
                 class="e">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress4'] ?? 0 }}</span>
         </p>
-        <p>{{ Lang('global_ress5_name') }}:
+        <p class="m-0">{{ Lang('global_ress5_name') }}:
             <span
                 class="t">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress5'] ?? 0 }}</span>
         </p>
-        <p>
+        <p class="m-0">
             <span class="t">{{$Building->can()['value']}}</span>
         </p>
-        <p>{{ Lang('Buildtime') }}
+        <p class="m-0">{{ Lang('Buildtime') }}
             : {{ timeconversion($Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
         <br>
         <br>

@@ -69,7 +69,9 @@
             height: 500px;
         }
         p {
-            margin: 0px;
+            margin: 0px !important;
+            margin-bottom: 0px !important;
+            padding: 0px;
         }
     </style>
 @endsection
