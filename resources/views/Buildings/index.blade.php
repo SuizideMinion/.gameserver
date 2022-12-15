@@ -68,6 +68,9 @@
             width: 500px;
             height: 500px;
         }
+        p {
+            margin: 0px;
+        }
     </style>
 @endsection
 
@@ -91,7 +94,7 @@
         <div class="Moon"></div>
         @foreach($Builds as $Build)
             <div id="{{ (($BuildingActive->build_id ?? 0) == $Build['id'] ? 'gebactive':'') }}" class="geb geb1"
-                 onclick="showDialog('{{ $Build['id'] }}')"
+                 onclick="showDialog('/buildings/{{ $Build['id'] }}')"
                  style="
                      top: {{ $Build['kordX'] }}px;
                      left: {{ $Build['kordY'] }}px;
@@ -124,6 +127,9 @@
             </div>
         </div>
     </div>
+    <div style="position: fixed;top: calc(50% - 15px); right: 10px;">
+        <img onclick="showDialog('/researchs/')" style="width: 30px" src="{{ getImage('icon3.png', 'ressurcen') }}">
+    </div>
 @endsection
 
 
@@ -137,7 +143,7 @@
             $(".modal-body").html(
                 '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
             $(document).ready(function() {
-                $('.modal-body').load('/buildings/'+ id);
+                $('.modal-body').load(id);
             })
             myModal.show()
         }
