@@ -17,7 +17,9 @@ class RankingController extends Controller
         $Users = User::select('users.*', 'user_data.value as kollektoren')
             ->join('user_data','user_data.user_id', '=', 'users.id')
             ->where('user_data.key','kollektoren')
-            ->orderBy('user_data.value', 'DESC')
+            ->with('getData')
+            ->orderByRaw("user_data.value * 1 desc")
+//            ->orderBy('user_data.value', 'DESC')
             ->get();
 
         return view('ranking.index', compact('Users'));

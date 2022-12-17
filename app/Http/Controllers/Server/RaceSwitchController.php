@@ -39,22 +39,25 @@ class RaceSwitchController extends Controller
     {
         if( isset( $request->name ) AND isset( $request->pname ) AND isset( $request->race ) )
         {
-            function test_input($data) {
+            function checkInput($data) {
                 $data = trim($data);
                 $data = stripslashes($data);
                 $data = htmlspecialchars($data);
                 return $data;
             }
 
-            $NameCheck = User::where('name', $request->name)->whereNot('id', auth()->user()->id)->first();
+            $name = checkInput($request->name);
+            $pname = checkInput($request->pname);
+
+            $NameCheck = User::where('name', $name)->whereNot('id', auth()->user()->id)->first();
 
             if ($NameCheck) return back()->with('error', 'Name Schon Vergeben');
 
-            $PlanetCheck = UserData::where('key', 'planet.name')->where('value', $request->pname)->whereNot('user_id', auth()->user()->id)->first();
+            $PlanetCheck = UserData::where('key', 'planet.name')->where('value', $pname)->whereNot('user_id', auth()->user()->id)->first();
 
             if ($PlanetCheck) return back()->with('error', 'Planetenname ist schon Vergeben!');
 
-            User::where('id', auth()->user()->id)->update(['name' => test_input($request->name)]);
+            User::where('id', auth()->user()->id)->update(['name' => $name]);
 
             UserData::updateOrCreate(
                 [
@@ -62,7 +65,7 @@ class RaceSwitchController extends Controller
                     'key' => 'planet.name'
                 ],
                 [
-                    'value' => test_input($request->pname)
+                    'value' => $pname
                 ]
             );
             UserData::updateOrCreate(

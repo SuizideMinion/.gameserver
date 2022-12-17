@@ -9,7 +9,7 @@
                     <ul>
                         <li>
                             <span class="agenda-name"><a
-                                    href="{{ route('messages.show', $User->id) }}"> {{ $User->name }} </a></span>
+                                    href="{{ route('messages.show', $User->id) }}"> {{ $User->getData->pluck('value', 'key')['planet.name'] }} </a></span>
                         </li>
                         <li>
                             <span class="green">{{ $User->kollektoren }}</span>

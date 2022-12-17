@@ -270,7 +270,7 @@
                         notify.list[id] = new Notification("Notification #" + id, {
                             body: text,
                             tag: id,
-                            icon: "images/Sexy_Ben.jpeg",
+                            icon: "",
                             lang: "",
                             dir: "auto",
                         });
