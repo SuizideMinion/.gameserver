@@ -61,13 +61,13 @@
     @if(session()->has('error'))
         <div style="display: flex;
     bottom: 10px;
-    right: 10px;
+    left: 10px;
     position: fixed;
     z-index: 99">
             <div>
                 <div class="arrow_box"
                      style="max-width: 150px;color: white;text-align: -webkit-center;">{{ session()->get('error') }}</div>
-                <img src="/assets/img/berater/berater{{ rand(1,11) }}.png" style="width: 150px;margin-top: 20px"></div>
+                <img src="/assets/img/berater/berater{{ rand(1,11) }}.png" style="width: 100px;margin-top: 20px"></div>
         </div>
     @endif
     <div class="race-footerl" style=""></div>
