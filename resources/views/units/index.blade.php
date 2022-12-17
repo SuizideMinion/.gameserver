@@ -22,6 +22,8 @@
                         <div class="heading"
                              style="text-shadow: 2px 2px 0px black;background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/{{ $getData['image'] }}');background-size: cover;">
                             <h3>{{ $getData['name'] }}</h3>
+                            <p class="text-white mb-0">{{ Lang('military.units.here', array: [':SUM' => ($userUnits[$Unit->id] ?? 0)]) }}
+                            </p>
                             <p class="text-white mb-0">{{ Lang('global_ress1_name') }}:
                                 <span data-value="{{ $getData['ress1'] }}"
                                       class="mc-{{ $Unit->id }} mt-0">{{ $getData['ress1'] }}</span>
@@ -47,7 +49,8 @@
                             <span>
                                 <div class="text-form mt-0">
                                     <div class="password">
-                                        <input onkeyup="calccolcost()" onclick="calccolcost()" type="number" value="" placeholder="0"
+                                        <input onkeyup="calccolcost()" onclick="calccolcost()" type="{{( hasTech(2, $getData['build_need']) ? 'number':'hidden') }}" value=""
+                                               placeholder="0"
                                                style="appearance: none;" name="{{ $Unit->id }}"
                                                id="value-{{ $Unit->id }}">
                                     </div>

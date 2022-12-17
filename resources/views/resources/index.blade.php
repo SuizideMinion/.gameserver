@@ -20,7 +20,7 @@
                             <div class="message-type-there">
                                 <div class="search-bar">
                                     <i class="bi bi-percent"></i>
-                                    <input type="number" placeholder="Percent" value="{{ $ressKey->ress1 }}" name="ress1">
+                                    <input type="{{( hasTech(1, 5) ? 'number':'hidden') }}" placeholder="Percent" value="{{ $ressKey->ress1 }}" name="ress1">
                                 </div>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                             <div class="message-type-there">
                                 <div class="search-bar">
                                     <i class="bi bi-percent"></i>
-                                    <input type="number" placeholder="Percent" value="{{ $ressKey->ress2 }}" name="ress2">
+                                    <input type="{{( hasTech(1, 6) ? 'number':'hidden') }}" placeholder="Percent" value="{{ $ressKey->ress2 }}" name="ress2">
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                             <div class="message-type-there">
                                 <div class="search-bar">
                                     <i class="bi bi-percent"></i>
-                                    <input type="number" placeholder="Percent" value="{{ $ressKey->ress3 }}" name="ress3">
+                                    <input type="{{( hasTech(1, 7) ? 'number':'hidden') }}" placeholder="Percent" value="{{ $ressKey->ress3 }}" name="ress3">
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                             <div class="message-type-there">
                                 <div class="search-bar">
                                     <i class="bi bi-percent"></i>
-                                    <input type="number" placeholder="Percent" value="{{ $ressKey->ress4 }}" name="ress4">
+                                    <input type="{{( hasTech(1, 8) ? 'number':'hidden') }}" placeholder="Percent" value="{{ $ressKey->ress4 }}" name="ress4">
                                 </div>
                             </div>
                         </div>
