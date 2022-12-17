@@ -119,28 +119,30 @@ class ResearchsController extends Controller
 
             if( canTech(2, $id) )
             {
-                $getData = $Research->getData->pluck('value', 'key');
+                if( !hasTech(2, $id) ) {
+                    $getData = $Research->getData->pluck('value', 'key');
 
-                UserResearchs::updateOrCreate(
-                    [
-                        'user_id' => auth()->user()->id,
-                        'research_id' => $id,
-                    ],
-                    [
-                        'level' => 0,
-                        'time' => time() + ($getData['tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value),
-                        'value' => 1,
-                    ]
-                );
-                UserData::where('user_id', auth()->user()->id)->where('key', 'ress')->update([
-                    'value' => json_encode([
-                        'ress1' => uRess()->ress1 - ($getData['ress1'] ?? 0),
-                        'ress2' => uRess()->ress2 - ($getData['ress2'] ?? 0),
-                        'ress3' => uRess()->ress3 - ($getData['ress3'] ?? 0),
-                        'ress4' => uRess()->ress4 - ($getData['ress4'] ?? 0),
-                        'ress5' => uRess()->ress5 - ($getData['ress5'] ?? 0),
-                    ])
-                ]);
+                    UserResearchs::updateOrCreate(
+                        [
+                            'user_id' => auth()->user()->id,
+                            'research_id' => $id,
+                        ],
+                        [
+                            'level' => 0,
+                            'time' => time() + ($getData['tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value),
+                            'value' => 1,
+                        ]
+                    );
+                    UserData::where('user_id', auth()->user()->id)->where('key', 'ress')->update([
+                        'value' => json_encode([
+                            'ress1' => uRess()->ress1 - ($getData['ress1'] ?? 0),
+                            'ress2' => uRess()->ress2 - ($getData['ress2'] ?? 0),
+                            'ress3' => uRess()->ress3 - ($getData['ress3'] ?? 0),
+                            'ress4' => uRess()->ress4 - ($getData['ress4'] ?? 0),
+                            'ress5' => uRess()->ress5 - ($getData['ress5'] ?? 0),
+                        ])
+                    ]);
+                } else return back()->with('error', 'Du hast die blaupause schon');
             } else return back()->with('error', 'Dir Fehlen Vorraussetzungen für dieses Gebäude!');
         } else return back()->with('error', 'Du Baust gerade was anderes');
 
