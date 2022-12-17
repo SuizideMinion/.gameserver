@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="carousel__cell"
-     onclick="window.location.href = '{{ route('buildings.edit', $Building->id) }}';"
+{{--     onclick="window.location.href = '{{ route('buildings.edit', $Building->id) }}';"--}}
      style="
          background-image:
          linear-gradient(rgba(0, 0, 0, 0.5),
@@ -20,7 +20,7 @@
         title="<em>{{ Lang('Building.desc.'. $Building->id) }}</em>">
         {{ Lang('planet.building.name', array: [':NAME' => Lang('Building.name.'. $Building->id), ':LEVEL' => (session('UserBuildings')[$Building->id]->level ?? 0), ':MAX' => $Building->pluck()['1.max_level'] ]) }}
     </h2><br>
-    @if( !hasTech(1, $Building->id, (session('UserBuildings')[$Building->id]->level ?? 0)) )
+    @if( !hasTech(1, $Building->id, (session('Buildings')[$Building->id]->getData->pluck('value', 'key')['1.max_level'])) )
         <p class=""
            style="">{{ Lang('planet.building.build', [':level' => (session('UserBuildings')[$Building->id]->level ?? 0) + 1], plural: (session('UserBuildings')[$Building->id]->level ?? 0) + 1) }}</p>
         <p class="m-0">{{ Lang('global_ress1_name') }}:
