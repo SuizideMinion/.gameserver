@@ -20,7 +20,7 @@
         title="<em>{{ Lang('Building.desc.'. $Building->id) }}</em>">
         {{ Lang('planet.building.name', array: [':NAME' => Lang('Building.name.'. $Building->id), ':LEVEL' => (session('UserBuildings')[$Building->id]->level ?? 0), ':MAX' => $Building->pluck()['1.max_level'] ]) }}
     </h2><br>
-    @if($Building->can()['value'] != Lang('planet.building.completed'))
+    @if( !hasTech(1, $Building->id, (session('UserBuildings')[$Building->id]->level ?? 0)) )
         <p class=""
            style="">{{ Lang('planet.building.build', [':level' => (session('UserBuildings')[$Building->id]->level ?? 0) + 1], plural: (session('UserBuildings')[$Building->id]->level ?? 0) + 1) }}</p>
         <p class="m-0">{{ Lang('global_ress1_name') }}:
@@ -47,7 +47,6 @@
             : {{ timeconversion($Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
         <br>
         <br>
-        {{--                            --}}
         @if($BuildingActive)
             @if($BuildingActive->build_id == $Building->id)
                 {{ Lang('planet.building.active') }}
@@ -64,7 +63,7 @@
             @endif
         @endif
     @else
-        <p>Maximum</p>
+        <p>{{ Lang('planet.building.completed') }}</p>
     @endif
 </div>
 
