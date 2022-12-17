@@ -1,6 +1,8 @@
 @extends('layout.ingame')
 
 @section('styles')
+    <style>
+    </style>
 @endsection
 
 @section('settings')
@@ -20,7 +22,7 @@
                     <div class="user-text">
                         <h6>{{ $Bug->getUser->name }}</h6>
                         <div class="text">
-                            <p>{{ $Bug->title }}</p>
+                            <p>{{ Lang('Bug.Group.'. $Bug->group) }}: {{ $Bug->title }}</p>
                         </div>
                     </div>
                     <div class="user-active">
@@ -37,7 +39,7 @@
                     <div class="user-text">
                         <h6>{{ $Bug->getUser->name }}</h6>
                         <div class="text">
-                            <p>{{ $Bug->title }}</p>
+                            <p>{{ Lang('Bug.Group.'. $Bug->group) }}: {{ $Bug->title }}</p>
                         </div>
                     </div>
                     <div class="user-active">
@@ -54,7 +56,7 @@
                     <div class="user-text">
                         <h6>{{ $Bug->getUser->name }}</h6>
                         <div class="text">
-                            <p>{{ $Bug->title }}</p>
+                            <p>{{ Lang('Bug.Group.'. $Bug->group) }}: {{ $Bug->title }}</p>
                         </div>
                     </div>
                     <div class="user-active">

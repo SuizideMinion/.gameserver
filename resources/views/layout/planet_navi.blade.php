@@ -3,7 +3,15 @@
     <ul class="nav nav-tabs my-tab-ul" id="myTab" role="tablist">
         <li></li>
         <li class="nav-item" role="presentation">
-            <button onclick="window.location.href = '{{ route('buildings.index') }}';" class="nav-link {{ request()->is('buildings') ? 'active': ''}}" id="active-tab" data-bs-toggle="tab" data-bs-target="#active-tab-pane" type="button" role="tab" aria-controls="active-tab-pane" aria-selected="true">
+            <button onclick="window.location.href = '{{ route('buildings.index') }}';"
+                    class="nav-link {{ request()->is('buildings') ? 'active': ''}}"
+                    data-bs-toggle="tooltip"
+                    data-bs-html="true"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="<em>{{Lang('global_planet_research_name')}}</em>">
+                <h2 class="" >
+                    Wandlerkammer E
+                </h2>
                 {{ Lang('global_planet_buildings_name') }}
             </button>
         </li>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Buildings;
+use App\Models\Researchs;
 use App\Models\ServerData;
 use App\Models\Translations;
 use App\Models\UserBuildings;
@@ -121,16 +123,22 @@ class Checker
 
             $UserBuildings = \App\Models\UserBuildings::where('user_id', Auth::user()->id)->get()->keyBy('build_id');
             $UserResearchs = \App\Models\UserResearchs::where('user_id', Auth::user()->id)->get()->keyBy('research_id');
+            $Researchs = \App\Models\Researchs::with('getData')->get()->keyBy('id');
+            $Buildings = \App\Models\Buildings::with('getData')->get()->keyBy('id');
             $Lang = Translations::where('lang', 'DE')->where('race', $UsersData['race']->value)->orWhere('race', 0)->get()->keyBy('key');
-
 
             session([
                 'Lang' => $Lang,
                 'UserBuildings' => $UserBuildings,
                 'UserResearchs' => $UserResearchs,
                 'uData' => $UsersData,
-                'ServerData' => $ServerData
+                'ServerData' => $ServerData,
+                'Researchs' => $Researchs,
+                'Buildings' => $Buildings
             ]);
+
+//            dd($Researchs['3']);
+//            dd(session('Researchs')[3]->getData->pluck('value','key'));
             UserData::updateOrCreate(
                 [
                     'user_id' => Auth::user()->id,

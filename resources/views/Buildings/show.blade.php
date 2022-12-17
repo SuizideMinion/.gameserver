@@ -23,7 +23,7 @@
     <style>
         .carousel__cell {
             position: absolute;
-            height: 100%;
+            /*height: 500px;*/
             width: 100%;
             line-height: 26px;
             font-size: 20px;
@@ -83,9 +83,6 @@
             <span
                 class="t">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress5'] ?? 0 }}</span>
         </p>
-        <p class="m-0">
-            <span class="t">{{$Building->can()['value']}}</span>
-        </p>
         <p class="m-0">{{ Lang('Buildtime') }}
             : {{ timeconversion($Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
         <br>
@@ -100,7 +97,7 @@
                 </div>
             @endif
         @else
-            @if($Building->can()['value'] == 1)
+            @if(canTech(1, $Building->id, (session('UserBuildings')[$Building->id]->level ?? 0) + 1))
                 <a href="{{ route('buildings.edit', $Building->id) }}" class="orbit-btn">
                     {{ Lang('tech.Button.Build.1', plural: (((session('UserBuildings')[$Building->id]->level ?? 0) + 1))) }}
                 </a>

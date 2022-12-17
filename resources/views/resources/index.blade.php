@@ -1,11 +1,9 @@
-@extends('layout.ingame')
+@extends('layout.local')
 
 @section('styles')
 @endsection
 
 @section('content')
-    @include('layout/planet_navi')
-
     <div class="container" style="margin-top: 20px">
         <div class="row">
             <form class="row g-3" method="post" action="{{ route('resources.store') }}">

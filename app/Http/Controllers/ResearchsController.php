@@ -7,6 +7,7 @@ use App\Models\ResearchsData;
 use App\Models\UserData;
 use App\Models\UserResearchs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 
 class ResearchsController extends Controller
 {
@@ -17,7 +18,12 @@ class ResearchsController extends Controller
      */
     public function index()
     {
-        $Researchs = Researchs::with('getData')->get();
+        $Researchs = Researchs::with('getData')
+            ->join('researchs_data', 'researchs_data.research_id', 'researchs.id')
+            ->where('researchs_data.key', 'group')
+            ->orderBy('researchs_data.value')
+            ->get()
+            ->groupBy('value');
 
         $ResearchActive = UserResearchs::where('user_id', auth()->user()->id)->where('value', '1')->first();
 
@@ -57,14 +63,44 @@ class ResearchsController extends Controller
      */
     public function show($id)
     {
-        $Researchs = Researchs::get();
+        $Researchs = Researchs::with('getData')
+            ->join('researchs_data', 'researchs_data.research_id', 'researchs.id')
+            ->select('researchs_data.value as researchs_data.research_id', 'researchs.*')
+            ->where('researchs_data.key', 'group')
+            ->where('value', $id)
+//            ->with('getData')
+            ->get();
 
+//        dd($Researchs);
+
+        $array = [];
+//        $Researchs -> test = $Researchs -> getData -> keyBy('research_id');
+//        $Researchs -> addVisible('getData');
+//        $Researchs->setRelation('test', $Researchs->getData->keyBy('research_id'));
+//        $ResearchData = ;
         foreach ($Researchs AS $Research)
         {
-            $ResearchData = ResearchsData::where('research_id', $Research->id)->get()->pluck('value', 'key');
+            $ResearchData = $Research->getData->keyBy('key');
+//            dd($ResearchData);
 
-            print_r(json_decode($ResearchData['build_need']));
+            $array[$Research->id] = [
+                'name' => Lang('Research.name.'. $Research->id),
+                'desc' => Lang('Research.desc.'. $Research->id),
+                'id' => $Research->id,
+                'build_need' => ($ResearchData['build_need'] ?? ''),
+                'build_time' => ($ResearchData['tech_build_time'] ?? ''),
+                'ress1' => ($ResearchData['ress1'] ?? '0'),
+                'ress2' => ($ResearchData['ress2'] ?? '0'),
+                'ress3' => ($ResearchData['ress3'] ?? '0'),
+                'ress4' => ($ResearchData['ress4'] ?? '0'),
+                'ress5' => ($ResearchData['ress5'] ?? '0'),
+                'image' => ($ResearchData['image'] ?? '0'),
+                'hasBuilds' => hasBuildNeed($Research->id)
+            ];
         }
+//        dd($array);
+
+        return view('Researchs.show', compact('array'));
     }
 
     /**
@@ -80,7 +116,8 @@ class ResearchsController extends Controller
         if( !$ResearchActive )
         {
             $Research = Researchs::where('id', $id)->with('getData')->first();
-            if($Research->can()['value'] == 1)
+
+            if( canTech(2, $id) )
             {
                 $getData = $Research->getData->pluck('value', 'key');
 
@@ -107,7 +144,7 @@ class ResearchsController extends Controller
             } else return back()->with('error', 'Dir Fehlen Vorraussetzungen für dieses Gebäude!');
         } else return back()->with('error', 'Du Baust gerade was anderes');
 
-        return redirect('/researchs');
+        return redirect('buildings');//redirect('/researchs');
     }
 
     /**

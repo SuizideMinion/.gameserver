@@ -18,6 +18,11 @@
                         <label for="input">
                             <input type="text" placeholder="Titel" name="title">
                         </label>
+                        <select name="group" class="form-select class" aria-label="Default select example">
+                            @foreach($arrayGroups as $Group)
+                            <option value="{{ $Group }}" >{{ Lang('Bug.Group.'. $Group) }}</option>
+                            @endforeach
+                        </select>
                         <label for="textarea">
                             <textarea type="text" placeholder="Text" name="text" id="textarea"></textarea>
                         </label>

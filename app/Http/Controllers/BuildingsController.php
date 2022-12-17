@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Buildings;
 use App\Models\UserBuildings;
 use App\Models\UserData;
+use App\Models\UserResearchs;
 use Illuminate\Http\Request;
 
 class BuildingsController extends Controller
@@ -19,6 +20,7 @@ class BuildingsController extends Controller
         $Buildings = Buildings::with('getData')->get();
 
         $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
+        $ResearchActive = UserResearchs::where('user_id', auth()->user()->id)->where('value', '1')->first();
 
         $Builds = [];
 
@@ -42,7 +44,7 @@ class BuildingsController extends Controller
         $Columns = $Columns->getTableColumns();
         $Columns = array_diff($Columns, ['created_at', 'updated_at']);
 
-        return view('Buildings.index', compact('Builds', 'Columns', 'BuildingActive'));
+        return view('Buildings.index', compact('Builds', 'Columns', 'BuildingActive', 'ResearchActive'));
     }
 
     /**

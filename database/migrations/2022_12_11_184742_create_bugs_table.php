@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('text');
+            $table->integer('group');
             $table->unsignedBigInteger('user_id');
             $table->bigInteger('status');
             $table->timestamps();

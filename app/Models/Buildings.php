@@ -42,10 +42,10 @@ class Buildings extends Model
                 return ['notDisplay' => false, 'value' => 'imBau'];
             }
         }
-//dd(isset($getData[$c . '.build_need']));
+
         if (isset($getData[$c . '.build_need'])) {
             $keys = json_decode($getData[$c . '.build_need']);
-//            if( $this->id == 14) dd($keys);
+
             foreach ($keys as $array)
             {
                 $id = $array[0]->id;

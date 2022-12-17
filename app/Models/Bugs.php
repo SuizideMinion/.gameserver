@@ -13,7 +13,8 @@ class Bugs extends Model
         'title',
         'text',
         'user_id',
-        'status'
+        'status',
+        'group'
     ];
 
     public function getUser()

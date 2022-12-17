@@ -1442,8 +1442,12 @@ header .action a {
     -o-border-radius: 50%;
 }
 
+.user-text {
+    width: 100%;
+    margin-left: 20px;
+}
+
 .user-text h6 {
-    text-transform: capitalize;
     font: 400 14px/1.3 'Roboto', sans-serif;
 }
 
@@ -1617,7 +1621,6 @@ header .action a {
 
 .agenda-one ul li .agenda-name,
 .agenda-there ul li .agenda-name {
-    text-transform: capitalize;
     font: 400 15px/1.3 'Roboto', sans-serif;
 }
 
@@ -1651,7 +1654,6 @@ header .action a {
 }
 
 .agenda-two ul li .agenda-name {
-    text-transform: capitalize;
     font: 400 15px/1.3 'Roboto', sans-serif;
 }
 
@@ -2444,6 +2446,21 @@ header .action a {
 }
 
 .text-form .orbit-form input::placeholder {
+    font-size: 16px;
+    color: #2be901;
+}
+
+.text-form .orbit-form .class {
+    background-color: transparent;
+    color: #2be901;
+    text-align: center;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid rgba(21, 94, 1, 0.5);
+    margin-top: 5px;
+}
+
+.text-form .orbit-form .class::placeholder {
     font-size: 16px;
     color: #2be901;
 }

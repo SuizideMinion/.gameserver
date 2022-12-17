@@ -1,266 +1,186 @@
-@extends('layout.ingame')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('styles')
-@endsection
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-@section('settings')
-    <a class="dropdown-item d-flex align-items-center" onclick="uSetting('show.all.Researchs', {{uData('show.all.Researchs') == 1 ? 0:1}})" style="cursor: pointer">
-        <i class="bi bi-person"></i>
-        <span>{{uData('show.all.Researchs') == 1 ? 'nur Forschbare Blaupausen anzeigen':'alle Blaupausen Anzeigen'}}</span>
-    </a>
-@endsection
+    <title>test DE:r ingame</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
 
-@section('content')
-    @include('layout/planet_navi')
-    @set($c, 0)
-    <div class="scene">
-        <div class="carousel">
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.ico" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-            @foreach($Researchs as $key => $Research)
-                @if($Research->can()['notDisplay'] == 0 OR uData('show.all.Researchs') == '1')
-                    @set($c, $c + 1)
-                    <div class="carousel__cell"
-                         style="
-                             cursor: pointer;
-                             background-image:
-                             linear-gradient(rgba(0, 0, 0, 0.5),
-                             rgba(0, 0, 0, 0.5)),
-                             url('/assets/img/research/{{ $Research->pluck()['image'] ?? '' }}');
-                             background-repeat: no-repeat;
-                             background-size: contain;
-                             ">
-                        <br>
-                        <h2 class="" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-                            title="<em>{{ Lang('Research.desc.'. $Research->id) }}</em>">
-                            {{ Lang('Research.name.'. $Research->id) }}
-                        </h2><br>
-                        @if($Research->can()['value'] != Lang('research.fertig'))
-                            <p class=""
-                               style="">{{ Lang('research.erforschen') }}</p>
-                            <p>{{ Lang('global_ress1_name') }}:
-                                <span class="m">{{ $Research->pluck()['ress1'] ?? 0 }}</span>
-                            </p>
-                            <p>{{ Lang('global_ress2_name') }}:
-                                <span class="d">{{ $Research->pluck()['ress2'] ?? 0 }}</span>
-                            </p>
-                            <p>{{ Lang('global_ress3_name') }}:
-                                <span class="i">{{ $Research->pluck()['ress3'] ?? 0 }}</span>
-                            </p>
-                            <p>{{ Lang('global_ress4_name') }}:
-                                <span class="e">{{ $Research->pluck()['ress4'] ?? 0 }}</span>
-                            </p>
-                            <p>{{ Lang('global_ress5_name') }}:
-                                <span class="t">{{ $Research->pluck()['ress5'] ?? 0 }}</span>
-                            </p>
-                            <p>{{ Lang('Buildtime') }}
-                                : {{ timeconversion($Research->pluck()['tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
-                            <br>
-                            <br>
+    <!-- Template Main CSS File -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/{{ uData('race') }}.css" rel="stylesheet">
+    <link href="/assets/css/responsive.css" rel="stylesheet">
+    <style type="text/css">
+        img {
+            max-width: 100%;
+        }
 
-                            @if($ResearchActive)
-                                @if($ResearchActive->research_id == $Research->id)
+        .inbox_people {
+            float: left;
+            overflow: hidden;
+            width: 40%;
+            border-right: 1px solid #c4c4c4;
+        }
 
-                                    {{ Lang('research.imBau') }}
-                                    @set($timeend, session('UserResearchs')[$Research->id]->time - time())
-                                    <div id="clockdiv">
-                                        <span class="Timer"></span>
-                                    </div>
-                                    @set($rotate, $c)
-                                @endif
-                            @else
-                                @if($Research->can()['value'] == 1)
-                                    <button onclick="window.location.href = '{{ route('researchs.edit', $Research->id) }}';" class="orbit-btn">{{ Lang('tech.Button.Research') }}</button>
-                                @endif
-                            @endif
-                        @else
-                            <p>Maximum</p>
-                        @endif
-                    </div>
-                @endif
-            @endforeach
+        .inbox_msg {
+            border: 1px solid #c4c4c4;
+            clear: both;
+            overflow: hidden;
+        }
+
+        .recent_heading h4 {
+            color: #05728f;
+            font-size: 21px;
+            margin: auto;
+        }
+
+        .srch_bar input {
+            border: 1px solid #cdcdcd;
+            border-width: 0 0 1px 0;
+            width: 80%;
+            padding: 2px 0 4px 6px;
+            background: none;
+        }
+
+        .srch_bar .input-group-addon button {
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+            border: medium none;
+            padding: 0;
+            color: #707070;
+            font-size: 18px;
+        }
+
+        .chat_ib h5 {
+            font-size: 15px;
+            color: #464646;
+            margin: 0 0 8px 0;
+        }
+
+        .chat_ib h5 span {
+            font-size: 13px;
+            float: right;
+        }
+
+        .chat_ib p {
+            font-size: 14px;
+            color: #989898;
+            margin: auto
+        }
+
+        .inbox_chat {
+            height: 550px;
+        }
+
+        .received_withd_msg p {
+            background: #ebebeb none repeat scroll 0 0;
+            border-radius: 3px;
+            color: #646464;
+            font-size: 14px;
+            margin: 0;
+            padding: 5px 10px 5px 12px;
+            width: 100%;
+        }
+
+        .mesgs {
+            float: left;
+            padding: 30px 15px 0 25px;
+            width: 60%;
+            height: 582px;
+            overflow: scroll;
+            OVERFLOW-X: auto;
+            max-height: 100%;
+        }
+
+        .sent_msg p {
+            background: #05728f none repeat scroll 0 0;
+            border-radius: 3px;
+            font-size: 14px;
+            margin: 0;
+            color: #fff;
+            padding: 5px 10px 5px 12px;
+            width: 100%;
+        }
+
+        .input_msg_write input {
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+            border: medium none;
+            color: #4c4c4c;
+            font-size: 15px;
+            min-height: 48px;
+            width: 100%;
+        }
+    </style>
+<body>
+<!------ Include the above in your HEAD tag ---------->
+
+    <div class="messaging">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+                <div class="inbox_chat agenda">
+                    @foreach($Researchs as $Key => $Research)
+                        <div class="agenda-one" onclick="showResearch('/researchs/{{ $Key }}')">
+                            <div class="user-text">
+                                <div class="text">
+                                    <p>{{ Lang('Forschung.Group.'. $Key, array: [':KOLLEKTOREN' => Lang('Unit.name.1', plural: '2')]) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="mesgs">
+            </div>
         </div>
     </div>
 
-    <div class="carousel-options" style="display: none">
-        <input class="cells-range" type="range" min="3" max="15" value="9"/>
-        <input type="radio" name="orientation" value="horizontal" checked/>
-        <input type="radio" name="orientation" value="vertical"/>
-    </div>
-    <i class="bi bi-caret-left-fill" id="pfeill" style="color: white;font-size: xxx-large;"
-       onclick="leftclick()"></i>
-    <i class="bi bi-caret-right-fill" id="pfeilr" style="color: white;font-size: xxx-large;"
-       onclick="rightclick()"></i>
-@endsection
+<script src="/assets/js/jquery.js"></script>
+<script type="text/javascript">
+    function showResearch(id)
+    {
+        $(".mesgs").html(
+            '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+        $(document).ready(function() {
+            $('.mesgs').load(id);
+        })
+    }
+</script>
 
-@section('scripts')
-    <script>
-        function uSetting(key, value)
-        {
-            $.ajax({
-                url: "/api/uSettings/{{uData('token')}}/"+ key +"/"+ value,
-                success: function(res) {
-                    console.log(res);
-                    location.reload();
-                }
-            });
+<script>
+    $('.m').each(function () {
+        if ($(this).text() > {{ uRess()->ress1 }}) {
+            $(this).css("color", "red");
         }
-    </script>
-
-    <script>
-        $('.m').each(function () {
-            if ($(this).text() > {{ uRess()->ress1 }}) {
-                $(this).css("color", "red");
-            }
-        });
-        $('.d').each(function () {
-            if ($(this).text() > {{ uRess()->ress2 }}) {
-                $(this).css("color", "red");
-            }
-        });
-        $('.i').each(function () {
-            if ($(this).text() > {{ uRess()->ress3 }}) {
-                $(this).css("color", "red");
-            }
-        });
-        $('.e').each(function () {
-            if ($(this).text() > {{ uRess()->ress4 }}) {
-                $(this).css("color", "red");
-            }
-        });
-        $('.t').each(function () {
-            if ($(this).text() > {{ uRess()->ress5 }}) {
-                $(this).css("color", "red");
-            }
-        });
-    </script>
-
-    <script>
-        var carousel = document.querySelector('.carousel');
-        var cells = carousel.querySelectorAll('.carousel__cell');
-        var cellCount; // cellCount set from cells-range input value
-        var selectedIndex = {{($rotate ?? 1)}} - 1;
-        var cellWidth = carousel.offsetWidth;
-        var cellHeight = carousel.offsetHeight;
-        var isHorizontal = true;
-        var rotateFn = isHorizontal ? 'rotateY' : 'rotateX';
-        var radius, theta;
-
-        // console.log( cellWidth, cellHeight );
-
-        function rotateCarousel() {
-            var angle = theta * selectedIndex * -1;
-            carousel.style.transform = 'translateZ(' + -radius + 'px) ' +
-                rotateFn + '(' + angle + 'deg)';
+    });
+    $('.d').each(function () {
+        if ($(this).text() > {{ uRess()->ress2 }}) {
+            $(this).css("color", "red");
         }
-
-        // var prevButton = document.querySelector('.previous-button');
-        // prevButton.addEventListener( 'click', function() {
-        //     selectedIndex--;
-        //     rotateCarousel();
-        // });
-
-        function leftclick() {
-            selectedIndex--;
-            rotateCarousel();
-        };
-
-        // var nextButton = document.querySelector('.next-button');
-        // nextButton.addEventListener('click', function () {
-        //     selectedIndex++;
-        //     rotateCarousel();
-        // });
-
-        function rightclick() {
-            selectedIndex++;
-            rotateCarousel();
-        };
-
-        // var cellsRange = document.querySelector('.cells-range');
-        // cellsRange.addEventListener('change', changeCarousel);
-        // cellsRange.addEventListener('input', changeCarousel);
-
-
-        function changeCarousel() {
-            @php if(isset($c)) $c = ( $c <= 3 ? 3:$c ); @endphp
-                cellCount = {{$c}};
-            theta = 360 / cellCount;
-            var cellSize = isHorizontal ? cellWidth : cellHeight;
-            radius = Math.round((cellSize / 2) / Math.tan(Math.PI / cellCount));
-            for (var i = 0; i < cells.length; i++) {
-                var cell = cells[i];
-                if (i < cellCount) {
-                    // visible cell
-                    cell.style.opacity = 1;
-                    var cellAngle = theta * i;
-                    cell.style.transform = rotateFn + '(' + cellAngle + 'deg) translateZ(' + radius + 'px)';
-                } else {
-                    // hidden cell
-                    cell.style.opacity = 0;
-                    cell.style.transform = 'none';
-                }
-            }
-
-            rotateCarousel();
+    });
+    $('.i').each(function () {
+        if ($(this).text() > {{ uRess()->ress3 }}) {
+            $(this).css("color", "red");
         }
-
-        var orientationRadios = document.querySelectorAll('input[name="orientation"]');
-        (function () {
-            for (var i = 0; i < orientationRadios.length; i++) {
-                var radio = orientationRadios[i];
-                radio.addEventListener('change', onOrientationChange);
-            }
-        })();
-
-        function onOrientationChange() {
-            var checkedRadio = document.querySelector('input[name="orientation"]:checked');
-            isHorizontal = checkedRadio.value == 'horizontal';
-            rotateFn = isHorizontal ? 'rotateY' : 'rotateX';
-            changeCarousel();
+    });
+    $('.e').each(function () {
+        if ($(this).text() > {{ uRess()->ress4 }}) {
+            $(this).css("color", "red");
         }
+    });
+    $('.t').each(function () {
+        if ($(this).text() > {{ uRess()->ress5 }}) {
+            $(this).css("color", "red");
+        }
+    });
+</script>
 
-        // set initials
-        onOrientationChange();
-    </script>
-    @isset($timeend)
-        <script>
-            function getTimeRemaining(endtime) {
-                const total = Date.parse(endtime) - Date.parse(new Date());
-                const seconds = Math.floor((total / 1000) % 60);
-                const minutes = Math.floor((total / 1000 / 60) % 60);
-                const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-                const days = Math.floor(total / (1000 * 60 * 60 * 24));
-
-                return {
-                    total,
-                    days,
-                    hours,
-                    minutes,
-                    seconds
-                };
-            }
-
-            function initializeClock(id, endtime) {
-                const clock = document.getElementById(id);
-                const Timer = clock.querySelector('.Timer');
-
-                function updateClock() {
-                    const t = getTimeRemaining(endtime);
-
-                    Timer.innerHTML = (t.days !== 0 ? t.days + 'Tage ' : '') + ('0' + t.hours).slice(-2) + ':' + ('0' + t.minutes).slice(-2) + ':' + ('0' + t.seconds).slice(-2);
-
-                    if (t.total <= 0) {
-                        clearInterval(timeinterval);
-                        Timer.innerHTML = 'Fertig!';
-                        window.location.reload();
-                    }
-                }
-
-                updateClock();
-                const timeinterval = setInterval(updateClock, 1000);
-            }
-
-            //const deadline = new Date(Date.parse(new Date()) + 3600 * 1000);
-            initializeClock('clockdiv', new Date(Date.parse(new Date()) + {{$timeend}} * 1000));
-        </script>
-    @endisset
-@endsection
+</body>
+</html>

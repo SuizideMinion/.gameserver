@@ -1,5 +1,68 @@
 <?php
 
+use App\Models\ResearchsData;
+
+function hasBuildNeed($id)
+{
+//    $getData = ResearchsData::where('research_id', $id)->where('key', 'build_need')->first();
+    $getData = session('Researchs')[$id]->getData->pluck('value','key');
+
+    $array = [];
+
+    if( $getData['build_need'] )
+    {
+        $values = json_decode($getData['build_need']);
+
+        foreach ($values as $value)
+        {
+            if($value[0]->art == 1)
+            {
+//                $getDataBuild = \App\Models\BuildingsData::where('build_id', $value[0]->id)->get()->pluck('value', 'key');
+                $getDataBuild = session('Buildings')[$value[0]->id]->getData->pluck('value','key');
+                $array[$value[0]->art .'_'. $value[0]->id] = [
+                    'name' => Lang('Building.name.'. $value[0]->id),
+                    'desc' => Lang('Building.desc.'. $value[0]->id),
+                    'id' => $value[0]->id,
+                    'level' => $value[0]->level,
+                    'art' => $value[0]->art,
+                    'build_need' => ($getDataBuild[$value[0]->level .'.build_need'] ?? ''),
+                    'build_time' => ($getDataBuild[$value[0]->level .'.tech_build_time'] ?? ''),
+                    'ress1' => ($getDataBuild[$value[0]->level .'.ress1'] ?? '0'),
+                    'ress2' => ($getDataBuild[$value[0]->level .'.ress2'] ?? '0'),
+                    'ress3' => ($getDataBuild[$value[0]->level .'.ress3'] ?? '0'),
+                    'ress4' => ($getDataBuild[$value[0]->level .'.ress4'] ?? '0'),
+                    'ress5' => ($getDataBuild[$value[0]->level .'.ress5'] ?? '0'),
+                    'image' => 'technologies/'. ($getDataBuild['1.image'] ?? '0'),
+//                    'hasBuilds' => hasBuildNeed($value[0]->id)
+                ];
+            }
+            if($value[0]->art == 2)
+            {
+//                $getDataResearch = \App\Models\ResearchsData::where('research_id', $value[0]->id)->get()->pluck('value', 'key');
+                $getDataResearch = session('Researchs')[$value[0]->id]->getData->pluck('value','key');
+//                dd($getDataResearch);
+                $array[$value[0]->art .'_'. $value[0]->id] = [
+                    'name' => Lang('Research.name.'. $value[0]->id),
+                    'desc' => Lang('Research.desc.'. $value[0]->id),
+                    'id' => $value[0]->id,
+                    'level' => $value[0]->level,
+                    'art' => $value[0]->art,
+                    'build_need' => ($getDataResearch['build_need'] ?? ''),
+                    'build_time' => ($getDataResearch['tech_build_time'] ?? ''),
+                    'ress1' => ($getDataResearch['ress1'] ?? '0'),
+                    'ress2' => ($getDataResearch['ress2'] ?? '0'),
+                    'ress3' => ($getDataResearch['ress3'] ?? '0'),
+                    'ress4' => ($getDataResearch['ress4'] ?? '0'),
+                    'ress5' => ($getDataResearch['ress5'] ?? '0'),
+                    'image' => 'research/'. ($getDataResearch['image'] ?? '0'),
+//                    'hasBuilds' => hasBuildNeed($value[0]->id)
+                ];
+            }
+        }
+    }
+    return $array;
+}
+
 function ressCalc($id = 0)
 {
     if ( $id == 0) $id = auth()->user()->id;
@@ -53,7 +116,9 @@ function ressCalc($id = 0)
     ]);
     // M 2:1 | D 4:1 | I 6:1 | E 8:1
     // Fba+ 1:1 | 2:1 | 3:1 | 4:1
+    return '';
 }
+
 
 function ressChanceDown($user_id, $ress1, $ress2, $ress3 = 0, $ress4 = 0, $ress5 = 0)
 {
@@ -85,11 +150,71 @@ function ressChance($user_id, $ress1 = null, $ress2 = null, $ress3 = null, $ress
     ]);
 }
 
+function canTech($tech, $id, $level = 1, $user_id = 0)
+{
+    $c = 1;
+    if($tech == 1) {
+        $select = 'UserBuildings';
+        $getData = session('Buildings')[$id]->getData->pluck('value','key');
+        if ((session($select)[$id]->value ?? 0) == 2) {
+            if (($getData['1.max_level'] ?? '1') == session($select)[$id]->level) return false;
+            $c = session($select)[$id]->level + 1;
+        }
+    }
+    if($tech == 2) {
+        $select = 'UserResearchs';
+        $getData = session('Researchs')[$id]->getData->pluck('value','key');
+        if ((session($select)[$id]->value ?? 0) == 1) {
+            return false;
+        }
+    }
+
+    if (isset($getData[( $select == 'UserBuildings' ? $c .'.':'') .'build_need'])) {
+        $keys = json_decode($getData[( $select == 'UserBuildings' ? $c .'.':'') .'build_need']);
+
+        foreach ($keys as $array)
+        {
+            $id = $array[0]->id;
+            if ($array[0]->art == 1) {
+                // Gebäude
+                if (isset(session('UserBuildings')[$id])) {
+                    if (session('UserBuildings')[$id]->value == 2) {
+                        if (session('UserBuildings')[$id]->level < $array[0]->level) return false;
+                    }
+                } else return false;
+
+            } elseif ($array[0]->art == 2) {
+                // Research
+                if (isset(session('UserResearchs')[$id])) {
+                    if (session('UserResearchs')[$id]->value != 2) {
+                        return false;
+                        //
+                    }
+                } else return false;
+            }
+        }
+    }
+
+    if ((int)uRess()->ress1 < (int)$getData[( $select == 'UserBuildings' ? $c .'.':'') .'ress1'])
+        return false;
+    if ((int)uRess()->ress2 < (int)$getData[( $select == 'UserBuildings' ? $c .'.':'') .'ress2'])
+        return false;
+    if ((int)uRess()->ress3 < (int)$getData[( $select == 'UserBuildings' ? $c .'.':'') .'ress3'])
+        return false;
+    if ((int)uRess()->ress4 < (int)$getData[( $select == 'UserBuildings' ? $c .'.':'') .'ress4'])
+        return false;
+    if ((int)uRess()->ress5 < (int)$getData[( $select == 'UserBuildings' ? $c .'.':'') .'ress5'])
+        return false;
+
+    return true;
+//        return ['notDisplay' => true, 'value' => 'lol10'];
+}
+
 function hasTech($tech, $id, $level = 1, $user_id = 0)
 {
     if ( $user_id == 0 ) {
         if ($tech == 1) return ((session('UserBuildings')[$id]->value ?? 0) == 2 and session('UserBuildings')[$id]->level >= $level ? true : false);
-        if ($tech == 2) return ((session('UserResearchs')[$id]->value ?? 0) == 2 and session('UserBuildings')[$id]->level >= $level ? true : false);
+        if ($tech == 2) return ((session('UserResearchs')[$id]->value ?? 0) == 2 and session('UserResearchs')[$id]->level >= $level ? true : false);
     }
     if ($tech == 1)
         return ( \App\Models\UserBuildings::where('user_id', $user_id)->where('build_id', $id)->where('level', '>=', $level)->first() ? true:false);
@@ -261,3 +386,4 @@ function intoLogs($text, $user_id = 0, $link = 0, $previous = 0, $post = 0)
         'time' => time()
     ]);
 }
+

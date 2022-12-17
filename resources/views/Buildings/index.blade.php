@@ -5,6 +5,7 @@
         body {
             overflow: hidden;
         }
+
         #zoom {
             width: 20000px;
             height: 10000px;
@@ -13,6 +14,7 @@
             cursor: grab;
             position: absolute;
         }
+
         .Planet {
             width: 2048px;
             height: 2048px;
@@ -23,6 +25,7 @@
             left: calc(50% - 1000px);
             top: calc(50% - 1000px);
         }
+
         .Moon {
             width: 800px;
             height: 800px;
@@ -33,6 +36,7 @@
             left: calc(50% + 1500px);
             top: calc(50% - 2000px);
         }
+
         div#zoom > img {
             width: 100%;
             height: auto;
@@ -65,9 +69,10 @@
         }
 
         .modal-body {
-            width: 500px;
-            height: 500px;
+            /*width: 500px;*/
+            height: 600px;
         }
+
         p {
             margin: 0px !important;
             margin-bottom: 0px !important;
@@ -77,7 +82,8 @@
 @endsection
 
 @section('settings')
-    <a class="dropdown-item d-flex align-items-center" onclick="uSetting('show.all.Buildings', {{uData('show.all.Buildings') == 1 ? 0:1}})" style="cursor: pointer">
+    <a class="dropdown-item d-flex align-items-center"
+       onclick="uSetting('show.all.Buildings', {{uData('show.all.Buildings') == 1 ? 0:1}})" style="cursor: pointer">
         <i class="bi bi-person"></i>
         <span>{{uData('show.all.Buildings') == 1 ? 'nur Baubare Gebäude anzeigen':'alle Gebäude Anzeigen'}}</span>
     </a>
@@ -95,16 +101,19 @@
         <div class="Planet"></div>
         <div class="Moon"></div>
         @foreach($Builds as $Build)
-            <div id="{{ (($BuildingActive->build_id ?? 0) == $Build['id'] ? 'gebactive':'') }}" class="geb geb1"
-                 onclick="showDialog('/buildings/{{ $Build['id'] }}')"
-                 style="
-                     top: {{ $Build['kordX'] }}px;
-                     left: {{ $Build['kordY'] }}px;
-                     background-image: url('{{ getImage($Build['image'], 'technologies') }}')
-                     "
-            >
-                <span class="Timer"></span>
-            </div>
+            {{--            {{ ( hasTech(1, $Build['id']) ? 'style': canTech(1, $Build['id'])) }}--}}
+            @if( hasTech(1, $Build['id']) OR canTech(1, $Build['id'], (session('UserBuildings')[$Build['id']]->level ?? 0) + 1))
+                <div id="{{ (($BuildingActive->build_id ?? 0) == $Build['id'] ? 'gebactive':'') }}" class="geb geb1"
+                     onclick="showDialog('/buildings/{{ $Build['id'] }}')"
+                     style="
+                         top: {{ $Build['kordX'] }}px;
+                         left: {{ $Build['kordY'] }}px;
+                         background-image: url('{{ getImage($Build['image'], 'technologies') }}')
+                         "
+                >
+                    <span class="Timer"></span>
+                </div>
+            @endif
         @endforeach
     <!-- Button trigger modal -->
         {{--                <div class="geb geb16" style="top: 4376px;left: 9742px;"></div>--}}
@@ -119,48 +128,73 @@
         {{--                <div class="geb geb25" style="top: 4612px;left: 10772px;"></div>--}}
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="showDialog" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showDialog" aria-hidden="true">
+    <div class="modal  modal-xl" id="showDialog" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showDialog"
+         aria-hidden="true">
+        <button style="color: red;font-size: xx-large;position: fixed;right: 20px;top: 20px;" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <i class="bi bi-x-circle" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" aria-label="close"></i>
+        </button>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body p-0">
                     ...
                 </div>
-{{--                <button type="button" class="btn-close" onclick="closeDialog()" style="position: absolute;right: 10px;top: 10px;"></button>--}}
+                {{--                <button type="button" class="btn-close" onclick="closeDialog()" style="position: absolute;right: 10px;top: 10px;"></button>--}}
             </div>
         </div>
     </div>
-    <div style="position: fixed;top: calc(50% - 15px); right: 10px;">
-        <img onclick="showDialog('/researchs/')" style="width: 30px" src="{{ getImage('icon3.png', 'ressurcen') }}">
+    <div style="align-items: center;position: fixed;top: calc(50% - 45px); right: 10px;">
+        <div style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
+            id="{{ ($ResearchActive ? 'resactive':'') }}"
+             data-bs-toggle="tooltip"
+             data-bs-html="true"
+             data-bs-placement="bottom"
+             data-bs-original-title="<em>{{Lang('global_planet_research_name')}}</em>">
+            <img onclick="showDialog('/researchs/')" style="width: 30px" src="{{ getImage('icon3.png', 'ressurcen') }}">
+            @if( $ResearchActive ) <span class="ResearchTimer"></span> @endif
+        </div>
+        <div style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
+             data-bs-toggle="tooltip"
+             data-bs-html="true"
+             data-bs-placement="bottom"
+             data-bs-original-title="<em>{{Lang('global_planet_ressurces_name')}}</em>">
+            <img onclick="showDialog('/resources/')" style="width: 30px" src="{{ getImage('icon1.png', 'ressurcen') }}">
+        </div>
+        <div style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
+             data-bs-toggle="tooltip"
+             data-bs-html="true"
+             data-bs-placement="bottom"
+             data-bs-original-title="<em>{{Lang('global_planet_kollektoren_name')}}</em>">
+            <img onclick="showDialog('/kollektoren/')" style="width: 30px" src="{{ getImage('icon2.png', 'ressurcen') }}">
+        </div>
     </div>
 @endsection
 
 
 @section('scripts')
     <script>
-        function showDialog(id)
-        {
+        function showDialog(id) {
             let myModal = new bootstrap.Modal(document.getElementById('showDialog'), {
                 keyboard: false
             })
             $(".modal-body").html(
                 '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('.modal-body').load(id);
             })
             myModal.show()
         }
-        function closeDialog()
-        {
+
+        function closeDialog() {
             let myModal = new bootstrap.Modal(document.getElementById('showDialog'), {
                 keyboard: false
             })
             myModal.hide()
         }
-        function uSetting(key, value)
-        {
+
+        function uSetting(key, value) {
             $.ajax({
-                url: "/api/uSettings/{{uData('token')}}/"+ key +"/"+ value,
-                success: function(res) {
+                url: "/api/uSettings/{{uData('token')}}/" + key + "/" + value,
+                success: function (res) {
                     console.log(res);
                     location.reload();
                 }
@@ -200,19 +234,20 @@
         let scale = 0.1,
             panning = false,
 
-            pointX = ( 0 - ( 1000 + width / 2 - width )),
+            pointX = (0 - (1000 + width / 2 - width)),
             pointY = 0,
-            start = { x: 0, y: 0 },
+            start = {x: 0, y: 0},
             zoom = document.getElementById("zoom");
 
         setTransform();
+
         function setTransform() {
             zoom.style.transform = "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")";
         }
 
         zoom.onmousedown = function (e) {
             e.preventDefault();
-            start = { x: e.clientX - pointX, y: e.clientY - pointY };
+            start = {x: e.clientX - pointX, y: e.clientY - pointY};
             panning = true;
         }
 
@@ -243,7 +278,7 @@
 
             zoom.ontouchstart = function (e) {
                 e.preventDefault();
-                start = { x: e.clientX - pointX, y: e.clientY - pointY };
+                start = {x: e.clientX - pointX, y: e.clientY - pointY};
                 panning = true;
             }
 
@@ -264,6 +299,49 @@
             setTransform();
         }
     </script>
+
+    @isset( $ResearchActive->time )
+        <script>
+            function getTimeRRemaining(endtime) {
+                let total = Date.parse(endtime) - Date.parse(new Date());
+                let seconds = Math.floor((total / 1000) % 60);
+                let minutes = Math.floor((total / 1000 / 60) % 60);
+                let hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+                let days = Math.floor(total / (1000 * 60 * 60 * 24));
+
+                return {
+                    total,
+                    days,
+                    hours,
+                    minutes,
+                    seconds
+                };
+            }
+
+            function initializeRClock(id, endtime) {
+                let clock = document.getElementById(id);
+                let Timer = clock.querySelector('.ResearchTimer');
+
+                function updateClock() {
+                    let t = getTimeRRemaining(endtime);
+
+                    Timer.innerHTML = (t.days !== 0 ? t.days + 'Tage ' : '') + ('0' + t.hours).slice(-2) + ':' + ('0' + t.minutes).slice(-2) + ':' + ('0' + t.seconds).slice(-2);
+
+                    if (t.total <= 0) {
+                        clearInterval(timeinterval);
+                        Timer.innerHTML = 'Fertig!';
+                        // window.location.reload();
+                    }
+                }
+
+                updateClock();
+                let timeinterval = setInterval(updateClock, 1000);
+            }
+
+            initializeRClock('resactive', new Date({{$ResearchActive->time * 1000}}));
+        </script>
+
+    @endisset
     @isset($BuildingActive->time)
         <script>
             function getTimeRemaining(endtime) {
@@ -301,7 +379,8 @@
                 updateClock();
                 let timeinterval = setInterval(updateClock, 1000);
             }
-            initializeClock('gebactive', new Date({{$BuildingActive->time * 1000}} ));
+
+            initializeClock('gebactive', new Date({{$BuildingActive->time * 1000}}));
         </script>
     @endisset
 @endsection

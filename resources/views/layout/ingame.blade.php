@@ -26,19 +26,6 @@
 
 <body>
 
-@if(session()->has('error'))
-    <div style="display: flex;
-    bottom: 10px;
-    right: 10px;
-    position: fixed;
-    z-index: 99">
-        <div>
-            <div class="arrow_box"
-                 style="max-width: 150px;color: white;text-align: -webkit-center;">{{ session()->get('error') }}</div>
-            <img src="/assets/img/berater/berater{{ rand(1,11) }}.png" style="width: 150px;margin-top: 20px"></div>
-    </div>
-@endif
-
 @yield('content')
 <div class="ressMain">
     <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
@@ -70,105 +57,123 @@
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>
 <div class="bottom_navi">
+
+    @if(session()->has('error'))
+        <div style="display: flex;
+    bottom: 10px;
+    right: 10px;
+    position: fixed;
+    z-index: 99">
+            <div>
+                <div class="arrow_box"
+                     style="max-width: 150px;color: white;text-align: -webkit-center;">{{ session()->get('error') }}</div>
+                <img src="/assets/img/berater/berater{{ rand(1,11) }}.png" style="width: 150px;margin-top: 20px"></div>
+        </div>
+    @endif
     <div class="race-footerl" style=""></div>
     <div class="race-footerr" style=""></div>
-    <div class="race-head" style=""></div>
-    <div class="race-icon race-icona" onclick="window.location.href = '{{ route('buildings.index') }}';">
-        <i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-           title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i>
+
+    <div class="Navigation">
+        <div class="race-head" style=""></div>
+        <div class="race-icon race-icona" onclick="window.location.href = '{{ route('buildings.index') }}';">
+            <i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+               title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i>
+        </div>
+        <div class="race-icon race-iconb" style="color: gray"><i class="bi bi-star-fill"></i></div>
+        <div class="race-icon race-iconc" onclick="window.location.href = '{{ route('units.index') }}';">
+            <i class="bi bi-chevron-double-up" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+               title="<b>{{ Lang('global_military_name') }}</b> <br><br><em>{{ Lang('global_military_desc') }}</em>"></i>
+        </div>
+        <div class="race-icon race-icond" onclick="window.location.href = '{{ route('ranking.index') }}';">
+            <i class="bi bi-ladder" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+               title="<b>{{ Lang('global_ranking_name') }}</b> <br><br><em>{{ Lang('global_ranking_desc') }}</em>"></i>
+        </div>
+        <div class="race-icon race-icone" style="color: gray"><i class="bi bi-star-fill"></i></div>
+        <div class="race-icon race-iconf" style="color: gray"><i class="bi bi-star-fill"></i></div>
     </div>
-    <div class="race-icon race-iconb" style="color: gray"><i class="bi bi-star-fill"></i></div>
-    <div class="race-icon race-iconc" onclick="window.location.href = '{{ route('units.index') }}';">
-        <i class="bi bi-chevron-double-up" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-           title="<b>{{ Lang('global_military_name') }}</b> <br><br><em>{{ Lang('global_military_desc') }}</em>"></i>
-    </div>
-    <div class="race-icon race-icond" onclick="window.location.href = '{{ route('ranking.index') }}';">
-        <i class="bi bi-ladder" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-           title="<b>{{ Lang('global_ranking_name') }}</b> <br><br><em>{{ Lang('global_ranking_desc') }}</em>"></i>
-    </div>
-    <div class="race-icon race-icone" style="color: gray"><i class="bi bi-star-fill"></i></div>
-    <div class="race-icon race-iconf" style="color: gray"><i class="bi bi-star-fill"></i></div>
-</div>
-<li class="nav-item dropdown pe-3"
-    style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">
+    <li class="nav-item dropdown pe-3"
+        style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">
 
-    <a class="nav-link nav-icon" href="/bugs" style="margin-right: 10px">
-        <i class="bi bi-bug"></i>
-    </a><!-- End Bugs Icon -->
+        <a class="nav-link nav-icon" href="/bugs" style="margin-right: 10px">
+            <i class="bi bi-bug"></i>
+        </a><!-- End Bugs Icon -->
 
-    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="margin-right: 10px">
-        <i class="bi bi-chat-left-text"></i>
-    </a><!-- End Messages Icon -->
-    <ul class="dropdown-menu messages" style="background-color: black;width: 350px">
-    </ul><!-- End Messages Dropdown Items -->
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"
+           style="margin-right: 10px">
+            <i class="bi bi-chat-left-text"></i>
+        </a><!-- End Messages Icon -->
+        <ul class="dropdown-menu messages" style="background-color: black;width: 350px">
+        </ul><!-- End Messages Dropdown Items -->
 
 
-    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="margin-right: 10px">
-        <i class="bi bi-diagram-3"></i>
-    </a><!-- End sitemap Icon -->
-    <ul class="dropdown-menu sitemap" style="">
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="/buildings">
-               Planet -> Gebäude
-            </a>
-        </li>
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="/researchs">
-                Planet -> Forschungen
-            </a>
-        </li>
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="/resources">
-                Planet -> Ressourcen
-            </a>
-        </li>
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="/kollektoren">
-                Planet -> Kollektoren
-            </a>
-        </li>
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="/units">
-                Militär -> Einheiten
-            </a>
-        </li>
-    </ul><!-- End sitemap Dropdown Items -->
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"
+           style="margin-right: 10px">
+            <i class="bi bi-diagram-3"></i>
+        </a><!-- End sitemap Icon -->
+        <ul class="dropdown-menu sitemap" style="">
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="/buildings">
+                    Planet -> Gebäude
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="/researchs">
+                    Planet -> Forschungen
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="/resources">
+                    Planet -> Ressourcen
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="/kollektoren">
+                    Planet -> Kollektoren
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="/units">
+                    Militär -> Einheiten
+                </a>
+            </li>
+        </ul><!-- End sitemap Dropdown Items -->
 
 
-    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-        <i class="bi bi-gear"></i>
-    </a>
+        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-gear"></i>
+        </a>
 
-    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-        <li>
-            <a class="dropdown-item d-flex align-items-center" onclick="notify.authorize()">
-                <i class="bi bi-person"></i>
-                <span>Benarichtigungen bei Gebäude/Forschungen</span>
-            </a>
-            <a class="dropdown-item d-flex align-items-center">
-                <i class="bi bi-person"></i>
-                <span>{{time()}}</span>
-            </a>
-            @yield('settings')
-        </li>
-        <li>
-            <hr class="dropdown-divider">
-        </li>
-        <li>
-            <a class="dropdown-item d-flex align-items-center">
-                <i class="bi bi-person"></i>
-                <span>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li>
+                <a class="dropdown-item d-flex align-items-center" onclick="notify.authorize()">
+                    <i class="bi bi-person"></i>
+                    <span>Benarichtigungen bei Gebäude/Forschungen</span>
+                </a>
+                <a class="dropdown-item d-flex align-items-center">
+                    <i class="bi bi-person"></i>
+                    <span>{{time()}}</span>
+                </a>
+                @yield('settings')
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li>
+                <a class="dropdown-item d-flex align-items-center">
+                    <i class="bi bi-person"></i>
+                    <span>
                     @desktop
                         Desktop
                     @elsedesktop
                         Mobile
                     @enddesktop
                 </span>
-            </a>
-        </li>
+                </a>
+            </li>
 
-    </ul><!-- End Profile Dropdown Items -->
-</li><!-- End Profile Nav -->
+        </ul><!-- End Profile Dropdown Items -->
+    </li><!-- End Profile Nav -->
+</div>
 <div id="modifiersDiv"></div>
 <!-- Template Main JS File -->
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -182,6 +187,7 @@
 
 // Define recursive function to print nested values
         let c = 0;
+
         function printValues(obj) {
             for (var k in obj) {
                 if (obj[k] instanceof Object) {
@@ -189,8 +195,8 @@
                 } else {
                     if (k === 'text') {
                         // document.write(obj['text'] + " -> " + k + "<br>");
-                        if ( c < 5) {
-                            $(".messages").append('<li><a href="/messages/' + obj['id'] + '" class="user-message-one"><div class="user-text"><h6>' + obj['name'] + '</h6> <div class="text"> <p>'+ (obj['read'] === 0 ? 'Neu:':'') +' ' + obj['text'].slice(0, 50) + '...</p> </div> </div><div class="user-active"><span>4 hrs. ago</span></div></a></li>');
+                        if (c < 5) {
+                            $(".messages").append('<li><a href="/messages/' + obj['id'] + '" class="user-message-one"><div class="user-text"><h6>' + obj['name'] + '</h6> <div class="text"> <p>' + (obj['read'] === 0 ? '<b>Neu:</b>' : '') + ' ' + obj['text'].slice(0, 50) + '...</p> </div> </div><div class="user-active"><span>4 hrs. ago</span></div></a></li>');
                             if (obj['new'] === 'ja') $(".bi-chat-left-text").css("color", "red");
                             c++;
                             // alert(c);

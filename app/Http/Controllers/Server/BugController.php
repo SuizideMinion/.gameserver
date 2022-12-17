@@ -19,7 +19,9 @@ class BugController extends Controller
         $BugsB = Bugs::where('status', 2)->with('getUser')->orderBy('created_at', 'DESC')->get();
         $BugsF = Bugs::where('status', 3)->with('getUser')->orderBy('created_at', 'DESC')->get();
 
-        return view('Server.bugs.index', compact('Bugs', 'BugsB', 'BugsF'));
+        $arrayGroups = [0, 1, 2, 3,4, 99];
+
+        return view('Server.bugs.index', compact('Bugs', 'BugsB', 'BugsF', 'arrayGroups'));
     }
 
     /**
@@ -29,7 +31,9 @@ class BugController extends Controller
      */
     public function create()
     {
-        return view('Server.bugs.create');
+        $arrayGroups = [0, 1, 2, 3,4, 99];
+
+        return view('Server.bugs.create', compact('arrayGroups'));
     }
 
     /**
@@ -48,6 +52,7 @@ class BugController extends Controller
         Bugs::create([
             'title' => strip_tags($validated['title']),
             'text' => strip_tags($validated['text']),
+            'group' => $request->group,
             'status' => 1,
             'user_id' => auth()->user()->id
         ]);

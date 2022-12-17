@@ -146,7 +146,7 @@ class ResearchsController extends Controller
 
                 $i++;
             }
-            $keyListData = ['build_need', 'level', 'tech_build_time', 'ress1', 'ress2', 'ress3', 'ress4', 'ress5', 'max_level', 'image'];
+            $keyListData = ['group', 'build_need', 'level', 'tech_build_time', 'ress1', 'ress2', 'ress3', 'ress4', 'ress5', 'max_level', 'image'];
             $keyListTrans = ['name_1', 'name_2', 'name_3', 'name_4', 'name_5', 'desc_1', 'desc_2', 'desc_3', 'desc_4'];
             Researchs::where('id', '>', 0)->delete();
             Translations::where('key', 'LIKE', 'Research%')->delete();
