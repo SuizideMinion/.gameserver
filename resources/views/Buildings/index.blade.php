@@ -111,7 +111,7 @@
                          background-image: url('{{ getImage($Build['image'], 'technologies') }}')
                          "
                 >
-                    <span class="Timer"></span>
+                    {!! ($BuildingActive->build_id ?? 0) == $Build['id'] ? timerHTML('buildactive', $BuildingActive->time - time()):'' !!}
                 </div>
             @endif
         @endforeach
@@ -130,8 +130,10 @@
     <!-- Modal -->
     <div class="modal  modal-xl" id="showDialog" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showDialog"
          aria-hidden="true">
-        <button style="color: red;font-size: xx-large;position: fixed;right: 20px;top: 20px;" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            <i class="bi bi-x-circle" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" aria-label="close"></i>
+        <button style="color: red;font-size: xx-large;position: fixed;right: 20px;top: 20px;" type="button"
+                class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <i class="bi bi-x-circle" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+               aria-label="close"></i>
         </button>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -143,28 +145,30 @@
         </div>
     </div>
     <div style="align-items: center;position: fixed;top: calc(50% - 45px); right: 10px;">
-        <div style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
-            id="{{ ($ResearchActive ? 'resactive':'') }}"
+        <div class="mt-1" style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
+             id="{{ ($ResearchActive ? 'resactive':'') }}"
              data-bs-toggle="tooltip"
              data-bs-html="true"
              data-bs-placement="bottom"
              data-bs-original-title="<em>{{Lang('global_planet_research_name')}}</em>">
             <img onclick="showDialog('/researchs/')" style="width: 30px" src="{{ getImage('icon3.png', 'ressurcen') }}">
-            @if( $ResearchActive ) <span class="ResearchTimer"></span> @endif
+            {!! $ResearchActive ? timerHTML('resactive', $ResearchActive->time - time()):'' !!}
         </div>
-        <div style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
+        <div class="mt-1" style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
              data-bs-toggle="tooltip"
              data-bs-html="true"
              data-bs-placement="bottom"
              data-bs-original-title="<em>{{Lang('global_planet_ressurces_name')}}</em>">
             <img onclick="showDialog('/resources/')" style="width: 30px" src="{{ getImage('icon1.png', 'ressurcen') }}">
         </div>
-        <div style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
+        <div class="mt-1" style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
              data-bs-toggle="tooltip"
              data-bs-html="true"
              data-bs-placement="bottom"
              data-bs-original-title="<em>{{Lang('global_planet_kollektoren_name')}}</em>">
-            <img onclick="showDialog('/kollektoren/')" style="width: 30px" src="{{ getImage('icon2.png', 'ressurcen') }}">
+            <img onclick="showDialog('/kollektoren/')" style="width: 30px"
+                 src="{{ getImage('icon2.png', 'ressurcen') }}">
+            {!! ($userUnitsBuilds != 0) ? timerHTML('colactive', (($userUnitsBuilds * 60) + ( ( round ( time() / 60 ) * 60 ) - time() ))):'' !!}
         </div>
     </div>
 @endsection
@@ -265,83 +269,55 @@
             setTransform();
         }
 
-        zoom.onwheel = function (e) {
-            e.preventDefault();
-            var xs = (e.clientX - pointX) / scale,
+        const debounce = function(func, delay){
+            let timer;
+            return function () {     //anonymous function
+                const context = this;
+                const args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(()=> {
+                    func.apply(context, args)
+                },delay);
+            }
+        }
+
+        zoom.onwheel = debounce(function (e) {
+            // console.info('Hey! It is', e);
+            // e.preventDefault();
+            let xs = (e.clientX - pointX) / scale,
                 ys = (e.clientY - pointY) / scale,
                 delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
             if (delta < 0 && scale > 0.2 || delta > 0) {
                 (delta > 0) ? (scale *= 1.2) : (scale /= 1.2);
                 pointX = e.clientX - xs * scale;
                 pointY = e.clientY - ys * scale;
-            }
-
-            zoom.ontouchstart = function (e) {
-                e.preventDefault();
-                start = {x: e.clientX - pointX, y: e.clientY - pointY};
-                panning = true;
-            }
-
-            zoom.ontouchend = function (e) {
-                panning = false;
-            }
-
-            zoom.ontouchmove = function (e) {
-                e.preventDefault();
-                if (!panning) {
-                    return;
-                }
-                pointX = (e.clientX - start.x);
-                pointY = (e.clientY - start.y);
                 setTransform();
             }
+        }, 10);
 
+        zoom.ontouchstart = function (e) {
+            e.preventDefault();
+            start = {x: e.clientX - pointX, y: e.clientY - pointY};
+            panning = true;
+        }
+
+        zoom.ontouchend = function (e) {
+            panning = false;
+        }
+
+        zoom.ontouchmove = function (e) {
+            e.preventDefault();
+            if (!panning) {
+                return;
+            }
+            pointX = (e.clientX - start.x);
+            pointY = (e.clientY - start.y);
             setTransform();
         }
+
+        setTransform();
     </script>
 
-    @isset( $ResearchActive->time )
-        <script>
-            function getTimeRRemaining(endtime) {
-                let total = Date.parse(endtime) - Date.parse(new Date());
-                let seconds = Math.floor((total / 1000) % 60);
-                let minutes = Math.floor((total / 1000 / 60) % 60);
-                let hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-                let days = Math.floor(total / (1000 * 60 * 60 * 24));
-
-                return {
-                    total,
-                    days,
-                    hours,
-                    minutes,
-                    seconds
-                };
-            }
-
-            function initializeRClock(id, endtime) {
-                let clock = document.getElementById(id);
-                let Timer = clock.querySelector('.ResearchTimer');
-
-                function updateClock() {
-                    let t = getTimeRRemaining(endtime);
-
-                    Timer.innerHTML = (t.days !== 0 ? t.days + 'Tage ' : '') + ('0' + t.hours).slice(-2) + ':' + ('0' + t.minutes).slice(-2) + ':' + ('0' + t.seconds).slice(-2);
-
-                    if (t.total <= 0) {
-                        clearInterval(timeinterval);
-                        Timer.innerHTML = 'Fertig!';
-                        // window.location.reload();
-                    }
-                }
-
-                updateClock();
-                let timeinterval = setInterval(updateClock, 1000);
-            }
-
-            initializeRClock('resactive', new Date({{$ResearchActive->time * 1000}}));
-        </script>
-
-    @endisset
     @isset($BuildingActive->time)
         <script>
             function getTimeRemaining(endtime) {

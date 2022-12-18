@@ -2,59 +2,136 @@
 
 use App\Models\ResearchsData;
 
+function timerHTML($id, $time)
+{
+    return "
+<div id='timer". $id ."'></div>
+<script>
+    var ". $id ." = new Date();
+	". $id ." = (Date.parse(". $id .") / 1000 + ". $time .");
+       function make". $id ."Timer() {
+        var now = new Date();
+        now = (Date.parse(now) / 1000);
+
+        var timeLeft = ". $id ." - now;
+
+        var days = Math.floor(timeLeft / 86400);
+        var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
+        var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600 )) / 60);
+        var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));
+
+        if (hours < '10') { hours = '0' + hours; }
+        if (minutes < '10') { minutes = '0' + minutes; }
+        if (seconds < '10') { seconds = '0' + seconds; }
+        if (days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0)
+        {
+            $('#timer" . $id . "').html('Finish');
+            clearInterval(". $id ."Timer);
+        }
+        else
+            $('#timer". $id ."').html(days + ':'+
+                   hours + ':'+
+                   minutes + ':' +
+                   seconds);
+	}
+	let ". $id ."Timer = setInterval(function() { make". $id ."Timer(); }, 1000);
+</script>
+
+    ";
+//    return "
+//    <span class='". $id ."Timer'></span>
+//    <script>
+//            function getTime". $id ."Remaining(endtime) {
+//                let total = Date.parse(endtime) - Date.parse(new Date());
+//                let seconds = Math.floor((total / 1000) % 60);
+//                let minutes = Math.floor((total / 1000 / 60) % 60);
+//                let hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+//                let days = Math.floor(total / (1000 * 60 * 60 * 24));
+//
+//                return {
+//                    total,
+//                    days,
+//                    hours,
+//                    minutes,
+//                    seconds
+//                };
+//            }
+//
+//            function initialize". $id ."Clock(id, endtime) {
+//                let clock = document.getElementById(id);
+//                let Timer = clock.querySelector('.". $id ."Timer');
+//
+//                function update". $id ."Clock() {
+//                    let t = getTime". $id ."Remaining(endtime);
+//
+//                    Timer.innerHTML = (t.days !== 0 ? t.days + 'Tage ' : '') + ('0' + t.hours).slice(-2) + ':' + ('0' + t.minutes).slice(-2) + ':' + ('0' + t.seconds).slice(-2);
+//
+//                    if (t.total <= 0) {
+//                        clearInterval(timeinterval);
+//                        Timer.innerHTML = 'Fertig!';
+//                        // window.location.reload();
+//                    }
+//                }
+//
+//                update". $id ."Clock();
+//                let timeinterval = setInterval(updateClock, 1000);
+//            }
+//
+//            initialize". $id ."Clock('". $id ."', new Date(". $time * 1000 ."));
+//        </script>
+//        ";
+}
+
 function hasBuildNeed($id)
 {
 //    $getData = ResearchsData::where('research_id', $id)->where('key', 'build_need')->first();
-    $getData = session('Researchs')[$id]->getData->pluck('value','key');
+    $getData = session('Researchs')[$id]->getData->pluck('value', 'key');
 
     $array = [];
 
-    if( $getData['build_need'] )
-    {
+    if ($getData['build_need']) {
         $values = json_decode($getData['build_need']);
 
-        foreach ($values as $value)
-        {
-            if($value[0]->art == 1)
-            {
+        foreach ($values as $value) {
+            if ($value[0]->art == 1) {
 //                $getDataBuild = \App\Models\BuildingsData::where('build_id', $value[0]->id)->get()->pluck('value', 'key');
-                $getDataBuild = session('Buildings')[$value[0]->id]->getData->pluck('value','key');
-                $array[$value[0]->art .'_'. $value[0]->id] = [
-                    'name' => Lang('Building.name.'. $value[0]->id),
-                    'desc' => Lang('Building.desc.'. $value[0]->id),
+                $getDataBuild = session('Buildings')[$value[0]->id]->getData->pluck('value', 'key');
+                $array[$value[0]->art . '_' . $value[0]->id] = [
+                    'name' => Lang('Building.name.' . $value[0]->id),
+                    'desc' => Lang('Building.desc.' . $value[0]->id),
                     'id' => $value[0]->id,
                     'level' => $value[0]->level,
                     'art' => $value[0]->art,
-                    'build_need' => ($getDataBuild[$value[0]->level .'.build_need'] ?? ''),
-                    'build_time' => ($getDataBuild[$value[0]->level .'.tech_build_time'] ?? ''),
-                    'ress1' => ($getDataBuild[$value[0]->level .'.ress1'] ?? '0'),
-                    'ress2' => ($getDataBuild[$value[0]->level .'.ress2'] ?? '0'),
-                    'ress3' => ($getDataBuild[$value[0]->level .'.ress3'] ?? '0'),
-                    'ress4' => ($getDataBuild[$value[0]->level .'.ress4'] ?? '0'),
-                    'ress5' => ($getDataBuild[$value[0]->level .'.ress5'] ?? '0'),
-                    'image' => 'technologies/'. ($getDataBuild['1.image'] ?? '0'),
+                    'build_need' => ($getDataBuild[$value[0]->level . '.build_need'] ?? ''),
+                    'build_time' => ($getDataBuild[$value[0]->level . '.tech_build_time'] ?? ''),
+                    'ress1' => ($getDataBuild[$value[0]->level . '.ress1'] ?? '0'),
+                    'ress2' => ($getDataBuild[$value[0]->level . '.ress2'] ?? '0'),
+                    'ress3' => ($getDataBuild[$value[0]->level . '.ress3'] ?? '0'),
+                    'ress4' => ($getDataBuild[$value[0]->level . '.ress4'] ?? '0'),
+                    'ress5' => ($getDataBuild[$value[0]->level . '.ress5'] ?? '0'),
+                    'image' => 'technologies/' . ($getDataBuild['1.image'] ?? '0'),
 //                    'hasBuilds' => hasBuildNeed($value[0]->id)
                 ];
             }
-            if($value[0]->art == 2)
-            {
+            if ($value[0]->art == 2) {
 //                $getDataResearch = \App\Models\ResearchsData::where('research_id', $value[0]->id)->get()->pluck('value', 'key');
-                $getDataResearch = session('Researchs')[$value[0]->id]->getData->pluck('value','key');
+                $getDataResearch = session('Researchs')[$value[0]->id]->getData->pluck('value', 'key');
 //                dd($getDataResearch);
-                $array[$value[0]->art .'_'. $value[0]->id] = [
-                    'name' => Lang('Research.name.'. $value[0]->id),
-                    'desc' => Lang('Research.desc.'. $value[0]->id),
+                $array[$value[0]->art . '_' . $value[0]->id] = [
+                    'name' => Lang('Research.name.' . $value[0]->id),
+                    'desc' => Lang('Research.desc.' . $value[0]->id),
                     'id' => $value[0]->id,
                     'level' => $value[0]->level,
                     'art' => $value[0]->art,
                     'build_need' => ($getDataResearch['build_need'] ?? ''),
+                    'group' => ($getDataResearch['group'] ?? ''),
                     'build_time' => ($getDataResearch['tech_build_time'] ?? ''),
                     'ress1' => ($getDataResearch['ress1'] ?? '0'),
                     'ress2' => ($getDataResearch['ress2'] ?? '0'),
                     'ress3' => ($getDataResearch['ress3'] ?? '0'),
                     'ress4' => ($getDataResearch['ress4'] ?? '0'),
                     'ress5' => ($getDataResearch['ress5'] ?? '0'),
-                    'image' => 'research/'. ($getDataResearch['image'] ?? '0'),
+                    'image' => 'research/' . ($getDataResearch['image'] ?? '0'),
 //                    'hasBuilds' => hasBuildNeed($value[0]->id)
                 ];
             }
@@ -65,7 +142,7 @@ function hasBuildNeed($id)
 
 function ressCalc($id = 0)
 {
-    if ( $id == 0) $id = auth()->user()->id;
+    if ($id == 0) $id = auth()->user()->id;
     $userData = \App\Models\UserData::where('user_id', $id)->get()->keyBy('key');
     $ServerData = \App\Models\ServerData::get()->keyBy('key');
 
@@ -74,30 +151,28 @@ function ressCalc($id = 0)
     $ress3 = json_decode($ServerData['Planetar.ress']->value)->ress3;
     $ress4 = json_decode($ServerData['Planetar.ress']->value)->ress4;
 
-    if( hasTech(1, 16, 1, $id) )
-    {
+    if (hasTech(1, 16, 1, $id)) {
         $ress1 = $ress1 * 4;
         $ress2 = $ress2 * 4;
         $ress3 = $ress3 * 3;
         $ress4 = $ress4 * 2;
     }
 
-    if($userData['kollektoren']->value)
-    {
+    if ($userData['kollektoren']->value) {
         $ressVerteilung = json_decode($userData['ress.verteilung']->value);
         $energy = $userData['kollektoren']->value * 100;
 
-        if( hasTech(1, 5, 2, $id) ) $ress1 = $ress1 + intval($energy / 100 * $ressVerteilung->ress1);
-        elseif ( hasTech(1, 5, 1, $id) ) $ress1 = $ress1 + intval($energy / 100 * $ressVerteilung->ress1 / 2);
+        if (hasTech(1, 5, 2, $id)) $ress1 = $ress1 + intval($energy / 100 * $ressVerteilung->ress1);
+        elseif (hasTech(1, 5, 1, $id)) $ress1 = $ress1 + intval($energy / 100 * $ressVerteilung->ress1 / 2);
 
-        if( hasTech(1, 6, 2, $id) ) $ress2 = $ress2 + intval($energy / 100 * $ressVerteilung->ress2 / 2);
-        elseif( hasTech(1, 6, 1, $id) ) $ress2 = $ress2 + intval($energy / 100 * $ressVerteilung->ress2 / 4);
+        if (hasTech(1, 6, 2, $id)) $ress2 = $ress2 + intval($energy / 100 * $ressVerteilung->ress2 / 2);
+        elseif (hasTech(1, 6, 1, $id)) $ress2 = $ress2 + intval($energy / 100 * $ressVerteilung->ress2 / 4);
 
-        if( hasTech(1, 7, 2, $id) ) $ress3 = $ress3 + intval($energy / 100 * $ressVerteilung->ress3 / 3);
-        elseif( hasTech(1, 7, 1, $id) ) $ress3 = $ress3 + intval($energy / 100 * $ressVerteilung->ress3 / 6);
+        if (hasTech(1, 7, 2, $id)) $ress3 = $ress3 + intval($energy / 100 * $ressVerteilung->ress3 / 3);
+        elseif (hasTech(1, 7, 1, $id)) $ress3 = $ress3 + intval($energy / 100 * $ressVerteilung->ress3 / 6);
 
-        if( hasTech(1, 8, 2, $id) ) $ress4 = $ress4 + intval($energy / 100 * $ressVerteilung->ress4 / 4);
-        elseif( hasTech(1, 8, 1, $id) ) $ress4 = $ress4 + intval($energy / 100 * $ressVerteilung->ress4 / 8);
+        if (hasTech(1, 8, 2, $id)) $ress4 = $ress4 + intval($energy / 100 * $ressVerteilung->ress4 / 4);
+        elseif (hasTech(1, 8, 1, $id)) $ress4 = $ress4 + intval($energy / 100 * $ressVerteilung->ress4 / 8);
     }
 
 //    if( hasTech(1, 5, 2, $id) ) $ress1 = $ress1 * 4;
@@ -126,11 +201,11 @@ function ressChanceDown($user_id, $ress1, $ress2, $ress3 = 0, $ress4 = 0, $ress5
 //    dd($ress);
     \App\Models\UserData::where('user_id', $user_id)->where('key', 'ress')->update([
         'value' => json_encode([
-            'ress1' => number_format(( $ress->ress1 - $ress1 ),0,'',''),
-            'ress2' => number_format(( $ress->ress2 - $ress2 ),0,'',''),
-            'ress3' => number_format(( $ress->ress3 - $ress3 ),0,'',''),
-            'ress4' => number_format(( $ress->ress4 - $ress4 ),0,'',''),
-            'ress5' => number_format(( $ress->ress5 - $ress5 ),0,'',''),
+            'ress1' => number_format(($ress->ress1 - $ress1), 0, '', ''),
+            'ress2' => number_format(($ress->ress2 - $ress2), 0, '', ''),
+            'ress3' => number_format(($ress->ress3 - $ress3), 0, '', ''),
+            'ress4' => number_format(($ress->ress4 - $ress4), 0, '', ''),
+            'ress5' => number_format(($ress->ress5 - $ress5), 0, '', ''),
         ])
     ]);
 }
@@ -141,11 +216,11 @@ function ressChance($user_id, $ress1 = null, $ress2 = null, $ress3 = null, $ress
 //    dd($ress);
     \App\Models\UserData::where('user_id', $user_id)->where('key', 'ress')->update([
         'value' => json_encode([
-            'ress1' => ( $ress1 != null ? number_format($ress1, 0 ,'', ''):$ress->ress1),
-            'ress2' => ( $ress2 != null ? number_format($ress2, 0 ,'', ''):$ress->ress2),
-            'ress3' => ( $ress3 != null ? number_format($ress3, 0 ,'', ''):$ress->ress3),
-            'ress4' => ( $ress4 != null ? number_format($ress4, 0 ,'', ''):$ress->ress4),
-            'ress5' => ( $ress5 != null ? number_format($ress5, 0 ,'', ''):$ress->ress5),
+            'ress1' => ($ress1 != null ? number_format($ress1, 0, '', '') : $ress->ress1),
+            'ress2' => ($ress2 != null ? number_format($ress2, 0, '', '') : $ress->ress2),
+            'ress3' => ($ress3 != null ? number_format($ress3, 0, '', '') : $ress->ress3),
+            'ress4' => ($ress4 != null ? number_format($ress4, 0, '', '') : $ress->ress4),
+            'ress5' => ($ress5 != null ? number_format($ress5, 0, '', '') : $ress->ress5),
         ])
     ]);
 }
@@ -153,27 +228,26 @@ function ressChance($user_id, $ress1 = null, $ress2 = null, $ress3 = null, $ress
 function canTech($tech, $id, $level = 1, $user_id = 0)
 {
     $c = 1;
-    if($tech == 1) {
+    if ($tech == 1) {
         $select = 'UserBuildings';
-        $getData = session('Buildings')[$id]->getData->pluck('value','key');
+        $getData = session('Buildings')[$id]->getData->pluck('value', 'key');
         if ((session($select)[$id]->value ?? 0) == 2) {
             if (($getData['1.max_level'] ?? '1') == session($select)[$id]->level) return false;
             $c = session($select)[$id]->level + 1;
         }
     }
-    if($tech == 2) {
+    if ($tech == 2) {
         $select = 'UserResearchs';
-        $getData = session('Researchs')[$id]->getData->pluck('value','key');
+        $getData = session('Researchs')[$id]->getData->pluck('value', 'key');
         if ((session($select)[$id]->value ?? 0) == 1) {
             return false;
         }
     }
 
-    if (isset($getData[( $select == 'UserBuildings' ? $c .'.':'') .'build_need'])) {
-        $keys = json_decode($getData[( $select == 'UserBuildings' ? $c .'.':'') .'build_need']);
+    if (isset($getData[($select == 'UserBuildings' ? $c . '.' : '') . 'build_need'])) {
+        $keys = json_decode($getData[($select == 'UserBuildings' ? $c . '.' : '') . 'build_need']);
 
-        foreach ($keys as $array)
-        {
+        foreach ($keys as $array) {
             $id = $array[0]->id;
             if ($array[0]->art == 1) {
                 // Gebäude
@@ -195,15 +269,15 @@ function canTech($tech, $id, $level = 1, $user_id = 0)
         }
     }
 
-    if ((int)uRess()->ress1 < (int)$getData[( $select == 'UserBuildings' ? $c .'.':'') .'ress1'])
+    if ((int)uRess()->ress1 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress1'])
         return false;
-    if ((int)uRess()->ress2 < (int)$getData[( $select == 'UserBuildings' ? $c .'.':'') .'ress2'])
+    if ((int)uRess()->ress2 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress2'])
         return false;
-    if ((int)uRess()->ress3 < (int)$getData[( $select == 'UserBuildings' ? $c .'.':'') .'ress3'])
+    if ((int)uRess()->ress3 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress3'])
         return false;
-    if ((int)uRess()->ress4 < (int)$getData[( $select == 'UserBuildings' ? $c .'.':'') .'ress4'])
+    if ((int)uRess()->ress4 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress4'])
         return false;
-    if ((int)uRess()->ress5 < (int)$getData[( $select == 'UserBuildings' ? $c .'.':'') .'ress5'])
+    if ((int)uRess()->ress5 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress5'])
         return false;
 
     return true;
@@ -212,14 +286,14 @@ function canTech($tech, $id, $level = 1, $user_id = 0)
 
 function hasTech($tech, $id, $level = 1, $user_id = 0)
 {
-    if ( $user_id == 0 ) {
+    if ($user_id == 0) {
         if ($tech == 1) return ((session('UserBuildings')[$id]->value ?? 0) == 2 and session('UserBuildings')[$id]->level >= $level ? true : false);
         if ($tech == 2) return ((session('UserResearchs')[$id]->value ?? 0) == 2 and session('UserResearchs')[$id]->level >= $level ? true : false);
     }
     if ($tech == 1)
-        return ( \App\Models\UserBuildings::where('user_id', $user_id)->where('build_id', $id)->where('level', '>=', $level)->first() ? true:false);
+        return (\App\Models\UserBuildings::where('user_id', $user_id)->where('build_id', $id)->where('level', '>=', $level)->first() ? true : false);
     elseif ($tech == 2)
-        return ( \App\Models\UserResearchs::where('user_id', $user_id)->where('research_id', $id)->where('level', '>=', $level)->first() ? true:false);
+        return (\App\Models\UserResearchs::where('user_id', $user_id)->where('research_id', $id)->where('level', '>=', $level)->first() ? true : false);
 }
 
 function uData($key)
@@ -244,11 +318,10 @@ function uRess()
 
 function Lang($key, $array = null, $plural = null)
 {
-    if( $plural == null OR $plural == 1) $text = (session('Lang')[$key]->value ?? session('Lang')['dummy']->value);
+    if ($plural == null or $plural == 1) $text = (session('Lang')[$key]->value ?? session('Lang')['dummy']->value);
     else $text = (session('Lang')[$key]->plural ?? session('Lang')['dummy']->value);
 
-    if ( $array != null )
-    {
+    if ($array != null) {
         $text = str_replace(array_keys($array), array_values($array), $text);
     }
 
@@ -261,7 +334,7 @@ function timeconversion($sekunden): string
     $std = floor($sekunden / 3600 % 24);
     $min = floor($sekunden / 60 % 60);
     $sek = floor($sekunden % 60);
-    return ($tag != 0 ? $tag . Lang('global.Day') .' ' : '') . ($std <= 9 ? '0' . $std : $std) . ':' . ($min <= 9 ? '0' . $min : $min) . ':' . ($sek <= 9 ? '0' . $sek : $sek);
+    return ($tag != 0 ? $tag . Lang('global.Day') . ' ' : '') . ($std <= 9 ? '0' . $std : $std) . ':' . ($min <= 9 ? '0' . $min : $min) . ':' . ($sek <= 9 ? '0' . $sek : $sek);
 }
 
 function getImage($name, $path = null, $race = null): string
@@ -274,15 +347,12 @@ function FormatTime($timestamp)
     // Get time difference and setup arrays
     $difference = time() - $timestamp;
     $periods = array("second", "minute", "hour", "day", "week", "month", "years");
-    $lengths = array("60","60","24","7","4.35","12");
+    $lengths = array("60", "60", "24", "7", "4.35", "12");
 
     // Past or present
-    if ($difference >= 0)
-    {
+    if ($difference >= 0) {
         $ending = Lang('global.ago');
-    }
-    else
-    {
+    } else {
         $difference = -$difference;
         $ending = "to go";
     }
@@ -290,8 +360,7 @@ function FormatTime($timestamp)
     // Figure out difference by looping while less than array length
     // and difference is larger than lengths.
     $arr_len = count($lengths);
-    for($j = 0; $j < $arr_len && $difference >= $lengths[$j]; $j++)
-    {
+    for ($j = 0; $j < $arr_len && $difference >= $lengths[$j]; $j++) {
         $difference /= $lengths[$j];
     }
 
@@ -299,44 +368,35 @@ function FormatTime($timestamp)
     $difference = round($difference);
 
     // Make plural if needed
-    if($difference != 1)
-    {
-        $periods[$j] = Lang('global.'. $periods[$j], plural: 'yes');
-    } else $periods[$j] = Lang('global.'. $periods[$j]);
+    if ($difference != 1) {
+        $periods[$j] = Lang('global.' . $periods[$j], plural: 'yes');
+    } else $periods[$j] = Lang('global.' . $periods[$j]);
 
     // Default format
     $text = "$difference $periods[$j] $ending";
 
     // over 24 hours
-    if($j > 2)
-    {
+    if ($j > 2) {
         // future date over a day formate with year
-        if($ending == "to go")
-        {
-            if($j == 3 && $difference == 1)
-            {
-                $text = "Tomorrow at ". date("g:i a", $timestamp);
-            }
-            else
-            {
+        if ($ending == "to go") {
+            if ($j == 3 && $difference == 1) {
+                $text = "Tomorrow at " . date("g:i a", $timestamp);
+            } else {
                 $text = date("F j, Y \a\\t g:i a", $timestamp);
             }
             return $text;
         }
 
-        if($j == 3 && $difference == 1) // Yesterday
+        if ($j == 3 && $difference == 1) // Yesterday
         {
-            $text = "Yesterday at ". date("g:i a", $timestamp);
-        }
-        else if($j == 3) // Less than a week display -- Monday at 5:28pm
+            $text = "Yesterday at " . date("g:i a", $timestamp);
+        } else if ($j == 3) // Less than a week display -- Monday at 5:28pm
         {
             $text = date("l \a\\t g:i a", $timestamp);
-        }
-        else if($j < 6 && !($j == 5 && $difference == 12)) // Less than a year display -- June 25 at 5:23am
+        } else if ($j < 6 && !($j == 5 && $difference == 12)) // Less than a year display -- June 25 at 5:23am
         {
             $text = date("F j \a\\t g:i a", $timestamp);
-        }
-        else // if over a year or the same month one year ago -- June 30, 2010 at 5:34pm
+        } else // if over a year or the same month one year ago -- June 30, 2010 at 5:34pm
         {
             $text = date("F j, Y \a\\t g:i a", $timestamp);
         }

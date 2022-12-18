@@ -80,21 +80,25 @@ class ResearchsController extends Controller
 //        $ResearchData = ;
         foreach ($Researchs AS $Research)
         {
-            $ResearchData = $Research->getData->keyBy('key');
+            $ResearchData = $Research->getData->pluck('value', 'key');
 //            dd($ResearchData);
 
             $array[$Research->id] = [
                 'name' => Lang('Research.name.'. $Research->id),
                 'desc' => Lang('Research.desc.'. $Research->id),
+                'disable' => ($ResearchData['disable'] ?? 0),
                 'id' => $Research->id,
+                'art' => 2,
+                'level' => 1,
                 'build_need' => ($ResearchData['build_need'] ?? ''),
+                'group' => ($ResearchData['group'] ?? ''),
                 'build_time' => ($ResearchData['tech_build_time'] ?? ''),
                 'ress1' => ($ResearchData['ress1'] ?? '0'),
                 'ress2' => ($ResearchData['ress2'] ?? '0'),
                 'ress3' => ($ResearchData['ress3'] ?? '0'),
                 'ress4' => ($ResearchData['ress4'] ?? '0'),
                 'ress5' => ($ResearchData['ress5'] ?? '0'),
-                'image' => ($ResearchData['image'] ?? '0'),
+                'image' => 'research/' . ($ResearchData['image'] ?? '0'),
                 'hasBuilds' => hasBuildNeed($Research->id)
             ];
         }

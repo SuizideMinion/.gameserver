@@ -1,24 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layout.local')
 
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <title>test DE:r ingame</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-
-    <!-- Favicons -->
-    <link href="/assets/img/favicon.ico" rel="icon">
-    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-    <!-- Template Main CSS File -->
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="/assets/css/style.css" rel="stylesheet">
-    <link href="/assets/css/{{ uData('race') }}.css" rel="stylesheet">
-    <link href="/assets/css/responsive.css" rel="stylesheet">
+@section('styles')
     <style type="text/css">
         img {
             max-width: 100%;
@@ -100,9 +82,27 @@
         p {
             margin: 0px;
         }
+        .span-icon {
+            position: relative;
+            top: 0px;
+            right: 13px;
+        }
+        .span-icon i{
+            font-size: 20px;
+        }
+        .bi-check-all{
+            color: green;
+        }
+        .bi-arrow-up-short {
+            color: orange;
+        }
+        .bi-x {
+            color: red;
+        }
     </style>
-<body>
+@endsection
 
+@section('content')
 @if(session()->has('error'))
     <div class="heading mt-1">
         <p>{{ session()->get('error') }}</p>
@@ -110,30 +110,52 @@
 @endif
 <!------ Include the above in your HEAD tag ---------->
 @foreach($array as $Research)
-    <div class="heading mt-1">
+    @if ($Research['disable'] != 1)
+    <div class="heading mt-1" id="{{$Research['id']}}">
         <h3>
             {{ $Research['name'] }}
-            @if( hasTech(2, $Research['id']) ) erforscht!
-            @elseif( canTech(2, $Research['id']) ) <a href="{{ route('researchs.edit', $Research['id']) }}">Erforschen</a>
-            @endif
+{{--            @if( hasTech(2, $Research['id']) ) erforscht!--}}
+{{--            @elseif( canTech(2, $Research['id']) ) <a href="{{ route('researchs.edit', $Research['id']) }}">Erforschen</a>--}}
+{{--            @endif--}}
         </h3>
         <p>
-            {{ Lang('global_ress1_name') }}: {{ $Research['ress1']->value }}
-            {{ Lang('global_ress2_name') }}: {{ $Research['ress2']->value }}
-            {{ Lang('global_ress3_name') }}: {{ $Research['ress3']->value }}
-            {{ Lang('global_ress4_name') }}: {{ $Research['ress4']->value }}
-            {{ Lang('global_ress5_name') }}: {{ $Research['ress5']->value }}
+            {{ Lang('global_ress1_name') }}: {{ $Research['ress1'] }}
+            {{ Lang('global_ress2_name') }}: {{ $Research['ress2'] }}
+            {{ Lang('global_ress3_name') }}: {{ $Research['ress3'] }}
+            {{ Lang('global_ress4_name') }}: {{ $Research['ress4'] }}
+            {{ Lang('global_ress5_name') }}: {{ $Research['ress5'] }}
         </p>
         <p class="mt-1"></p>
         <p>
+            <img onclick="{{ ($Research['art'] == 1 ? '/buildings/'. $Research['id'] .'/edit':(!canTech($Research['art'], $Research['id'], $Research['level']) ? 'window.open("/researchs/'. $Research['group'] .'#'. $Research['id'] :'/researchs/'. $Research['id'] .'/edit")') ) }};"
+                 class="getImage"
+                 src="{{ getImage($Research['image']) }}"
+                 style="{{ hasTech($Research['art'], $Research['id'], $Research['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($Research['art'], $Research['id'], $Research['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
+                 data-bs-toggle="tooltip"
+                 data-bs-html="true"
+                 {{--                     {{ dd(canTech(2, 10, 1)) }}--}}
+                 title="<em>{{ $Research['name'] . $Research['level'] }}</em><br>
+                        <p>{{ Lang('global_ress1_name') }}: <span class='m'>{{ $Research['ress1'] ?? 0 }}</span></p>
+                        <p>{{ Lang('global_ress2_name') }}: <span class='d'>{{ $Research['ress2'] ?? 0 }}</span></p>
+                        <p>{{ Lang('global_ress3_name') }}: <span class='i'>{{ $Research['ress3'] ?? 0 }}</span></p>
+                        <p>{{ Lang('global_ress4_name') }}: <span class='e'>{{ $Research['ress4'] ?? 0 }}</span></p>
+                        <p>{{ Lang('global_ress5_name') }}: <span class='t'>{{ $Research['ress5'] ?? 0 }}</span></p>
+{{--                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>--}}
+                     <b>{{ $Research['desc'] }}</b>
+                        <br>">
+            <span class="span-icon">
+                    <i class="bi {{
+                        hasTech($Research['art'], $Research['id'], $Research['level']) == true ?
+                        'bi-check-all': (canTech($Research['art'], $Research['id'], $Research['level']) == true ?
+                        'bi-arrow-up-short':'bi-x') }}">
+                    </i>
+                </span>
+            <i style="font-size: 20px;top: 4px;position: relative;left: -10px;" class="bi bi-chevron-double-right"></i>
             @foreach($Research['hasBuilds'] as $has)
-                @if ($Research['id'] == 21)
-{{--                {{dd($Research['hasBuilds'], $has)}}--}}
-                @endif
-                <img onclick="window.location.href = '{{ route(($has['art'] == 1 ? 'buildings':'researchs') .'.edit', $has['id']) }}';"
+                <img onclick="{{ ($has['art'] == 1 ? '/buildings/'. $has['id'] .'/edit':(!canTech($has['art'], $has['id'], $has['level']) ? 'window.open("/researchs/'. $has['group'] .'#'. $has['id'] :'/researchs/'. $has['id'] .'/edit")') ) }};"
                      class="getImage"
                      src="{{ getImage($has['image']) }}"
-                     style="{{ hasTech($has['art'], $has['id'], $has['level']) == true ? 'border: green 1px solid;': (canTech($has['art'], $has['id'], $has['level']) == true ? 'border: orange 1px solid;':'') }}"
+                     style="{{ hasTech($has['art'], $has['id'], $has['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($has['art'], $has['id'], $has['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
                      data-bs-toggle="tooltip"
                      data-bs-html="true"
 {{--                     {{ dd(canTech(2, 10, 1)) }}--}}
@@ -146,31 +168,46 @@
 {{--                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>--}}
                          <b>{{ $has['desc'] }}</b>
                         <br>">
+                <span class="span-icon">
+                    <i class="bi {{
+                        hasTech($has['art'], $has['id'], $has['level']) == true ?
+                        'bi-check-all': (canTech($has['art'], $has['id'], $has['level']) == true ?
+                        'bi-arrow-up-short':'bi-x') }}">
+                    </i>
+                </span>
             @endforeach
         </p>
         <span><i class="fa-solid fa-angle-down"></i></span>
     </div>
+    @endif
 @endforeach
 
-<script src="/assets/js/jquery.js"></script>
-<script type="text/javascript">
-    function showResearch(id)
-    {
-        $(".mesgs").html(
-            '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
-        $(document).ready(function() {
-            $('.mesgs').load(id);
+
+@endsection
+
+@section('scripts')
+
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
         })
-    }
-</script>
-<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script>
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
-</script>
+    </script>
+
+@endsection
+{{--<script src="/assets/js/jquery.js"></script>--}}
+{{--<script type="text/javascript">--}}
+{{--    function showResearch(id)--}}
+{{--    {--}}
+{{--        $(".mesgs").html(--}}
+{{--            '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');--}}
+{{--        $(document).ready(function() {--}}
+{{--            $('.mesgs').load(id);--}}
+{{--        })--}}
+{{--    }--}}
+{{--</script>--}}
+{{--<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>--}}
 
 
-</body>
-</html>
+{{--</body>--}}
+{{--</html>--}}
