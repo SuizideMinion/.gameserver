@@ -78,6 +78,23 @@
             margin-bottom: 0px !important;
             padding: 0px;
         }
+        .span-icon {
+            position: relative;
+            top: 0px;
+            left: 13px;
+        }
+        .span-icon i{
+            font-size: 50px;
+        }
+        .bi-check-all{
+            color: green;
+        }
+        .bi-arrow-up-short {
+            color: orange;
+        }
+        .bi-x {
+            color: red;
+        }
     </style>
 @endsection
 
@@ -112,6 +129,13 @@
                          "
                 >
                     {!! ($BuildingActive->build_id ?? 0) == $Build['id'] ? timerHTML('buildactive', $BuildingActive->time - time()):'' !!}
+                    <span class="span-icon">
+                    <i class="bi {{
+                        hasTech(1, $Build['id'], (session('UserBuildings')[$Build['id']]->level ?? 1)) == true ?
+                        'bi-check-all': (canTech(1, $Build['id'], (session('UserBuildings')[$Build['id']]->level ?? 1)) == true ?
+                        'bi-arrow-up-short':'bi-x') }}">
+                    </i>
+                </span>
                 </div>
             @endif
         @endforeach
