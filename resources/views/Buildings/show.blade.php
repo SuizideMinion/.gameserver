@@ -82,12 +82,12 @@
         p {
             margin: 0px;
         }
-        .span-icon {
+        .span-icon-show {
             position: relative;
             top: 0px;
             left: -13px;
         }
-        .span-icon i{
+        .span-icon-show i{
             font-size: 20px;
         }
         .bi-check-all{
@@ -139,7 +139,7 @@
 {{--                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>--}}
                              <b>{{ $Research['desc'] }}</b>
                         <br>">
-                    <span class="span-icon">
+                    <span class="span-icon-show">
                     <i class="bi {{
                         hasTech($Research['art'], $Research['id'], $Research['level']) == true ?
                         'bi-check-all': (canTech($Research['art'], $Research['id'], $Research['level']) == true ?
@@ -168,7 +168,7 @@
 {{--                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>--}}
                                  <b>{{ $has['desc'] }}</b>
                         <br>">
-                        <span class="span-icon">
+                        <span class="span-icon-show">
                     <i class="bi {{
                         hasTech($has['art'], $has['id'], $has['level']) == true ?
                         'bi-check-all': (canTech($has['art'], $has['id'], $has['level']) == true ?
