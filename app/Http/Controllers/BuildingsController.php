@@ -101,7 +101,7 @@ class BuildingsController extends Controller
             'ress4' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress4'] ?? '0'),
             'ress5' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress5'] ?? '0'),
             'image' => 'technologies/' . ($BuildingData['1.image'] ?? '0'),
-            'hasBuilds' => hasBuildNeed($Building->id)
+            'hasBuilds' => hasBuildNeed($Building->id, 1)
         ];
 //        dd($array);
         return view('Buildings.show', compact('Building', 'BuildingActive', 'array'));

@@ -83,15 +83,16 @@ function timerHTML($id, $time)
 }
 
 
-function hasBuildNeed($id)
+function hasBuildNeed($id, $art = 2)
 {
 //    $getData = ResearchsData::where('research_id', $id)->where('key', 'build_need')->first();
-    $getData = session('Researchs')[$id]->getData->pluck('value', 'key');
+    if( $art == 2 ) $getData = session('Researchs')[$id]->getData->pluck('value', 'key');
+    else $getData = session('Buildings')[$id]->getData->pluck('value', 'key');
 
     $array = [];
 
-    if ($getData['build_need']) {
-        $values = json_decode($getData['build_need']);
+    if ( isset($getData['build_need']) OR isset($getData['1.build_need']) ) {
+        $values = json_decode(($getData['build_need'] ?? $getData['1.build_need'] ));
 
         foreach ($values as $value) {
             if ($value[0]->art == 1) {
