@@ -108,15 +108,11 @@
         <p>{{ session()->get('error') }}</p>
     </div>
 @endif
-<!------ Include the above in your HEAD tag ---------->
 @foreach($array as $Research)
     @if ($Research['disable'] != 1)
     <div class="heading mt-1" id="{{$Research['id']}}">
         <h3>
             {{ $Research['name'] }}
-{{--            @if( hasTech(2, $Research['id']) ) erforscht!--}}
-{{--            @elseif( canTech(2, $Research['id']) ) <a href="{{ route('researchs.edit', $Research['id']) }}">Erforschen</a>--}}
-{{--            @endif--}}
         </h3>
         <p>
             {{ Lang('global_ress1_name') }}: {{ $Research['ress1'] }}
@@ -128,12 +124,10 @@
         <p class="mt-1"></p>
         <p>
             <img onclick="{{
-    ($Research['art'] == 1 ?
-        '/buildings/'. $Research['id'] .'/edit':
-        (!canTech($Research['art'], $Research['id'], $Research['level']) ?
-            'showResearch("/researchs/'. $Research['group'] .'#'. $Research['id'].'");' :
-            '/researchs/'. $Research['id'] .'/edit') )
-            }}"
+                    ($Research['art'] == 1 ? 'window.location.href = "/buildings/'. $Research['id'] .'/edit"':
+                    (!canTech($Research['art'], $Research['id'], $Research['level']) ?
+                    'showResearch("/researchs/'. $Research['group'] .'#'. $Research['id'].'");' :
+                    'window.location.href = "/researchs/'. $Research['id'] .'/edit"') ) }}"
                  class="getImage"
                  src="{{ getImage($Research['image']) }}"
                  style="{{ hasTech($Research['art'], $Research['id'], $Research['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($Research['art'], $Research['id'], $Research['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
@@ -159,10 +153,10 @@
             <i style="font-size: 20px;top: 4px;position: relative;left: -10px;" class="bi bi-chevron-double-right"></i>
             @foreach($Research['hasBuilds'] as $has)
                 <img onclick="{{
-                    ($has['art'] == 1 ? '/buildings/'. $has['id'] .'/edit':
+                    ($has['art'] == 1 ? 'window.location.href = "/buildings/'. $has['id'] .'/edit"':
                     (!canTech($has['art'], $has['id'], $has['level']) ?
                     'showResearch("/researchs/'. $has['group'] .'#'. $has['id'].'");' :
-                    '/researchs/'. $has['id'] .'/edit') ) }}"
+                    'window.location.href = "/researchs/'. $has['id'] .'/edit"') ) }}"
                      class="getImage"
                      src="{{ getImage($has['image']) }}"
                      style="{{ hasTech($has['art'], $has['id'], $has['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($has['art'], $has['id'], $has['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
@@ -205,19 +199,3 @@
     </script>
 
 @endsection
-{{--<script src="/assets/js/jquery.js"></script>--}}
-{{--<script type="text/javascript">--}}
-{{--    function showResearch(id)--}}
-{{--    {--}}
-{{--        $(".mesgs").html(--}}
-{{--            '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');--}}
-{{--        $(document).ready(function() {--}}
-{{--            $('.mesgs').load(id);--}}
-{{--        })--}}
-{{--    }--}}
-{{--</script>--}}
-{{--<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>--}}
-
-
-{{--</body>--}}
-{{--</html>--}}
