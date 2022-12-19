@@ -95,6 +95,32 @@
         .bi-x {
             color: red;
         }
+        .Shield {
+            position: absolute;
+            top: 4052px;
+            left: 9022px;
+            width: 1975px;
+            height: 1975px;
+            border-radius: 1000px;
+            box-shadow: white 0px 0px 116px;
+        }
+        .ShieldB {
+            box-shadow: purple 0px 0px 116px;
+        }
+        .dynamic {
+            width: 8px;
+            height: 6px;
+            position: absolute;
+            background-image: url("{{ getImage('kollie.gif', 'ressurcen') }}");
+            background-size: contain;
+        }
+        #dyn {
+            position: absolute;
+            top: 4052px;
+            left: 9022px;
+            width: 1975px;
+            height: 1975px;
+        }
     </style>
 @endsection
 
@@ -108,15 +134,10 @@
 
 @section('content')
     <div id="zoom">
-        {{--            Planetrarer Schild: --}}
-        {{--                top: 4052px;--}}
-        {{--                left: 9022px;--}}
-        {{--                width: 1975px;--}}
-        {{--                height: 1975px;--}}
-        {{--                border-radius: 1000px;--}}
-        {{--                box-shadow: white 0px 0px 116px;--}}
         <div class="Planet"></div>
         <div class="Moon"></div>
+        <div id="dyn"></div>
+        <div class=" {{ hasTech(1, 22, 2) ? 'Shield ShieldB': (hasTech(1, 22, 1) ? 'Shield': '')}}"></div>
         @foreach($Builds as $Build)
             {{--            {{ ( hasTech(1, $Build['id']) ? 'style': canTech(1, $Build['id'])) }}--}}
             @if( hasTech(1, $Build['id']) OR canTech(1, $Build['id'], (session('UserBuildings')[$Build['id']]->level ?? 0) + 1))
@@ -194,11 +215,37 @@
                  src="{{ getImage('icon2.png', 'ressurcen') }}">
             {!! ($userUnitsBuilds != 0) ? timerHTML('colactive', (($userUnitsBuilds * 60) + ( ( round ( time() / 60 ) * 60 ) - time() ))):'' !!}
         </div>
+        <div class="mt-1" style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
+             data-bs-toggle="tooltip"
+             data-bs-html="true"
+             data-bs-placement="bottom"
+             data-bs-original-title="<em>{{Lang('global_planet_shield_name')}}</em>">
+            <img onclick="showDialog('/buildings/22')" style="width: 30px"
+                 src="{{ getImage('icon4.png', 'ressurcen') }}">
+            {!! ($userUnitsBuilds != 0) ? timerHTML('colactive', (($userUnitsBuilds * 60) + ( ( round ( time() / 60 ) * 60 ) - time() ))):'' !!}
+        </div>
     </div>
 @endsection
 
 
 @section('scripts')
+    <script>
+        function createCircleOfDivs(num, radius, offsetX, offsetY, className) {
+            var x, y;
+            for (var n = 0; n < num; n++) {
+                x = radius * Math.cos(n / num * 2 * Math.PI);
+                y = radius * Math.sin(n / num * 2 * Math.PI);
+                // let dyn = document.getElementById("dyn");
+                let div = document.createElement("div");
+                div.className = className;
+                div.style.left = (x + offsetX) + "px";
+                div.style.top = (y + offsetY) + "px";
+                document.getElementById("dyn").append(div)
+                // document.body.appendChild(div);
+            }
+        }
+        createCircleOfDivs({{ uData('kollektoren') }}, 1400, 1000, 1000, "dynamic");
+    </script>
     <script>
         function showDialog(id) {
             let myModal = new bootstrap.Modal(document.getElementById('showDialog'), {

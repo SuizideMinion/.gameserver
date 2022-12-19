@@ -82,6 +82,7 @@ function timerHTML($id, $time)
 //        ";
 }
 
+
 function hasBuildNeed($id)
 {
 //    $getData = ResearchsData::where('research_id', $id)->where('key', 'build_need')->first();

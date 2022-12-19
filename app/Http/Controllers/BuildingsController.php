@@ -81,8 +81,30 @@ class BuildingsController extends Controller
     {
         $Building = Buildings::where('id', $id)->first();
         $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
+        $BuildingData = $Building->getData->pluck('value', 'key');
 
-        return view('Buildings.show', compact('Building', 'BuildingActive'));
+//        dd();
+
+        $array[$Building->id] = [
+            'name' => Lang('Building.name.'. $Building->id),
+            'desc' => Lang('Building.desc.'. $Building->id),
+            'disable' => ($BuildingData['1.disable'] ?? 0),
+            'id' => $Building->id,
+            'art' => 1,
+            'level' => 1,
+            'build_need' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.build_need'] ?? ''),
+            'group' => ($BuildingData['1.group'] ?? ''),
+            'build_time' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.tech_build_time'] ?? ''),
+            'ress1' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress1'] ?? '0'),
+            'ress2' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress2'] ?? '0'),
+            'ress3' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress3'] ?? '0'),
+            'ress4' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress4'] ?? '0'),
+            'ress5' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress5'] ?? '0'),
+            'image' => 'technologies/' . ($BuildingData['1.image'] ?? '0'),
+            'hasBuilds' => hasBuildNeed($Building->id)
+        ];
+//        dd($array);
+        return view('Buildings.show', compact('Building', 'BuildingActive', 'array'));
     }
 
     /**
