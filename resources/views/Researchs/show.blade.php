@@ -127,7 +127,13 @@
         </p>
         <p class="mt-1"></p>
         <p>
-            <img onclick="{{ ($Research['art'] == 1 ? '/buildings/'. $Research['id'] .'/edit':(!canTech($Research['art'], $Research['id'], $Research['level']) ? 'window.open("/researchs/'. $Research['group'] .'#'. $Research['id'] :'/researchs/'. $Research['id'] .'/edit")') ) }};"
+            <img onclick="{{
+    ($Research['art'] == 1 ?
+        '/buildings/'. $Research['id'] .'/edit':
+        (!canTech($Research['art'], $Research['id'], $Research['level']) ?
+            'showResearch("/researchs/'. $Research['group'] .'#'. $Research['id'].'");' :
+            '/researchs/'. $Research['id'] .'/edit') )
+            }}"
                  class="getImage"
                  src="{{ getImage($Research['image']) }}"
                  style="{{ hasTech($Research['art'], $Research['id'], $Research['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($Research['art'], $Research['id'], $Research['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
@@ -152,7 +158,11 @@
                 </span>
             <i style="font-size: 20px;top: 4px;position: relative;left: -10px;" class="bi bi-chevron-double-right"></i>
             @foreach($Research['hasBuilds'] as $has)
-                <img onclick="{{ ($has['art'] == 1 ? '/buildings/'. $has['id'] .'/edit':(!canTech($has['art'], $has['id'], $has['level']) ? 'window.open("/researchs/'. $has['group'] .'#'. $has['id'] :'/researchs/'. $has['id'] .'/edit")') ) }};"
+                <img onclick="{{
+                    ($has['art'] == 1 ? '/buildings/'. $has['id'] .'/edit':
+                    (!canTech($has['art'], $has['id'], $has['level']) ?
+                    'showResearch("/researchs/'. $has['group'] .'#'. $has['id'].'");' :
+                    '/researchs/'. $has['id'] .'/edit') ) }}"
                      class="getImage"
                      src="{{ getImage($has['image']) }}"
                      style="{{ hasTech($has['art'], $has['id'], $has['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($has['art'], $has['id'], $has['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
