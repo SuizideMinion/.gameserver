@@ -104,50 +104,50 @@
 
 @section('content')
 
-    @foreach($array as $Research)
-        @if ($Research['disable'] != 1)
-            <div class="heading mt-1" id="{{$Research['id']}}">
+    @foreach($array as $Building)
+        @if ($Building['disable'] != 1)
+            <div class="heading mt-1" id="{{$Building['id']}}">
                 <h3>
-                    {{ $Research['name'] }}
+                    {{ Lang('planet.building.name', array: [':NAME' => Lang('Building.name.'. $Building['id']), ':LEVEL' => (session('UserBuildings')[$Building['id']]->level ?? 0), ':MAX' => $Building['max_level'] ]) }}
                 </h3>
                 <p>
-                    {{ Lang('global_ress1_name') }}: {{ $Research['ress1'] }}
-                    {{ Lang('global_ress2_name') }}: {{ $Research['ress2'] }}
-                    {{ Lang('global_ress3_name') }}: {{ $Research['ress3'] }}
-                    {{ Lang('global_ress4_name') }}: {{ $Research['ress4'] }}
-                    {{ Lang('global_ress5_name') }}: {{ $Research['ress5'] }}
+                    {{ Lang('global_ress1_name') }}: {{ $Building['ress1'] }}
+                    {{ Lang('global_ress2_name') }}: {{ $Building['ress2'] }}
+                    {{ Lang('global_ress3_name') }}: {{ $Building['ress3'] }}
+                    {{ Lang('global_ress4_name') }}: {{ $Building['ress4'] }}
+                    {{ Lang('global_ress5_name') }}: {{ $Building['ress5'] }}
                 </p>
                 <p class="mt-1"></p>
                 <p>
                     <img onclick="{{
-                    ($Research['art'] == 1 ? 'window.location.href = "/buildings/'. $Research['id'] .'/edit"':
-                    (!canTech($Research['art'], $Research['id'], $Research['level']) ?
-                    'showResearch("/researchs/'. $Research['group'] .'#'. $Research['id'].'");' :
-                    'window.location.href = "/researchs/'. $Research['id'] .'/edit"') ) }}"
+                    ($Building['art'] == 1 ? 'window.location.href = "/buildings/'. $Building['id'] .'/edit"':
+                    (!canTech($Building['art'], $Building['id'], $Building['level']) ?
+                    'showResearch("/researchs/'. $Building['group'] .'#'. $Building['id'].'");' :
+                    'window.location.href = "/researchs/'. $Building['id'] .'/edit"') ) }}"
                          class="getImage"
-                         src="{{ getImage($Research['image']) }}"
-                         style="{{ hasTech($Research['art'], $Research['id'], $Research['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($Research['art'], $Research['id'], $Research['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
+                         src="{{ getImage($Building['image']) }}"
+                         style="{{ hasTech($Building['art'], $Building['id'], $Building['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($Building['art'], $Building['id'], $Building['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
                          data-bs-toggle="tooltip"
                          data-bs-html="true"
                          {{--                     {{ dd(canTech(2, 10, 1)) }}--}}
-                         title="<em>{{ $Research['name'] . $Research['level'] }}</em><br>
-                        <p>{{ Lang('global_ress1_name') }}: <span class='m'>{{ $Research['ress1'] ?? 0 }}</span></p>
-                        <p>{{ Lang('global_ress2_name') }}: <span class='d'>{{ $Research['ress2'] ?? 0 }}</span></p>
-                        <p>{{ Lang('global_ress3_name') }}: <span class='i'>{{ $Research['ress3'] ?? 0 }}</span></p>
-                        <p>{{ Lang('global_ress4_name') }}: <span class='e'>{{ $Research['ress4'] ?? 0 }}</span></p>
-                        <p>{{ Lang('global_ress5_name') }}: <span class='t'>{{ $Research['ress5'] ?? 0 }}</span></p>
+                         title="<em>{{ $Building['name'] . $Building['level'] }}</em><br>
+                        <p>{{ Lang('global_ress1_name') }}: <span class='m'>{{ $Building['ress1'] ?? 0 }}</span></p>
+                        <p>{{ Lang('global_ress2_name') }}: <span class='d'>{{ $Building['ress2'] ?? 0 }}</span></p>
+                        <p>{{ Lang('global_ress3_name') }}: <span class='i'>{{ $Building['ress3'] ?? 0 }}</span></p>
+                        <p>{{ Lang('global_ress4_name') }}: <span class='e'>{{ $Building['ress4'] ?? 0 }}</span></p>
+                        <p>{{ Lang('global_ress5_name') }}: <span class='t'>{{ $Building['ress5'] ?? 0 }}</span></p>
 {{--                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>--}}
-                             <b>{{ $Research['desc'] }}</b>
+                             <b>{{ $Building['desc'] }}</b>
                         <br>">
                     <span class="span-icon-show">
                     <i class="bi {{
-                        hasTech($Research['art'], $Research['id'], $Research['level']) == true ?
-                        'bi-check-all': (canTech($Research['art'], $Research['id'], $Research['level']) == true ?
+                        hasTech($Building['art'], $Building['id'], $Building['level']) == true ?
+                        'bi-check-all': (canTech($Building['art'], $Building['id'], $Building['level']) == true ?
                         'bi-arrow-up-short':'bi-x') }}">
                     </i>
                 </span>
                     <i style="font-size: 20px;top: 4px;position: relative;left: -10px;" class="bi bi-chevron-double-right"></i>
-                    @foreach($Research['hasBuilds'] as $has)
+                    @foreach($Building['hasBuilds'] as $has)
                         <img onclick="{{
                     ($has['art'] == 1 ? 'window.location.href = "/buildings/'. $has['id'] .'/edit"':
                     (!canTech($has['art'], $has['id'], $has['level']) ?

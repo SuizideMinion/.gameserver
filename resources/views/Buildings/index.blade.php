@@ -306,15 +306,14 @@
 
     <script>
         let width = window.innerWidth;
+        let height = window.innerHeight;
         let scale = 0.1,
             panning = false,
 
             pointX = (0 - (1000 + width / 2 - width)),
-            pointY = 0,
+            pointY = ( 0 - height / 8 ),
             start = {x: 0, y: 0},
             zoom = document.getElementById("zoom");
-
-        setTransform();
 
         function setTransform() {
             zoom.style.transform = "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")";
@@ -389,45 +388,4 @@
         setTransform();
     </script>
 
-    @isset($BuildingActive->time)
-        <script>
-            function getTimeRemaining(endtime) {
-                let total = Date.parse(endtime) - Date.parse(new Date());
-                let seconds = Math.floor((total / 1000) % 60);
-                let minutes = Math.floor((total / 1000 / 60) % 60);
-                let hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-                let days = Math.floor(total / (1000 * 60 * 60 * 24));
-
-                return {
-                    total,
-                    days,
-                    hours,
-                    minutes,
-                    seconds
-                };
-            }
-
-            function initializeClock(id, endtime) {
-                let clock = document.getElementById(id);
-                let Timer = clock.querySelector('.Timer');
-
-                function updateClock() {
-                    let t = getTimeRemaining(endtime);
-
-                    Timer.innerHTML = (t.days !== 0 ? t.days + 'Tage ' : '') + ('0' + t.hours).slice(-2) + ':' + ('0' + t.minutes).slice(-2) + ':' + ('0' + t.seconds).slice(-2);
-
-                    if (t.total <= 0) {
-                        clearInterval(timeinterval);
-                        Timer.innerHTML = 'Fertig!';
-                        // window.location.reload();
-                    }
-                }
-
-                updateClock();
-                let timeinterval = setInterval(updateClock, 1000);
-            }
-
-            initializeClock('gebactive', new Date({{$BuildingActive->time * 1000}}));
-        </script>
-    @endisset
 @endsection

@@ -34,7 +34,7 @@
                             <input type="text" placeholder="Spielername" value="{{ auth()->user()->name }}" name="name">
                         </label>
                         <label>
-                            <input type="text" placeholder="Planetname" value="{{ uData('planet.name') }}" name="pname">
+                            <input type="text" placeholder="Planetname" value="{{ uData('planet.name') != false ? uData('planet.name'):randPlanetName() }}" name="pname">
                         </label>
                     </div>
                     <div class="row">

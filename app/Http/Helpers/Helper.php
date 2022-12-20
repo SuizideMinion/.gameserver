@@ -23,9 +23,9 @@ function timerHTML($id, $time)
         if (hours < '10') { hours = '0' + hours; }
         if (minutes < '10') { minutes = '0' + minutes; }
         if (seconds < '10') { seconds = '0' + seconds; }
-        if (days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0)
+        if (timeLeft <= 0)
         {
-            $('#timer" . $id . "').html('Finish');
+            $('#timer" . $id . "').html('". Lang('timer.finish') ."');
             clearInterval(". $id ."Timer);
         }
         else
@@ -298,6 +298,22 @@ function hasTech($tech, $id, $level = 1, $user_id = 0)
         return (\App\Models\UserResearchs::where('user_id', $user_id)->where('research_id', $id)->where('level', '>=', $level)->first() ? true : false);
 }
 
+function getFreeCorrordinates()
+{
+    for($x=1; $x < 3500; $x++)
+    {
+        $X = rand(1,256);
+        $Y = rand(1,256);
+        if(empty(\App\Models\Planet::where('x', $X)->where('y', $Y)->first()))
+        {
+//            if(empty(\App\Models\User::where('posXmap', $X)->where('posYmap', $Y)->first()))
+//            {
+                return array(['x' => $X, 'y' => $Y]);
+//            }
+        }
+    }
+}
+
 function uData($key)
 {
     return (session('uData')[$key]->value ?? false);
@@ -320,14 +336,40 @@ function uRess()
 
 function Lang($key, $array = null, $plural = null)
 {
-    if ($plural == null or $plural == 1) $text = (session('Lang')[$key]->value ?? session('Lang')['dummy']->value);
-    else $text = (session('Lang')[$key]->plural ?? session('Lang')['dummy']->value);
+    if ($plural == null or $plural == 1) $text = (session('Lang')[$key]->value ?? session('Lang')['dummy']->value .'('. $key .')');
+    else $text = (session('Lang')[$key]->plural ?? session('Lang')['dummy']->value .'('. $key .')');
 
     if ($array != null) {
         $text = str_replace(array_keys($array), array_values($array), $text);
     }
 
     return $text;
+}
+
+function randPlanetName() {
+    $handle = @fopen(storage_path() . '/csv/planetennamensliste.txt', 'r');
+//    dd($handle);
+    if ($handle) {
+        $random_line = null;
+        $line = null;
+        $count = 0;
+
+//        dd($handle);
+        while (($line = fgets($handle, 4096)) !== false) {
+            $count++;
+            // P(1/$count) probability of picking current line as random line
+            if(rand() % $count == 0) {
+                $random_line = $line;
+            }
+        }
+        if (!feof($handle)) {
+            fclose($handle);
+            return  "Error: unexpected fgets() fail\n";
+        } else {
+            fclose($handle);
+        }
+        return str_replace("\r\n",'',  $random_line);
+    }
 }
 
 function timeconversion($sekunden): string

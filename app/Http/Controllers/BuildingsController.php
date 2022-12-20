@@ -18,6 +18,12 @@ class BuildingsController extends Controller
      */
     public function index()
     {
+//        $Buildings = Researchs::with('getData')
+//            ->join('researchs_data', 'researchs_data.research_id', 'researchs.id')
+//            ->where('researchs_data.key', 'group')
+//            ->orderBy('researchs_data.value')
+//            ->get()
+//            ->groupBy('value');
         $Buildings = Buildings::with('getData')->get();
 
         $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
@@ -94,6 +100,7 @@ class BuildingsController extends Controller
             'level' => 1,
             'build_need' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.build_need'] ?? ''),
             'group' => ($BuildingData['1.group'] ?? ''),
+            'max_level' => ($BuildingData['1.max_level'] ?? ''),
             'build_time' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.tech_build_time'] ?? ''),
             'ress1' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress1'] ?? '0'),
             'ress2' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress2'] ?? '0'),

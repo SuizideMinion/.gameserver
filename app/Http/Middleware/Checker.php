@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Buildings;
+use App\Models\Planet;
 use App\Models\Researchs;
 use App\Models\ServerData;
 use App\Models\Translations;
@@ -52,6 +53,25 @@ class Checker
             {
                 header('Location: /Race');
                 exit;
+            }
+
+            if ( !isset($UsersData['x']) )
+            {
+                $korrds = Planet::where('user_id', NULL)->orderByRaw('RAND()')->first();
+                UserData::create([
+                    'user_id' => Auth::user()->id,
+                    'key' => 'x',
+                    'value' => $korrds['x']
+                ]);
+                UserData::create([
+                    'user_id' => Auth::user()->id,
+                    'key' => 'y',
+                    'value' => $korrds['y']
+                ]);
+                Planet::where('id', $korrds->id)->update([
+                    'user_id' => Auth::user()->id
+                ]);
+                $UsersData = UserData::where('user_id', Auth::user()->id)->get()->keyBy('key');
             }
 
             if ( !isset($UsersData['ress']) )

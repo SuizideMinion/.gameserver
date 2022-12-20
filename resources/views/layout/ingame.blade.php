@@ -88,8 +88,8 @@
             <i class="bi bi-ladder" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
                title="<b>{{ Lang('global_ranking_name') }}</b> <br><br><em>{{ Lang('global_ranking_desc') }}</em>"></i>
         </div>
-        <div class="race-icon race-icone" style="color: gray"><i class="bi bi-star-fill"></i></div>
-        <div class="race-icon race-iconf" style="color: gray"><i class="bi bi-star-fill"></i></div>
+{{--        <div class="race-icon race-icone" style="color: gray"><i class="bi bi-star-fill"></i></div>--}}
+{{--        <div class="race-icon race-iconf" style="color: gray"><i class="bi bi-star-fill"></i></div>--}}
     </div>
     <li class="nav-item dropdown pe-3"
         style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">
@@ -235,11 +235,11 @@
         window.notify = {
             list: [],
             id: 0,
-            log: function (msg) {
-                var console = document.getElementById('console');
-                console.innerHTML += ("\n" + msg);
-                console.scrollTop = console.scrollHeight;
-            },
+            // log: function (msg) {
+            //     var console = document.getElementById('console');
+            //     console.innerHTML += ("\n" + msg);
+            //     console.scrollTop = console.scrollHeight;
+            // },
             compatible: function () {
                 if (typeof Notification === 'undefined') {
                     notify.log("Notifications are not available for your browser.");
@@ -274,28 +274,28 @@
                             lang: "",
                             dir: "auto",
                         });
-                        notify.log("Notification #" + id + " queued for display");
-                        notify.list[id].onclick = function () {
-                            notify.logEvent(id, "clicked");
-                        };
-                        notify.list[id].onshow = function () {
-                            notify.logEvent(id, "showed");
-                        };
-                        notify.list[id].onerror = function () {
-                            notify.logEvent(id, "errored");
-                        };
-                        notify.list[id].onclose = function () {
-                            notify.logEvent(id, "closed");
-                        };
+                        // notify.log("Notification #" + id + " queued for display");
+                        // notify.list[id].onclick = function () {
+                        //     notify.logEvent(id, "clicked");
+                        // };
+                        // notify.list[id].onshow = function () {
+                        //     notify.logEvent(id, "showed");
+                        // };
+                        // notify.list[id].onerror = function () {
+                        //     notify.logEvent(id, "errored");
+                        // };
+                        // notify.list[id].onclose = function () {
+                        //     notify.logEvent(id, "closed");
+                        // };
 
-                        console.log("Created a new notification ...");
-                        console.log(notify.list[id]);
+                        // console.log("Created a new notification ...");
+                        // console.log(notify.list[id]);
                     }
                 }, time * 1000);
             },
-            logEvent: function (id, event) {
-                notify.log("Notification #" + id + " " + event);
-            }
+            // logEvent: function (id, event) {
+            //     notify.log("Notification #" + id + " " + event);
+            // }
         };
         notify.show({{ ( (\App\Models\UserBuildings::where('user_id', auth()->user()->id)->where('value', 1)->first()->time ?? 99999999999) - time() ) }}, 'Gebäude bau Fertig')
         notify.show({{ ( (\App\Models\UserResearchs::where('user_id', auth()->user()->id)->where('value', 1)->first()->time ?? 99999999999) - time() ) }}, 'Forschung Fertig')
