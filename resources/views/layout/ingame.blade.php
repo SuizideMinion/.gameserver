@@ -74,17 +74,17 @@
     <div class="race-footerr" style=""></div>
 
     <div class="Navigation">
-        <div class="race-head" style=""></div>
-        <div class="race-icon race-icona" onclick="window.location.href = '{{ route('buildings.index') }}';">
+        <div class="race-head" style="z-index: 1000"></div>
+        <div class="race-icon race-icona" style="z-index: 1000" onclick="window.location.href = '{{ route('buildings.index') }}';">
             <i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
                title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i>
         </div>
-        <div class="race-icon race-iconb" style="color: gray"><i class="bi bi-star-fill"></i></div>
-        <div class="race-icon race-iconc" onclick="window.location.href = '{{ route('units.index') }}';">
+        <div class="race-icon race-iconb" style="z-index: 1000"><i class="bi bi-star-fill"></i></div>
+        <div class="race-icon race-iconc" style="z-index: 1000" onclick="window.location.href = '{{ route('units.index') }}';">
             <i class="bi bi-chevron-double-up" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
                title="<b>{{ Lang('global_military_name') }}</b> <br><br><em>{{ Lang('global_military_desc') }}</em>"></i>
         </div>
-        <div class="race-icon race-icond" onclick="window.location.href = '{{ route('ranking.index') }}';">
+        <div class="race-icon race-icond" style="z-index: 1000" onclick="window.location.href = '{{ route('ranking.index') }}';">
             <i class="bi bi-ladder" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
                title="<b>{{ Lang('global_ranking_name') }}</b> <br><br><em>{{ Lang('global_ranking_desc') }}</em>"></i>
         </div>

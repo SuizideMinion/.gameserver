@@ -172,23 +172,6 @@
         {{--                <div class="geb geb24" style="top: 5346px;left: 10361px;"></div>--}}
         {{--                <div class="geb geb25" style="top: 4612px;left: 10772px;"></div>--}}
     </div>
-    <!-- Modal -->
-    <div class="modal  modal-xl" id="showDialog" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showDialog"
-         aria-hidden="true">
-        <button style="color: red;font-size: xx-large;position: fixed;right: 20px;top: 20px;" type="button"
-                class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            <i class="bi bi-x-circle" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-               aria-label="close"></i>
-        </button>
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body p-0">
-                    ...
-                </div>
-                {{--                <button type="button" class="btn-close" onclick="closeDialog()" style="position: absolute;right: 10px;top: 10px;"></button>--}}
-            </div>
-        </div>
-    </div>
     <div style="align-items: center;position: fixed;top: calc(50% - 45px); right: 10px;">
         <div class="mt-1" style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
              id="{{ ($ResearchActive ? 'resactive':'') }}"
@@ -245,36 +228,6 @@
             }
         }
         createCircleOfDivs({{ uData('kollektoren') }}, 1400, 1000, 1000, "dynamic");
-    </script>
-    <script>
-        function showDialog(id) {
-            let myModal = new bootstrap.Modal(document.getElementById('showDialog'), {
-                keyboard: false
-            })
-            $(".modal-body").html(
-                '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
-            $(document).ready(function () {
-                $('.modal-body').load(id);
-            })
-            myModal.show()
-        }
-
-        function closeDialog() {
-            let myModal = new bootstrap.Modal(document.getElementById('showDialog'), {
-                keyboard: false
-            })
-            myModal.hide()
-        }
-
-        function uSetting(key, value) {
-            $.ajax({
-                url: "/api/uSettings/{{uData('token')}}/" + key + "/" + value,
-                success: function (res) {
-                    console.log(res);
-                    location.reload();
-                }
-            });
-        }
     </script>
     <script>
         $('.m').each(function () {

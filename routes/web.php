@@ -59,7 +59,7 @@ Route::group(['middleware' => ['web', 'checker']], function () {
         Route::get('unitsadd', '\App\Http\Controllers\Admin\UnitController@getDataCsv');
         Route::get('/planets', '\App\Http\Controllers\Admin\PlanetsCreateController@index');
     });
-    Route::resource('/map', \App\Http\Controllers\MapController::class);
+    Route::resource('map', \App\Http\Controllers\MapController::class);
 
     Route::resource('buildings', 'App\Http\Controllers\BuildingsController');
     Route::resource('researchs', 'App\Http\Controllers\ResearchsController');
@@ -70,6 +70,7 @@ Route::group(['middleware' => ['web', 'checker']], function () {
     Route::resource('units', 'App\Http\Controllers\UnitsController');
     Route::resource('military/fleet', 'App\Http\Controllers\Military\FleetController');
     Route::resource('bugs', 'App\Http\Controllers\Server\BugController');
+    Route::resource('Navigation', 'App\Http\Controllers\Server\NavigationController');
 });
 
 Route::resource('Race', 'App\Http\Controllers\Server\RaceSwitchController');

@@ -989,7 +989,7 @@ header .action a {
 
 .complete-message .actions ul li a {
     width: 100%;
-    padding: 8px 0;
+    padding: 8px 8px;
     background-color: #111d2e;
     color: rgb(5, 198, 255);
     text-transform: uppercase;

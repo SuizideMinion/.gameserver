@@ -51,17 +51,19 @@
         <div id="map" class="draggable">
             <div style="width: 100%; height: 100%;position:relative;">
                 @foreach($Planets as $Planet)
+{{--                    @php $getData = (isset($Planet) ? $Planet->getData->where('user_id', auth()->user()->id)->pluck('value', 'key'):false); @endphp--}}
                     <div data-id="{{$Planet->id}}" class="planet"
-                         style="cursor: pointer;top:{{$Planet->x * 40}}px;left:{{$Planet->y * 40}}px;background-image: url('{{ getImage($Planet->img, 'planets/ai') }}');background-size: {{$Planet->size}}px;background-position:{{$Planet->posAtMap}};">
+                         style="{{ $Planet->x == uData('x') && $Planet->y == uData('y') ? 'box-shadow: red 0px 0px 22px;border-radius: 22px;':'' }}cursor: pointer;top:{{$Planet->x * 40}}px;left:{{$Planet->y * 40}}px;background-image: url('{{ getImage($Planet->img, 'planets/ai') }}');background-size: {{$Planet->size}}px;background-position:{{$Planet->posAtMap}};">
+{{--                        @if($getData) <div>TETS</div> @endif--}}
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
-    <div style="position:fixed;top:100px;right:20px;width:200px;z-index:9999;">
-        <div class="toast show" id="fixedInfo">
-            <div class="toast-header">Click auf einen Planeten</div>
-            <div class="toast-body" style="text-align: center;color: black;">
+    <div style="position:fixed;top:100px;right:20px;width:220px;z-index:9999;">
+        <div class="complete-message" id="fixedInfo">
+            <div class="toast-header intro d-block">Click auf einen Planeten</div>
+            <div class="body-content">
                 <div class="fixedName" style="color:orange;"></div>
                 <div class="fixedOwner"></div>
                 <div class="fixedRessurce"></div>
@@ -69,12 +71,34 @@
                 <div class="fixedEta"></div>
                 <div class="fixedAtt"></div>
             </div>
+
+            <div class="actions">
+                <ul>
+                    <li class="fbuttona">
+                    </li>
+                    <li class="fbuttonb">
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-
+    <div class="navi"></div>
 @endsection
 
 @section('scripts')
+    <script>
+        $(document).ready(navigation());
+
+        function navigation() {
+            $.ajax({
+                url: "/Navigation/",
+                success: function (res) {
+                    $('.navi').html(res);
+                }
+            });
+        }
+
+    </script>
     <script>
 
         var planets = document.getElementsByClassName('planet');
@@ -90,6 +114,8 @@
                 fixedInfo.find('.toast-header').html(array.pname !== false ? array.pname:array.name);
                 fixedInfo.find('.fixedXY').html(array.x + ':' + array.y);
                 fixedInfo.find('.fixedOwner').html(array.username !== false ? array.username:'');
+                fixedInfo.find('.fbuttona').html('<a href="#">Geheimdienst</a>');
+                fixedInfo.find('.fbuttonb').html('<a href="#">Angreifen</a>');
             });
         }
 
@@ -199,7 +225,7 @@
             // Einige Variablen
             let pos0; // Pointerposition bei down
             let start; // Position des Dragobjekts bei down
-            let zmax = 1000; // Start z-Index für die Dragelemente, muss evtl. angepasst werden
+            let zmax = 0; // Start z-Index für die Dragelemente, muss evtl. angepasst werden
             let dragele = null; // Das aktuelle Dragelement
             // Bestimmen der Pointerposition
             function get_pointer_pos(e) {
@@ -282,7 +308,7 @@
                         y: dragele.offsetTop
                     };
                     pos0 = pos;
-                    dragele.style.zIndex = ++zmax;
+                    dragele.style.zIndex = zmax;
                     dragele.focus();
                 }
             } // down
