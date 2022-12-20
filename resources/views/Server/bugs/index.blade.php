@@ -30,6 +30,9 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+
+        <div class="user-message mt-2">
             @foreach($BugsB AS $Bug)
                 <div class="user-message-one" style="cursor:pointer;"
                      onclick="window.location.href = '{{ route('bugs.show', $Bug->id) }}';">
@@ -47,6 +50,9 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+
+        <div class="user-message mt-2">
             @foreach($BugsF AS $Bug)
                 <div class="user-message-one" style="cursor:pointer;"
                      onclick="window.location.href = '{{ route('bugs.show', $Bug->id) }}';">

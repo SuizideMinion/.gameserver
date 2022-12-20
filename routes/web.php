@@ -89,3 +89,7 @@ Route::get('logout', function () {
 
     return Redirect('/');
 });
+Route::get('/500', function () {
+    abort(500);
+});
+

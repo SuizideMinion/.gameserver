@@ -148,23 +148,34 @@
             // alert( $('#value-2').val() )
             @foreach($Units AS $Unit)
                 mcost = mcost + ($('#value-{{ $Unit->id }}').val() * $('.mc-{{ $Unit->id }}').data('value'))
-            dcost = dcost + ($('#value-{{ $Unit->id }}').val() * $('.dc-{{ $Unit->id }}').data('value'))
-            icost = icost + ($('#value-{{ $Unit->id }}').val() * $('.ic-{{ $Unit->id }}').data('value'))
-            ecost = ecost + ($('#value-{{ $Unit->id }}').val() * $('.ec-{{ $Unit->id }}').data('value'))
-            tcost = tcost + ($('#value-{{ $Unit->id }}').val() * $('.tc-{{ $Unit->id }}').data('value'))
+                dcost = dcost + ($('#value-{{ $Unit->id }}').val() * $('.dc-{{ $Unit->id }}').data('value'))
+                icost = icost + ($('#value-{{ $Unit->id }}').val() * $('.ic-{{ $Unit->id }}').data('value'))
+                ecost = ecost + ($('#value-{{ $Unit->id }}').val() * $('.ec-{{ $Unit->id }}').data('value'))
+                tcost = tcost + ($('#value-{{ $Unit->id }}').val() * $('.tc-{{ $Unit->id }}').data('value'))
             @endforeach
 
 
             let color1 = "#FFFFFF";
             let color2 = "#FFFFFF";
-            if (mcost > {{ JSONuData('ress')->ress1 }}) color1 = "#FF0000";
-            if (dcost > {{ JSONuData('ress')->ress2 }}) color2 = "#FF0000";
+            let color3 = "#FFFFFF";
+            let color4 = "#FFFFFF";
+            let color5 = "#FFFFFF";
+            if (mcost > {{ JSONuData('ress')->ress1 }})
+                color1 = "#FF0000";
+            if (dcost > {{ JSONuData('ress')->ress2 }})
+                color2 = "#FF0000";
+            if (icost > {{ JSONuData('ress')->ress3 }})
+                color3 = "#FF0000";
+            if (ecost > {{ JSONuData('ress')->ress4 }})
+                color4 = "#FF0000";
+            if (tcost > {{ JSONuData('ress')->ress5 }})
+                color5 = "#FF0000";
 
             $("#mcost").html('<font color="' + color1 + '">' + number_format(Math.round(mcost)) + '</font>');
             $("#dcost").html('<font color="' + color2 + '">' + number_format(Math.round(dcost)) + '</font>');
-            $("#icost").html('<font color="' + color2 + '">' + number_format(Math.round(icost)) + '</font>');
-            $("#ecost").html('<font color="' + color2 + '">' + number_format(Math.round(ecost)) + '</font>');
-            $("#tcost").html('<font color="' + color2 + '">' + number_format(Math.round(tcost)) + '</font>');
+            $("#icost").html('<font color="' + color3 + '">' + number_format(Math.round(icost)) + '</font>');
+            $("#ecost").html('<font color="' + color4 + '">' + number_format(Math.round(ecost)) + '</font>');
+            $("#tcost").html('<font color="' + color5 + '">' + number_format(Math.round(tcost)) + '</font>');
         }
     </script>
 
