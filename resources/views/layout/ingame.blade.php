@@ -174,6 +174,24 @@
         </ul><!-- End Profile Dropdown Items -->
     </li><!-- End Profile Nav -->
 </div>
+
+<!-- Modal -->
+<div class="modal  modal-xl" id="showDialog" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showDialog"
+     aria-hidden="true">
+    <button style="color: red;font-size: xx-large;position: fixed;right: 20px;top: 20px;" type="button"
+            class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <i class="bi bi-x-circle" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+           aria-label="close"></i>
+    </button>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                ...
+            </div>
+            {{--                <button type="button" class="btn-close" onclick="closeDialog()" style="position: absolute;right: 10px;top: 10px;"></button>--}}
+        </div>
+    </div>
+</div>
 <div id="modifiersDiv"></div>
 <!-- Template Main JS File -->
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
