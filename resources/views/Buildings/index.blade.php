@@ -212,6 +212,37 @@
 
 
 @section('scripts')
+
+    <script>
+        function showDialog(id) {
+            let myModal = new bootstrap.Modal(document.getElementById('showDialog'), {
+                keyboard: false
+            })
+            $(".modal-body").html(
+                '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+            $(document).ready(function () {
+                $('.modal-body').load(id);
+            })
+            myModal.show()
+        }
+
+        function closeDialog() {
+            let myModal = new bootstrap.Modal(document.getElementById('showDialog'), {
+                keyboard: false
+            })
+            myModal.hide()
+        }
+
+        function uSetting(key, value) {
+            $.ajax({
+                url: "/api/uSettings/{{uData('token')}}/" + key + "/" + value,
+                success: function (res) {
+                    console.log(res);
+                    location.reload();
+                }
+            });
+        }
+    </script>
     <script>
         function createCircleOfDivs(num, radius, offsetX, offsetY, className) {
             var x, y;
