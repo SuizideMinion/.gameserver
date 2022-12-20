@@ -80,7 +80,7 @@ Route::get('login/{id}', function ($id) {
     if ($user) {
         Auth::loginUsingId($user->id);
     }
-    return redirect('/');
+    return redirect('/map');
 });
 
 Route::get('logout', function () {

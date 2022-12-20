@@ -79,7 +79,10 @@
             <i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
                title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i>
         </div>
-        <div class="race-icon race-iconb" style="z-index: 1000"><i class="bi bi-star-fill"></i></div>
+        <div class="race-icon race-iconb" style="z-index: 1000" onclick="window.location.href = '{{ route('map.index') }}';">
+            <i class="bi bi-stars" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
+               title="<b>{{ Lang('global_map_name') }}</b> <br><br><em>{{ Lang('global_map_desc') }}</em>"></i>
+        </div>
         <div class="race-icon race-iconc" style="z-index: 1000" onclick="window.location.href = '{{ route('units.index') }}';">
             <i class="bi bi-chevron-double-up" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
                title="<b>{{ Lang('global_military_name') }}</b> <br><br><em>{{ Lang('global_military_desc') }}</em>"></i>
