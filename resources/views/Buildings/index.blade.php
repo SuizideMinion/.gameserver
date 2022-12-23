@@ -239,39 +239,6 @@
             }
         }
 
-        // Erzeugen weiterer Quadrate und de Eventhandler für den Close-Button
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     let i = 0,
-        //         x0 = 0,
-        //         y0 = 130;
-        //     const farben = ["red", "green", "blue", "yellow", "orange", "magenta"];
-        //     document.querySelector("#b1")
-        //         .addEventListener("click", function () {
-        //             let newdiv = document.querySelector("#Lager .draggable")
-        //                 .cloneNode(true);
-        //             newdiv.style.left = x0 + i * 30 + "px";
-        //             newdiv.style.top = y0 + i * 30 + "px";
-        //             newdiv.style.backgroundColor = farben[i % farben.length];
-        //             i++;
-        //             if (i > 2 * farben.length) {
-        //                 i = 0;
-        //                 x0 += 30;
-        //             }
-        //             document.querySelector("#outer")
-        //                 .appendChild(newdiv);
-        //         }, false);
-        //     document.querySelector("#b2")
-        //         .addEventListener("click", function () {
-        //             let newdiv = document.querySelector("#Lager .fixed")
-        //                 .cloneNode(true);
-        //             document.querySelector("#outer")
-        //                 .appendChild(newdiv);
-        //         }, false);
-        //     document.body.addEventListener("click", function (e) {
-        //         if (e.target.classList && e.target.classList.contains("close")) e.target.parentNode
-        //             .parentNode.removeChild(e.target.parentNode);
-        //     }, false);
-        // }, false);
         // drag_n_drop.js
         // 6. 1. 2021
         // Alle Elemente mit der Klasse "draggable" werden verschiebbar gemacht
@@ -460,11 +427,11 @@
         map.addEventListener("touchend", mouseUp);
         map.addEventListener("mouseup", mouseUp);
 
-        var Y = -10000 + (window.innerWidth / 2) + 500;
+        var Y = -10000 + (window.innerWidth ) ;
 {{--            {{((isset($_GET['y']) ? $_GET['y']:uData('y')) * 40) + 20}} + (window.innerWidth / 2);--}}
         map.style.left = Y + 'px';
 
-        var X = -5000 + (window.innerHeight / 2) + 500;
+        var X = -5000 + (window.innerHeight ) ;
 {{--            {{((isset($_GET['x']) ? $_GET['x']:uData('x')) * 40) + 20}} + (window.innerHeight / 2);--}}
         map.style.top = X + 'px';
         var Intervall1;

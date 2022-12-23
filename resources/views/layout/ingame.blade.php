@@ -181,7 +181,7 @@
 <!-- Modal -->
 <div class="modal  modal-xl" id="showDialog" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showDialog"
      aria-hidden="true">
-    <button style="color: red;font-size: xx-large;position: fixed;right: 20px;top: 20px;" type="button"
+    <button style="color: red;font-size: xx-large;position: fixed;right: 20px;top: 20px;z-index: 9999999" type="button"
             class="btn-close" data-bs-dismiss="modal" aria-label="Close">
         <i class="bi bi-x-circle" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
            aria-label="close"></i>
