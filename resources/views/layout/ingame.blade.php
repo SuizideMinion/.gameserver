@@ -100,6 +100,10 @@
                 <i class="bi bi-bug"></i>
             </a><!-- End Bugs Icon -->
 
+            <a class="nav-link nav-icon" href="/Race" style="margin-right: 10px">
+                <i class="bi bi-bootstrap-reboot"></i>
+            </a><!-- End Bugs Icon -->
+
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"
                style="margin-right: 10px">
                 <i class="bi bi-chat-left-text"></i>

@@ -11,7 +11,6 @@
             width: 20240px;
             height: 10240px;
             display: flex;
-            zoom: 50%;
         }
 
         .draggable {
@@ -191,7 +190,19 @@
             var zoom_point = {x: 0, y: 0}
             var scale = 0.1
             target.css('transform-origin', '0 0')
-            target.on("mousewheel DOMMouseScroll", scrolled)
+            target.on("mousewheel DOMMouseScroll", debounce(scrolled,10))
+
+            function debounce(func, delay){
+                let timer;
+                return function () {     //anonymous function
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(timer);
+                    timer = setTimeout(()=> {
+                        func.apply(context, args)
+                    },delay);
+                }
+            }
 
             function scrolled(e) {
                 var offset = container.offset()

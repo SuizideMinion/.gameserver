@@ -133,7 +133,19 @@
             var zoom_point = {x: 0, y: 0}
             var scale = 0.1
             target.css('transform-origin', '0 0')
-            target.on("mousewheel DOMMouseScroll", scrolled)
+            target.on("mousewheel DOMMouseScroll", debounce(scrolled,10))
+
+            function debounce(func, delay){
+                let timer;
+                return function () {     //anonymous function
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(timer);
+                    timer = setTimeout(()=> {
+                        func.apply(context, args)
+                    },delay);
+                }
+            }
 
             function scrolled(e) {
                 var offset = container.offset()
@@ -179,39 +191,6 @@
             }
         }
 
-        // Erzeugen weiterer Quadrate und de Eventhandler für den Close-Button
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     let i = 0,
-        //         x0 = 0,
-        //         y0 = 130;
-        //     const farben = ["red", "green", "blue", "yellow", "orange", "magenta"];
-        //     document.querySelector("#b1")
-        //         .addEventListener("click", function () {
-        //             let newdiv = document.querySelector("#Lager .draggable")
-        //                 .cloneNode(true);
-        //             newdiv.style.left = x0 + i * 30 + "px";
-        //             newdiv.style.top = y0 + i * 30 + "px";
-        //             newdiv.style.backgroundColor = farben[i % farben.length];
-        //             i++;
-        //             if (i > 2 * farben.length) {
-        //                 i = 0;
-        //                 x0 += 30;
-        //             }
-        //             document.querySelector("#outer")
-        //                 .appendChild(newdiv);
-        //         }, false);
-        //     document.querySelector("#b2")
-        //         .addEventListener("click", function () {
-        //             let newdiv = document.querySelector("#Lager .fixed")
-        //                 .cloneNode(true);
-        //             document.querySelector("#outer")
-        //                 .appendChild(newdiv);
-        //         }, false);
-        //     document.body.addEventListener("click", function (e) {
-        //         if (e.target.classList && e.target.classList.contains("close")) e.target.parentNode
-        //             .parentNode.removeChild(e.target.parentNode);
-        //     }, false);
-        // }, false);
         // drag_n_drop.js
         // 6. 1. 2021
         // Alle Elemente mit der Klasse "draggable" werden verschiebbar gemacht

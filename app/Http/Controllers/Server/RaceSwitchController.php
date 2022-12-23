@@ -77,7 +77,7 @@ class RaceSwitchController extends Controller
                     'value' => (int)$request->race
                 ]
             );
-            return redirect('/');
+            return redirect('/map');
         }
         else {
             return back()->with('error', 'Bitte alles ausfüllen!');
