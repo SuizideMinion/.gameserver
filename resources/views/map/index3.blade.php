@@ -21,7 +21,7 @@
             left: -{{((isset($_GET['x']) ? $_GET['x']:auth()->user()->posXmap) * 40) + 520}}px;
             width: 10240px;
             height: 10240px;
-        /*linear-gradient(to bottom, blue, white);*/
+        linear-gradient(to bottom, blue, white);
             display: flex;
         }
 

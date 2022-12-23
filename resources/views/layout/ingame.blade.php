@@ -187,7 +187,7 @@
            aria-label="close"></i>
     </button>
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content" style="background-color: transparent">
             <div class="modal-body p-0">
                 ...
             </div>

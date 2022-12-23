@@ -121,7 +121,7 @@
                 <p>
                     <img onclick="{{
                     ($Building['art'] == 1 ? 'window.location.href = "/buildings/'. $Building['id'] .'/edit"':
-                    (!canTech($Building['art'], $Building['id'], $Building['level']) ?
+                    (!canTech($Building['art'], $Building['id'], ($Building['level'] + 1)) ?
                     'showResearch("/researchs/'. $Building['group'] .'#'. $Building['id'].'");' :
                     'window.location.href = "/researchs/'. $Building['id'] .'/edit"') ) }}"
                          class="getImage"
@@ -130,19 +130,19 @@
                          data-bs-toggle="tooltip"
                          data-bs-html="true"
                          {{--                     {{ dd(canTech(2, 10, 1)) }}--}}
-                         title="<em>{{ $Building['name'] . $Building['level'] }}</em><br>
+                         title="<em>{{ $Building['name'] . ($Building['level'] + 1 ) }}</em><br>
                         <p>{{ Lang('global_ress1_name') }}: <span class='m'>{{ $Building['ress1'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress2_name') }}: <span class='d'>{{ $Building['ress2'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress3_name') }}: <span class='i'>{{ $Building['ress3'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress4_name') }}: <span class='e'>{{ $Building['ress4'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress5_name') }}: <span class='t'>{{ $Building['ress5'] ?? 0 }}</span></p>
-{{--                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>--}}
+                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($Building['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
                              <b>{{ $Building['desc'] }}</b>
                         <br>">
                     <span class="span-icon-show">
                     <i class="bi {{
-                        hasTech($Building['art'], $Building['id'], $Building['level']) == true ?
-                        'bi-check-all': (canTech($Building['art'], $Building['id'], $Building['level']) == true ?
+                        hasTech($Building['art'], $Building['id'], ($Building['level'] + 1 )) == true ?
+                        'bi-check-all': (canTech($Building['art'], $Building['id'], ($Building['level'] + 1 )) == true ?
                         'bi-arrow-up-short':'bi-x') }}">
                     </i>
                 </span>
@@ -165,8 +165,8 @@
                         <p>{{ Lang('global_ress3_name') }}: <span class='i'>{{ $has['ress3'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress4_name') }}: <span class='e'>{{ $has['ress4'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress5_name') }}: <span class='t'>{{ $has['ress5'] ?? 0 }}</span></p>
-{{--                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>--}}
-                                 <b>{{ $has['desc'] }}</b>
+                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
+                        <b>{{ $has['desc'] }}</b>
                         <br>">
                         <span class="span-icon-show">
                     <i class="bi {{

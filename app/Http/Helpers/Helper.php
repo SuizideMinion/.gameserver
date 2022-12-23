@@ -38,48 +38,6 @@ function timerHTML($id, $time)
 </script>
 
     ";
-//    return "
-//    <span class='". $id ."Timer'></span>
-//    <script>
-//            function getTime". $id ."Remaining(endtime) {
-//                let total = Date.parse(endtime) - Date.parse(new Date());
-//                let seconds = Math.floor((total / 1000) % 60);
-//                let minutes = Math.floor((total / 1000 / 60) % 60);
-//                let hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-//                let days = Math.floor(total / (1000 * 60 * 60 * 24));
-//
-//                return {
-//                    total,
-//                    days,
-//                    hours,
-//                    minutes,
-//                    seconds
-//                };
-//            }
-//
-//            function initialize". $id ."Clock(id, endtime) {
-//                let clock = document.getElementById(id);
-//                let Timer = clock.querySelector('.". $id ."Timer');
-//
-//                function update". $id ."Clock() {
-//                    let t = getTime". $id ."Remaining(endtime);
-//
-//                    Timer.innerHTML = (t.days !== 0 ? t.days + 'Tage ' : '') + ('0' + t.hours).slice(-2) + ':' + ('0' + t.minutes).slice(-2) + ':' + ('0' + t.seconds).slice(-2);
-//
-//                    if (t.total <= 0) {
-//                        clearInterval(timeinterval);
-//                        Timer.innerHTML = 'Fertig!';
-//                        // window.location.reload();
-//                    }
-//                }
-//
-//                update". $id ."Clock();
-//                let timeinterval = setInterval(updateClock, 1000);
-//            }
-//
-//            initialize". $id ."Clock('". $id ."', new Date(". $time * 1000 ."));
-//        </script>
-//        ";
 }
 
 
@@ -227,7 +185,7 @@ function ressChance($user_id, $ress1 = null, $ress2 = null, $ress3 = null, $ress
     ]);
 }
 
-function canTech($tech, $id, $level = 1, $user_id = 0)
+function canTech($tech, $id, $level = 1, $user_id = 0, $ress = 1)
 {
     $c = 1;
     if ($tech == 1) {
@@ -270,17 +228,18 @@ function canTech($tech, $id, $level = 1, $user_id = 0)
             }
         }
     }
-
-    if ((int)uRess()->ress1 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress1'])
-        return false;
-    if ((int)uRess()->ress2 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress2'])
-        return false;
-    if ((int)uRess()->ress3 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress3'])
-        return false;
-    if ((int)uRess()->ress4 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress4'])
-        return false;
-    if ((int)uRess()->ress5 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress5'])
-        return false;
+    if ( $ress = 1 ) {
+        if ((int)uRess()->ress1 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress1'])
+            return false;
+        if ((int)uRess()->ress2 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress2'])
+            return false;
+        if ((int)uRess()->ress3 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress3'])
+            return false;
+        if ((int)uRess()->ress4 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress4'])
+            return false;
+        if ((int)uRess()->ress5 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress5'])
+            return false;
+    }
 
     return true;
 //        return ['notDisplay' => true, 'value' => 'lol10'];
