@@ -109,7 +109,7 @@
 
 @section('content')
     <div id="map" class="draggable">
-        <div style="width: 100%; height: 100%;position:relative;">
+        <div style="width: 100%; height: 100%;position:relative;transform-origin: 0px 0px;transform: translate(8096px, 4096px) scale(0.6, 0.6);">
             <div class="Planet"></div>
             <div class="Moon"></div>
             <div id="dyn"></div>
@@ -188,7 +188,7 @@
             var pos = {x: 0, y: 0}
             var zoom_target = {x: 0, y: 0}
             var zoom_point = {x: 0, y: 0}
-            var scale = 0.1
+            var scale = 0.6
             target.css('transform-origin', '0 0')
             target.on("mousewheel DOMMouseScroll", debounce(scrolled,10))
 
@@ -223,7 +223,7 @@
 
                 // apply zoom
                 scale += delta * factor * scale
-                scale = Math.max(1, Math.min(max_scale, scale))
+                scale = Math.max(0.6, Math.min(max_scale, scale))
 
                 // calculate x and y based on zoom
                 pos.x = -zoom_target.x * scale + zoom_point.x
@@ -436,11 +436,11 @@
         map.addEventListener("touchend", mouseUp);
         map.addEventListener("mouseup", mouseUp);
 
-        var Y = -10000 + (window.innerWidth ) ;
+        var Y = -13866 + ((window.innerWidth + 500) / 2);
 {{--            {{((isset($_GET['y']) ? $_GET['y']:uData('y')) * 40) + 20}} + (window.innerWidth / 2);--}}
         map.style.left = Y + 'px';
 
-        var X = -5000 + (window.innerHeight ) ;
+        var X = -6776 ;
 {{--            {{((isset($_GET['x']) ? $_GET['x']:uData('x')) * 40) + 20}} + (window.innerHeight / 2);--}}
         map.style.top = X + 'px';
         var Intervall1;

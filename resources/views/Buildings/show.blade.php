@@ -139,7 +139,9 @@
                              <b>{{ $Building['desc'] }}</b>
                         <br>">
                     <span class="span-icon-show">
-                        @if(canTechnik($Building['art'], $Building['id'], ((session('UserBuildings')[$Building['id']]->level ?? 0) + 1), ress: 0) == true)
+                        @if(hasTech($Building['art'], $Building['id'], $Building['level']) == true)
+                            <i class="bi bi-check-all"></i>
+                        @elseif(canTechnik($Building['art'], $Building['id'], $Building['level'], ress: 0) == true)
                             <i class="bi bi-arrow-up-short"></i>
                         @else
                             <i class="bi bi-x"></i>
