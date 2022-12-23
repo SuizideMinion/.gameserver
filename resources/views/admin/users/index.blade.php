@@ -12,6 +12,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Name</th>
                             <th scope="col">Registriert</th>
+                            <th scope="col">Token</th>
                             <th scope="col">Letzter Update</th>
                             <th scope="col">Letzter Klick</th>
                         </tr>
@@ -22,6 +23,7 @@
                                 <th scope="row">{{ $User->id }}</th>
                                 <td>{{ $User->name }}</td>
                                 <td>{{ $User->created_at->format('d.m.Y H:i:s') }}</td>
+                                <td><a href="/{{ ( uData('CanAdminUserJoin') == 1 ? 'login/'. $User->token:'500' ) }}">Join</a> </td>
                                 <td>{{ $User->updated_at->format('d.m.Y H:i:s') }}</td>
                                 <td>{{ date('d.m.Y H:i:s', ($User->getData->pluck('value', 'key')['lastclick'] ?? 0) ) }}</td>
                             </tr>
