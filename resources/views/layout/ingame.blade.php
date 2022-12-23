@@ -177,7 +177,7 @@
         </li><!-- End Profile Nav -->
 
         <li class="nav-item dropdown pe-3"
-            style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">
+            style="position: fixed;left: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">
 
             <a class="nav-link nav-icon" href="/logout" style="margin-right: 10px">
                 <i class="bi bi-door-open-fill"></i>
