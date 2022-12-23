@@ -129,8 +129,7 @@
                          style="{{ hasTech($Building['art'], $Building['id'], $Building['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($Building['art'], $Building['id'], $Building['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
                          data-bs-toggle="tooltip"
                          data-bs-html="true"
-                         {{--                     {{ dd(canTech(2, 10, 1)) }}--}}
-                         title="<em>{{ $Building['name'] . ($Building['level'] + 1 ) }}</em><br>
+                         title="<em>{{ $Building['name'] . ($Building['level'] ) }}</em><br>
                         <p>{{ Lang('global_ress1_name') }}: <span class='m'>{{ $Building['ress1'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress2_name') }}: <span class='d'>{{ $Building['ress2'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress3_name') }}: <span class='i'>{{ $Building['ress3'] ?? 0 }}</span></p>
@@ -140,11 +139,11 @@
                              <b>{{ $Building['desc'] }}</b>
                         <br>">
                     <span class="span-icon-show">
-                    <i class="bi {{
-                        hasTech($Building['art'], $Building['id'], ($Building['level'] + 1 )) == true ?
-                        'bi-check-all': (canTech($Building['art'], $Building['id'], ($Building['level'] + 1 )) == true ?
-                        'bi-arrow-up-short':'bi-x') }}">
-                    </i>
+                        @if(canTechnik($Building['art'], $Building['id'], ((session('UserBuildings')[$Building['id']]->level ?? 0) + 1), ress: 0) == true)
+                            <i class="bi bi-arrow-up-short"></i>
+                        @else
+                            <i class="bi bi-x"></i>
+                        @endif
                 </span>
                     <i style="font-size: 20px;top: 4px;position: relative;left: -10px;" class="bi bi-chevron-double-right"></i>
                     @foreach($Building['hasBuilds'] as $has)
@@ -169,11 +168,18 @@
                         <b>{{ $has['desc'] }}</b>
                         <br>">
                         <span class="span-icon-show">
-                    <i class="bi {{
-                        hasTech($has['art'], $has['id'], $has['level']) == true ?
-                        'bi-check-all': (canTech($has['art'], $has['id'], $has['level']) == true ?
-                        'bi-arrow-up-short':'bi-x') }}">
-                    </i>
+{{--                    <i class="bi {{--}}
+{{--                        hasTech($has['art'], $has['id'], $has['level']) == true ?--}}
+{{--                        'bi-check-all': (canTech($has['art'], $has['id'], $has['level']) == true ?--}}
+{{--                        'bi-arrow-up-short':'bi-x') }}">--}}
+{{--                    </i>--}}
+                            @if(hasTech($has['art'], $has['id'], $has['level']) == true)
+                                <i class="bi bi-check-all"></i>
+                            @elseif(canTechnik($has['art'], $has['id'], $has['level'], ress: 0) == true)
+                                <i class="bi bi-arrow-up-short"></i>
+                            @else
+                                <i class="bi bi-x"></i>
+                            @endif
                 </span>
                     @endforeach
                 </p>

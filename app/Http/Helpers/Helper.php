@@ -244,6 +244,64 @@ function canTech($tech, $id, $level = 1, $user_id = 0, $ress = 1)
     return true;
 //        return ['notDisplay' => true, 'value' => 'lol10'];
 }
+function canTechnik($tech, $id, $level = 1, $user_id = 0, $ress = 1)
+{
+    $c = 1;
+    if ($tech == 1) {
+        $select = 'UserBuildings';
+        $getData = session('Buildings')[$id]->getData->pluck('value', 'key');
+        if ((session($select)[$id]->value ?? 0) == 2) {
+            if (($getData['1.max_level'] ?? '1') <= $level) return false;
+        }
+    }
+    if ($tech == 2) {
+        $select = 'UserResearchs';
+        $getData = session('Researchs')[$id]->getData->pluck('value', 'key');
+        if ((session($select)[$id]->value ?? 0) == 1) {
+            return false;
+        }
+    }
+
+    if (isset($getData[($select == 'UserBuildings' ? $level . '.' : '') . 'build_need'])) {
+        $keys = json_decode($getData[($select == 'UserBuildings' ? $level . '.' : '') . 'build_need']);
+
+        foreach ($keys as $array) {
+            $id = $array[0]->id;
+            if ($array[0]->art == 1) {
+                // Gebäude
+                if (isset(session('UserBuildings')[$id])) {
+                    if (session('UserBuildings')[$id]->value == 2) {
+                        if (session('UserBuildings')[$id]->level < $array[0]->level) return false;
+                    }
+                } else return false;
+
+            } elseif ($array[0]->art == 2) {
+                // Research
+                if (isset(session('UserResearchs')[$id])) {
+                    if (session('UserResearchs')[$id]->value != 2) {
+                        return false;
+                        //
+                    }
+                } else return false;
+            }
+        }
+    }
+    if ( $ress = 1 ) {
+        if ((int)uRess()->ress1 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress1'])
+            return false;
+        if ((int)uRess()->ress2 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress2'])
+            return false;
+        if ((int)uRess()->ress3 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress3'])
+            return false;
+        if ((int)uRess()->ress4 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress4'])
+            return false;
+        if ((int)uRess()->ress5 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress5'])
+            return false;
+    }
+
+    return true;
+//        return ['notDisplay' => true, 'value' => 'lol10'];
+}
 
 function hasTech($tech, $id, $level = 1, $user_id = 0)
 {
