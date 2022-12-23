@@ -96,6 +96,89 @@
         <li class="nav-item dropdown pe-3"
             style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">
 
+            <a class="nav-link nav-icon" href="/bugs" style="margin-right: 10px">
+                <i class="bi bi-bug"></i>
+            </a><!-- End Bugs Icon -->
+
+            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"
+               style="margin-right: 10px">
+                <i class="bi bi-chat-left-text"></i>
+            </a><!-- End Messages Icon -->
+            <ul class="dropdown-menu messages" style="background-color: black;width: 350px">
+            </ul><!-- End Messages Dropdown Items -->
+
+
+            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"
+               style="margin-right: 10px">
+                <i class="bi bi-diagram-3"></i>
+            </a>
+            <ul class="dropdown-menu sitemap" style="">
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="/buildings">
+                        Planet -> Gebäude
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="/researchs">
+                        Planet -> Forschungen
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="/resources">
+                        Planet -> Ressourcen
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="/kollektoren">
+                        Planet -> Kollektoren
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="/units">
+                        Militär -> Einheiten
+                    </a>
+                </li>
+            </ul><!-- End sitemap Dropdown Items -->
+
+
+            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                <i class="bi bi-gear"></i>
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" onclick="notify.authorize()">
+                        <i class="bi bi-person"></i>
+                        <span>Benarichtigungen bei Gebäude/Forschungen</span>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center">
+                        <i class="bi bi-person"></i>
+                        <span>{{time()}}</span>
+                    </a>
+                    @yield('settings')
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center">
+                        <i class="bi bi-person"></i>
+                        <span>
+                    @desktop
+                        Desktop
+                    @elsedesktop
+                        Mobile
+                    @enddesktop
+                </span>
+                    </a>
+                </li>
+
+            </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+        <li class="nav-item dropdown pe-3"
+            style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">
+
             <a class="nav-link nav-icon" href="/logout" style="margin-right: 10px">
                 <i class="bi bi-door-open-fill"></i>
             </a><!-- End logout Icon -->
