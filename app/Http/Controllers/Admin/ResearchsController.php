@@ -187,6 +187,6 @@ class ResearchsController extends Controller
                 }
             }
         }
-        return view('admin.Researchs.csv', compact('Return'));
+        return view('admin.researchs.csv', compact('Return'));
     }
 }
