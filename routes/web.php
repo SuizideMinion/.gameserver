@@ -87,7 +87,7 @@ Route::get('logout', function () {
     Session::flush();
     Auth::logout();
 
-    return Redirect('/');
+    return Redirect('https://join.bgame-gameserver.de');
 });
 Route::get('/500', function () {
     abort(500);

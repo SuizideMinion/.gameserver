@@ -1,6 +1,5 @@
 @extends('layout.ingame')
 
-
 @section('styles')
     <style>
         body {
@@ -117,7 +116,7 @@
             <div id="dyn"></div>
             <div class=" {{ hasTech(1, 22, 2) ? 'Shield ShieldB': (hasTech(1, 22, 1) ? 'Shield': '')}}"></div>
             @foreach($Builds as $Build)
-                {{--            {{ ( hasTech(1, $Build['id']) ? 'style': canTech(1, $Build['id'])) }}--}}
+
                 @if( hasTech(1, $Build['id']) OR canTech(1, $Build['id'], (session('UserBuildings')[$Build['id']]->level ?? 0) + 1))
                     <div id="{{ (($BuildingActive->build_id ?? 0) == $Build['id'] ? 'gebactive':'') }}" class="geb"
                          onclick="showDialog('/buildings/{{ $Build['id'] }}')"
@@ -138,6 +137,7 @@
                         </span>
                     </div>
                 @endif
+
             @endforeach
         </div>
     </div>
@@ -179,11 +179,9 @@
             });
         }
 
-
         $(document).ready(function () {
             var scroll_zoom = new ScrollZoom($('#map'), 10, 0.2)
         })
-
 
         function ScrollZoom(container, max_scale, factor) {
             var target = container.children().first()
@@ -501,24 +499,5 @@
         var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
             return new bootstrap.Popover(popoverTriggerEl)
         })
-    </script>
-
-
-    <script>
-        map = document.getElementById('map');
-        map.addEventListener("click",function(map){
-            // map = document.getElementById('map');
-            //Logging purposes
-            console.log("mouse location:", e.clientX, e.clientY);
-
-            // //meat and potatoes of the snippet
-            // var pos = e;
-            // var dot;
-            // dot = document.createElement('div');
-            // dot.className = "dot";
-            // dot.style.left = pos.x + "px";
-            // dot.style.top = pos.y + "px";
-            // document.body.appendChild(dot);
-        });
     </script>
 @endsection
