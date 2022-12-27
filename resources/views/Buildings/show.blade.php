@@ -73,7 +73,8 @@
             min-height: 48px;
             width: 100%;
         }
-        .getImage{
+
+        .getImage {
             max-width: 100%;
             width: 50px;
             border-radius: 13px;
@@ -82,20 +83,25 @@
         p {
             margin: 0px;
         }
+
         .span-icon-show {
             position: relative;
             top: 0px;
             left: -13px;
         }
-        .span-icon-show i{
+
+        .span-icon-show i {
             font-size: 20px;
         }
-        .bi-check-all{
+
+        .bi-check-all {
             color: green;
         }
+
         .bi-arrow-up-short {
             color: orange;
         }
+
         .bi-x {
             color: red;
         }
@@ -119,14 +125,17 @@
                 </p>
                 <p class="mt-1"></p>
                 <p>
-                    <img onclick="{{
-                    ($Building['art'] == 1 ? 'window.location.href = "/buildings/'. $Building['id'] .'/edit"':
-                    (!canTech($Building['art'], $Building['id'], ($Building['level'] + 1)) ?
-                    'showResearch("/researchs/'. $Building['group'] .'#'. $Building['id'].'");' :
-                    'window.location.href = "/researchs/'. $Building['id'] .'/edit"') ) }}"
+                    <img onclick="window.location.href = {{
+                        ($Building['art'] == 1 ? '"/buildings/'. $Building['id'] .'/edit"':'"/researchs/'. $Building['id'] .'/edit"') }}"
                          class="getImage"
                          src="{{ getImage($Building['image']) }}"
-                         style="{{ hasTech($Building['art'], $Building['id'], $Building['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($Building['art'], $Building['id'], $Building['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
+                         style="
+                         @if( $Building['canBuild']['Ausgebaut'] == 'true' )
+                             border: green 1px solid;box-shadow: green 1px 1px 10px;
+                         @elseif( !isset($Building['canBuild']['error']) )
+                             border: orange 1px solid;box-shadow: orange 1px 1px 10px;
+                         @endif
+                             "
                          data-bs-toggle="tooltip"
                          data-bs-html="true"
                          title="<em>{{ $Building['name'] . ($Building['level'] ) }}</em><br>
@@ -139,119 +148,52 @@
                              <b>{{ $Building['desc'] }}</b>
                         <br>">
                     <span class="span-icon-show">
-                        @if(hasTech($Building['art'], $Building['id'], $Building['level']) == true)
+                        @if( $Building['canBuild']['Gebaut'] == 'true' )
                             <i class="bi bi-check-all"></i>
-                        @elseif(canTechnik($Building['art'], $Building['id'], $Building['level'], ress: 0) == true)
+                            {{--                            <i class="bi bi-check-all" title="{{ print_r($Build['canBuild']) }}"></i>--}}
+                        @elseif( !$Building['canBuild']['errors'] )
                             <i class="bi bi-arrow-up-short"></i>
+                            {{--                            <i class="bi bi-arrow-up-short" title="{{ print_r($Build['canBuild']) }}"></i>--}}
                         @else
                             <i class="bi bi-x"></i>
+                            {{--                            <i class="bi bi-x" title="{{ print_r($Build['canBuild']) }}"></i>--}}
                         @endif
                 </span>
-                    <i style="font-size: 20px;top: 4px;position: relative;left: -10px;" class="bi bi-chevron-double-right"></i>
+                    <i style="font-size: 20px;top: 4px;position: relative;left: -10px;"
+                       class="bi bi-chevron-double-right"></i>
                     @foreach($Building['hasBuilds'] as $has)
-                        <img onclick="{{
-                    ($has['art'] == 1 ? 'window.location.href = "/buildings/'. $has['id'] .'/edit"':
-                    (!canTech($has['art'], $has['id'], $has['level']) ?
-                    'showResearch("/researchs/'. $has['group'] .'#'. $has['id'].'");' :
-                    'window.location.href = "/researchs/'. $has['id'] .'/edit"') ) }}"
+                        <img onclick="window.location.href = {{
+                                    ($has['art'] == 1 ? '"/buildings/'. $has['id'] .'/edit"':'"/researchs/'. $has['id'] .'/edit"') }}"
                              class="getImage"
                              src="{{ getImage($has['image']) }}"
-                             style="{{ hasTech($has['art'], $has['id'], $has['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($has['art'], $has['id'], $has['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
+                             style="max-height: 38px;"
                              data-bs-toggle="tooltip"
                              data-bs-html="true"
-                             {{--                     {{ dd(canTech(2, 10, 1)) }}--}}
                              title="<em>{{ $has['name'] . $has['level'] }}</em><br>
                         <p>{{ Lang('global_ress1_name') }}: <span class='m'>{{ $has['ress1'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress2_name') }}: <span class='d'>{{ $has['ress2'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress3_name') }}: <span class='i'>{{ $has['ress3'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress4_name') }}: <span class='e'>{{ $has['ress4'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress5_name') }}: <span class='t'>{{ $has['ress5'] ?? 0 }}</span></p>
-                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
+                        <p>{{ Lang('Buildtime') }} {{ timeconversion(((int)$has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
                         <b>{{ $has['desc'] }}</b>
                         <br>">
                         <span class="span-icon-show">
-{{--                    <i class="bi {{--}}
-{{--                        hasTech($has['art'], $has['id'], $has['level']) == true ?--}}
-{{--                        'bi-check-all': (canTech($has['art'], $has['id'], $has['level']) == true ?--}}
-{{--                        'bi-arrow-up-short':'bi-x') }}">--}}
-{{--                    </i>--}}
-                            @if(hasTech($has['art'], $has['id'], $has['level']) == true)
+                                    @if( $has['canBuild']['Gebaut'] == 'true' )
                                 <i class="bi bi-check-all"></i>
-                            @elseif(canTechnik($has['art'], $has['id'], $has['level'], ress: 0) == true)
+                            @elseif( !$has['canBuild']['errors'] )
                                 <i class="bi bi-arrow-up-short"></i>
                             @else
                                 <i class="bi bi-x"></i>
+                                {{--                                                                    <i class="bi bi-x" title="{{ print_r($has['canBuild']) }}"></i>--}}
                             @endif
-                </span>
+                                </span>
                     @endforeach
                 </p>
                 <span><i class="fa-solid fa-angle-down"></i></span>
             </div>
         @endif
     @endforeach
-{{--<div class="carousel__cell"--}}
-{{--     onclick="window.location.href = '{{ route('buildings.edit', $Building->id) }}';"--}}
-{{--     style="--}}
-{{--         background-image:--}}
-{{--         linear-gradient(rgba(0, 0, 0, 0.5),--}}
-{{--         rgba(0, 0, 0, 0.5)),--}}
-{{--         url('/assets/img/technologies/{{ $Building->pluck()['1.image'] }}');--}}
-{{--         background-repeat: no-repeat;--}}
-{{--         background-size: contain;--}}
-{{--         width: 100%;--}}
-{{--         ">--}}
-{{--    <br>--}}
-{{--    <h2 class="" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"--}}
-{{--        title="<em>{{ Lang('Building.desc.'. $Building->id) }}</em>">--}}
-{{--        {{ Lang('planet.building.name', array: [':NAME' => Lang('Building.name.'. $Building->id), ':LEVEL' => (session('UserBuildings')[$Building->id]->level ?? 0), ':MAX' => $Building->pluck()['1.max_level'] ]) }}--}}
-{{--    </h2><br>--}}
-{{--    @if( !hasTech(1, $Building->id, (session('Buildings')[$Building->id]->getData->pluck('value', 'key')['1.max_level'])) )--}}
-{{--        <p class=""--}}
-{{--           style="">{{ Lang('planet.building.build', [':level' => (session('UserBuildings')[$Building->id]->level ?? 0) + 1], plural: (session('UserBuildings')[$Building->id]->level ?? 0) + 1) }}</p>--}}
-{{--        <p class="m-0">{{ Lang('global_ress1_name') }}:--}}
-{{--            <span--}}
-{{--                class="m">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress1'] ?? 0 }}</span>--}}
-{{--        </p>--}}
-{{--        <p class="m-0">{{ Lang('global_ress2_name') }}:--}}
-{{--            <span--}}
-{{--                class="d">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress2'] ?? 0 }}</span>--}}
-{{--        </p>--}}
-{{--        <p class="m-0">{{ Lang('global_ress3_name') }}:--}}
-{{--            <span--}}
-{{--                class="i">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress3'] ?? 0 }}</span>--}}
-{{--        </p>--}}
-{{--        <p class="m-0">{{ Lang('global_ress4_name') }}:--}}
-{{--            <span--}}
-{{--                class="e">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress4'] ?? 0 }}</span>--}}
-{{--        </p>--}}
-{{--        <p class="m-0">{{ Lang('global_ress5_name') }}:--}}
-{{--            <span--}}
-{{--                class="t">{{ $Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.ress5'] ?? 0 }}</span>--}}
-{{--        </p>--}}
-{{--        <p class="m-0">{{ Lang('Buildtime') }}--}}
-{{--            : {{ timeconversion($Building->pluck()[((session('UserBuildings')[$Building->id]->level ?? 0) + 1) .'.tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>--}}
-{{--        <br>--}}
-{{--        <br>--}}
-{{--        @if($BuildingActive)--}}
-{{--            @if($BuildingActive->build_id == $Building->id)--}}
-{{--                {{ Lang('planet.building.active') }}--}}
-{{--                @set($timeend, session('UserBuildings')[$Building->id]->time - time())--}}
-{{--                <div id="clockdiv">--}}
-{{--                    <span class="Timer"></span>--}}
-{{--                </div>--}}
-{{--            @endif--}}
-{{--        @else--}}
-{{--            @if(canTech(1, $Building->id, (session('UserBuildings')[$Building->id]->level ?? 0) + 1))--}}
-{{--                <a href="{{ route('buildings.edit', $Building->id) }}" class="orbit-btn">--}}
-{{--                    {{ Lang('planet.buildings.Button.Build', plural: (((session('UserBuildings')[$Building->id]->level ?? 0) + 1))) }}--}}
-{{--                </a>--}}
-{{--            @endif--}}
-{{--        @endif--}}
-{{--    @else--}}
-{{--        <p>{{ Lang('planet.building.completed') }}</p>--}}
-{{--    @endif--}}
-{{--</div>--}}
-
 @endsection
 
 @section('scripts')

@@ -12,7 +12,16 @@
 @endsection
 
 @section('content')
-    <div style="align-items: center;position: fixed;top: calc(50% - 45px); right: 10px;">
+    <div style="align-items: center;position: fixed;top: calc(50% - 90px); right: 10px;">
+        <div class="mt-1" style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
+             id="{{ ($BuildingActive ? 'bulactive':'') }}"
+             data-bs-toggle="tooltip"
+             data-bs-html="true"
+             data-bs-placement="bottom"
+             data-bs-original-title="<em>{{Lang('global_planet_building_name')}}</em>">
+            <img onclick="showDialog('/technologies/1')" style="width: 30px" src="{{ getImage('icon5.png', 'ressurcen') }}">
+            {!! $BuildingActive ? timerHTML('bulactive', $BuildingActive->time - time()):'' !!}
+        </div>
         <div class="mt-1" style="border: white 1px solid;border-radius: 9px;height: 32px;align-items: center;display: flex;"
              id="{{ ($ResearchActive ? 'resactive':'') }}"
              data-bs-toggle="tooltip"

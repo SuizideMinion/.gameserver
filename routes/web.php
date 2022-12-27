@@ -62,6 +62,7 @@ Route::group(['middleware' => ['web', 'checker']], function () {
     Route::resource('map', \App\Http\Controllers\MapController::class);
 
     Route::resource('buildings', 'App\Http\Controllers\BuildingsController');
+    Route::resource('technologies', 'App\Http\Controllers\Planet\TechnologieController');
     Route::resource('researchs', 'App\Http\Controllers\ResearchsController');
     Route::resource('resources', 'App\Http\Controllers\ResourcesController');
     Route::resource('kollektoren', 'App\Http\Controllers\KollektorenController');

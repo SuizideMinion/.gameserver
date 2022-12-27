@@ -18,18 +18,12 @@ class BuildingsController extends Controller
      */
     public function index()
     {
-//        $Buildings = Researchs::with('getData')
-//            ->join('researchs_data', 'researchs_data.research_id', 'researchs.id')
-//            ->where('researchs_data.key', 'group')
-//            ->orderBy('researchs_data.value')
-//            ->get()
-//            ->groupBy('value');
+        $id = 1;
+        $uT = 'UserBuildings';
+        $T = 'Building';
         $Buildings = Buildings::with('getData')->get();
 
         $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
-        $ResearchActive = UserResearchs::where('user_id', auth()->user()->id)->where('value', '1')->first();
-        $userUnitsBuilds = UserUnitsBuild::where('user_id', auth()->user()->id)->where('unit_id', 1)->sum('quantity');
-//        dd($userUnitsBuilds);
 
         $Builds = [];
 
@@ -39,21 +33,27 @@ class BuildingsController extends Controller
             if ( ($getData['1.disable'] ?? 0) != 1 ) {
                 $Builds[$Building->id] = [
                     'id' => $Building->id,
-                    'name' => Lang('Building.name.' . $Building->id),
-                    'desc' => Lang('Building.desc.' . $Building->id),
+                    'name' => Lang($T. '.name.' . $Building->id),
+                    'level' => (session($uT)[$Building->id]->level ?? 0) + 1,
+                    'desc' => Lang($T. '.desc.' . $Building->id),
+                    'max_level' => ($getData['1.max_level'] ?? ''),
+                    'art' => $id,
                     'kordX' => ($getData['1.kordx'] ?? ''),
                     'kordY' => ($getData['1.kordy'] ?? ''),
-                    'image' => ($getData['1.image'] ?? '')
+                    'image' => ( $id == 1 ? 'technologies':'research') .'/'. ($getData['1.image'] ?? ''),
+                    'ress1' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.ress1'] ?? '0'),
+                    'ress2' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.ress2'] ?? '0'),
+                    'ress3' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.ress3'] ?? '0'),
+                    'ress4' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.ress4'] ?? '0'),
+                    'ress5' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.ress5'] ?? '0'),
+                    'build_time' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.tech_build_time'] ?? ''),
+                    'canBuild' => canTechnik($id, $Building['id'], (session($uT)[$Building->id]->level ?? 0) + 1),
+                    //'canTech' => canTech(2, $Building['id'], (session($uT)[$Building->id]->level ?? 0) + 1),
+                    'hasBuilds' => hasBuildNeed($Building->id, $id, level: (session($uT)[$Building->id]->level ?? 0) + 1)
                 ];
             }
-
         }
-
-        $Columns = new Buildings;
-        $Columns = $Columns->getTableColumns();
-        $Columns = array_diff($Columns, ['created_at', 'updated_at']);
-
-        return view('Buildings.index', compact('Builds', 'Columns', 'BuildingActive', 'ResearchActive', 'userUnitsBuilds'));
+        return view('Buildings.index', compact('Builds', 'BuildingActive'));
     }
 
     /**
@@ -85,33 +85,37 @@ class BuildingsController extends Controller
      */
     public function show($id)
     {
-        $Building = Buildings::where('id', $id)->first();
-        $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
-        $BuildingData = $Building->getData->pluck('value', 'key');
+        $idg = 1;
+        $uT = 'UserBuildings';
+        $T = 'Building';
+        $Building = Buildings::where('id', $id)->with('getData')->first();
+        $getData = $Building->getData->pluck('value', 'key');
 
-//        dd();
-
-        $array[$Building->id] = [
-            'name' => Lang('Building.name.'. $Building->id),
-            'desc' => Lang('Building.desc.'. $Building->id),
-            'disable' => ($BuildingData['1.disable'] ?? 0),
-            'id' => $Building->id,
-            'art' => 1,
-            'level' => 1,
-            'build_need' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.build_need'] ?? ''),
-            'group' => ($BuildingData['1.group'] ?? ''),
-            'max_level' => ($BuildingData['1.max_level'] ?? ''),
-            'build_time' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.tech_build_time'] ?? ''),
-            'ress1' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress1'] ?? '0'),
-            'ress2' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress2'] ?? '0'),
-            'ress3' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress3'] ?? '0'),
-            'ress4' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress4'] ?? '0'),
-            'ress5' => ($BuildingData[( session('UserBuildings')[$Building->id]->level ?? 1 ). '.ress5'] ?? '0'),
-            'image' => 'technologies/' . ($BuildingData['1.image'] ?? '0'),
-            'hasBuilds' => hasBuildNeed($Building->id, 1)
-        ];
+        if ( ($getData['1.disable'] ?? 0) != 1 ) {
+            $array[$Building->id] = [
+                'id' => $Building->id,
+                'disable' => '0',
+                'name' => Lang($T. '.name.' . $Building->id),
+                'level' => (session($uT)[$Building->id]->level ?? 0) + 1,
+                'desc' => Lang($T. '.desc.' . $Building->id),
+                'max_level' => ($getData['1.max_level'] ?? ''),
+                'art' => $idg,
+                'kordX' => ($getData['1.kordx'] ?? ''),
+                'kordY' => ($getData['1.kordy'] ?? ''),
+                'image' => ( $idg == 1 ? 'technologies':'research') .'/'. ($getData['1.image'] ?? ''),
+                'ress1' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.ress1'] ?? '0'),
+                'ress2' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.ress2'] ?? '0'),
+                'ress3' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.ress3'] ?? '0'),
+                'ress4' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.ress4'] ?? '0'),
+                'ress5' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.ress5'] ?? '0'),
+                'build_time' => ($getData[( session($uT)[$Building->id]->level ?? 1 ). '.tech_build_time'] ?? ''),
+                'canBuild' => canTechnik($idg, $Building['id'], (session($uT)[$Building->id]->level ?? 0) + 1),
+                //'canTech' => canTech(2, $Building['id'], (session($uT)[$Building->id]->level ?? 0) + 1),
+                'hasBuilds' => hasBuildNeed($Building->id, $idg, level: (session($uT)[$Building->id]->level ?? 0) + 1)
+            ];
+        }
 //        dd($array);
-        return view('Buildings.show', compact('Building', 'BuildingActive', 'array'));
+        return view('Buildings.show', compact('array'));
     }
 
     /**
@@ -127,8 +131,10 @@ class BuildingsController extends Controller
         if( !$BuildingActive )
         {
             $Building = Buildings::where('id', $id)->with('getData')->first();
-            if($Building->can()['value'] == 1)
+            if( !canTechnik(1, $Building->id, (session('UserBuildings')[$Building->id]->level ?? 0) + 1)['errors'] )
+                //$Building->can()['value'] == 1)
             {
+//                dd(canTechnik(1, $Building->id, (session('UserBuildings')[$Building->id]->level ?? 0) + 1));
                 $getData = $Building->getData->pluck('value', 'key');
 
                 UserBuildings::updateOrCreate(

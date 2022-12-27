@@ -73,7 +73,8 @@
             min-height: 48px;
             width: 100%;
         }
-        .getImage{
+
+        .getImage {
             max-width: 100%;
             width: 50px;
             border-radius: 13px;
@@ -82,20 +83,25 @@
         p {
             margin: 0px;
         }
+
         .span-iconR {
             position: relative;
             top: 0px;
             right: 13px;
         }
-        .span-iconR i{
+
+        .span-iconR i {
             font-size: 20px;
         }
-        .bi-check-all{
+
+        .bi-check-all {
             color: green;
         }
+
         .bi-arrow-up-short {
             color: orange;
         }
+
         .bi-x {
             color: red;
         }
@@ -103,88 +109,90 @@
 @endsection
 
 @section('content')
-@if(session()->has('error'))
-    <div class="heading mt-1">
-        <p>{{ session()->get('error') }}</p>
-    </div>
-@endif
-@foreach($array as $Research)
-    @if ($Research['disable'] != 1)
-    <div class="heading mt-1" id="{{$Research['id']}}">
-        <h3>
-            {{ $Research['name'] }}
-        </h3>
-        <p>
-            {{ Lang('global_ress1_name') }}: {{ $Research['ress1'] }}
-            {{ Lang('global_ress2_name') }}: {{ $Research['ress2'] }}
-            {{ Lang('global_ress3_name') }}: {{ $Research['ress3'] }}
-            {{ Lang('global_ress4_name') }}: {{ $Research['ress4'] }}
-            {{ Lang('global_ress5_name') }}: {{ $Research['ress5'] }}
-        </p>
-        <p class="mt-1"></p>
-        <p>
-            <img onclick="{{
-                    ($Research['art'] == 1 ? 'window.location.href = "/buildings/'. $Research['id'] .'/edit"':
-                    (!canTech($Research['art'], $Research['id'], $Research['level']) ?
-                    'showResearch("/researchs/'. $Research['group'] .'#'. $Research['id'].'");' :
-                    'window.location.href = "/researchs/'. $Research['id'] .'/edit"') ) }}"
-                 class="getImage"
-                 src="{{ getImage($Research['image']) }}"
-                 style="{{ hasTech($Research['art'], $Research['id'], $Research['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($Research['art'], $Research['id'], $Research['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
-                 data-bs-toggle="tooltip"
-                 data-bs-html="true"
-                 {{--                     {{ dd(canTech(2, 10, 1)) }}--}}
-                 title="<em>{{ $Research['name'] . $Research['level'] }}</em><br>
+    @if(session()->has('error'))
+        <div class="heading mt-1">
+            <p>{{ session()->get('error') }}</p>
+        </div>
+    @endif
+    @foreach($array as $Research)
+        @if ($Research['disable'] != 1)
+            <div class="heading mt-1" id="{{$Research['id']}}">
+                <h3>
+                    {{ $Research['name'] }}
+                </h3>
+                <p>
+                    {{ Lang('global_ress1_name') }}: {{ $Research['ress1'] }}
+                    {{ Lang('global_ress2_name') }}: {{ $Research['ress2'] }}
+                    {{ Lang('global_ress3_name') }}: {{ $Research['ress3'] }}
+                    {{ Lang('global_ress4_name') }}: {{ $Research['ress4'] }}
+                    {{ Lang('global_ress5_name') }}: {{ $Research['ress5'] }}
+                </p>
+                <p class="mt-1"></p>
+                <p>
+                    <img onclick="window.location.href = {{
+                        ($Research['art'] == 1 ? '"/buildings/'. $Research['id'] .'/edit"':'"/researchs/'. $Research['id'] .'/edit"') }}"
+                         class="getImage"
+                         src="{{ getImage($Research['image']) }}"
+                         style="max-height: 38px;"
+                         data-bs-toggle="tooltip"
+                         data-bs-html="true"
+                         title="<em>{{ $Research['name'] . $Research['level'] }}</em><br>
                         <p>{{ Lang('global_ress1_name') }}: <span class='m'>{{ $Research['ress1'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress2_name') }}: <span class='d'>{{ $Research['ress2'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress3_name') }}: <span class='i'>{{ $Research['ress3'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress4_name') }}: <span class='e'>{{ $Research['ress4'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress5_name') }}: <span class='t'>{{ $Research['ress5'] ?? 0 }}</span></p>
-                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($Research['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
+                        <p>{{ Lang('Buildtime') }} {{ timeconversion(((int)$Research['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
                      <b>{{ $Research['desc'] }}</b>
                         <br>">
-            <span class="span-iconR">
-                    <i class="bi {{
-                        hasTech($Research['art'], $Research['id'], $Research['level']) == true ?
-                        'bi-check-all': (canTech($Research['art'], $Research['id'], $Research['level']) == true ?
-                        'bi-arrow-up-short':'bi-x') }}">
-                    </i>
-                </span>
-            <i style="font-size: 20px;top: 4px;position: relative;left: -10px;" class="bi bi-chevron-double-right"></i>
-            @foreach($Research['hasBuilds'] as $has)
-                <img onclick="{{
-                    ($has['art'] == 1 ? 'window.location.href = "/buildings/'. $has['id'] .'/edit"':
-                    (!canTech($has['art'], $has['id'], $has['level']) ?
-                    'showResearch("/researchs/'. $has['group'] .'#'. $has['id'].'");' :
-                    'window.location.href = "/researchs/'. $has['id'] .'/edit"') ) }}"
-                     class="getImage"
-                     src="{{ getImage($has['image']) }}"
-                     style="{{ hasTech($has['art'], $has['id'], $has['level']) == true ? 'border: green 1px solid;box-shadow: green 1px 1px 10px;': (canTech($has['art'], $has['id'], $has['level']) == true ? 'border: orange 1px solid;box-shadow: orange 1px 1px 10px;':'') }}"
-                     data-bs-toggle="tooltip"
-                     data-bs-html="true"
-{{--                     {{ dd(canTech(2, 10, 1)) }}--}}
-                     title="<em>{{ $has['name'] . $has['level'] }}</em><br>
+                    <span class="span-icon-show">
+                        @if( $Research['canBuild']['Gebaut'] == 'true' )
+                            <i class="bi bi-check-all"></i>
+                            {{--                            <i class="bi bi-check-all" title="{{ print_r($Build['canBuild']) }}"></i>--}}
+                        @elseif( !$Research['canBuild']['errors'] )
+                            <i class="bi bi-arrow-up-short"></i>
+                            {{--                            <i class="bi bi-arrow-up-short" title="{{ print_r($Build['canBuild']) }}"></i>--}}
+                        @else
+                            <i class="bi bi-x"></i>
+                            {{--                            <i class="bi bi-x" title="{{ print_r($Build['canBuild']) }}"></i>--}}
+                        @endif
+                    </span>
+                    <i style="font-size: 20px;top: 4px;position: relative;left: -10px;"
+                       class="bi bi-chevron-double-right"></i>
+                    @foreach($Research['hasBuilds'] as $has)
+                        <img onclick="window.location.href = {{
+                                    ($has['art'] == 1 ? '"/buildings/'. $has['id'] .'/edit"':'"/researchs/'. $has['id'] .'/edit"') }}"
+                             class="getImage"
+                             src="{{ getImage($has['image']) }}"
+                             style="max-height: 38px;"
+                             data-bs-toggle="tooltip"
+                             data-bs-html="true"
+                             {{--                     {{ dd(canTech(2, 10, 1)) }}--}}
+                             title="<em>{{ $has['name'] . $has['level'] }}</em><br>
                         <p>{{ Lang('global_ress1_name') }}: <span class='m'>{{ $has['ress1'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress2_name') }}: <span class='d'>{{ $has['ress2'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress3_name') }}: <span class='i'>{{ $has['ress3'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress4_name') }}: <span class='e'>{{ $has['ress4'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress5_name') }}: <span class='t'>{{ $has['ress5'] ?? 0 }}</span></p>
-                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
+                        <p>{{ Lang('Buildtime') }} {{ timeconversion(((int)$has['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
                          <b>{{ $has['desc'] }}</b>
                         <br>">
-                <span class="span-iconR">
-                    <i class="bi {{
-                        hasTech($has['art'], $has['id'], $has['level']) == true ?
-                        'bi-check-all': (canTech($has['art'], $has['id'], $has['level']) == true ?
-                        'bi-arrow-up-short':'bi-x') }}">
-                    </i>
-                </span>
-            @endforeach
-        </p>
-        <span><i class="fa-solid fa-angle-down"></i></span>
-    </div>
-    @endif
-@endforeach
+                        <span class="span-icon-show">
+                                    @if( $has['canBuild']['Gebaut'] == 'true' )
+                                <i class="bi bi-check-all"></i>
+                            @elseif( !$has['canBuild']['errors'] )
+                                <i class="bi bi-arrow-up-short"></i>
+                            @else
+                                <i class="bi bi-x"></i>
+                                {{--                                                                    <i class="bi bi-x" title="{{ print_r($has['canBuild']) }}"></i>--}}
+                            @endif
+                        </span>
+                    @endforeach
+                </p>
+                <span><i class="fa-solid fa-angle-down"></i></span>
+            </div>
+        @endif
+    @endforeach
 
 
 @endsection

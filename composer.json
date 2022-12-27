@@ -29,7 +29,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },"files": [
 
-            "app/Http/Helpers/Helper.php"
+            "app/Http/Helpers/Helper.php",
+            "app/Http/Helpers/canTech.php"
 
         ]
     },

@@ -22,8 +22,8 @@
 
                     @foreach($Buildings as $key => $Building)
                         @if($Building->can()['notDisplay'] == 0)
-{{--                        <tr onclick="window.location.href = '{{ route('admin.buildings.edit', $Building->id) }}';"--}}
-<tr
+                        <tr onclick="window.location.href = '{{ route('admin.buildings.edit', $Building->id) }}';"
+{{--<tr--}}
                             style="cursor: pointer;">
                             @foreach( $Columns AS $Column )
                                 <th scope="col">{{ $Building[$Column] }} {{$Building->can()['notDisplay']}} {{$Building->can()['error'] ?? ''}}</th>

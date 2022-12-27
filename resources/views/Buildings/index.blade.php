@@ -115,23 +115,27 @@
             <div id="dyn"></div>
             <div class=" {{ hasTech(1, 22, 2) ? 'Shield ShieldB': (hasTech(1, 22, 1) ? 'Shield': '')}}"></div>
             @foreach($Builds as $Build)
-
-                @if( hasTech(1, $Build['id']) OR canTech(1, $Build['id'], (session('UserBuildings')[$Build['id']]->level ?? 0) + 1))
+{{--            @php $test[$Build->id] = canTechnik(1, $Build['id'], $Build['level']) @endphp--}}
+{{--                @if( hasTech(1, $Build['id']) OR canTechnik(1, $Build['id'], (session('UserBuildings')[$Build['id']]->level ?? 0) + 1))--}}
+                @if( $Build['canBuild']['show'] == 'true' )
                     <div id="{{ (($BuildingActive->build_id ?? 0) == $Build['id'] ? 'gebactive':'') }}" class="geb"
                          onclick="showDialog('/buildings/{{ $Build['id'] }}')"
                          style="
                              top: {{ $Build['kordX'] }}px;
                              left: {{ $Build['kordY'] }}px;
-                             background-image: url('{{ getImage($Build['image'], 'technologies') }}')
+                             background-image: url('{{ getImage($Build['image']) }}')
                              ">
                         {!! ($BuildingActive->build_id ?? 0) == $Build['id'] ? timerHTML('buildactive', $BuildingActive->time - time()):'' !!}
                         <span class="span-icon">
-                            @if(canTech(1, $Build['id'], ((session('UserBuildings')[$Build['id']]->level ?? 0) + 1), ress: 0) == true)
-                                <i class="bi bi-arrow-up-short"></i>
-                            @elseif(hasTech(1, $Build['id'], (session('UserBuildings')[$Build['id']]->level ?? 1)) == true)
+                        @if( $Build['canBuild']['Gebaut'] == 'true' )
                                 <i class="bi bi-check-all"></i>
+                                {{--                            <i class="bi bi-check-all" title="{{ print_r($Build['canBuild']) }}"></i>--}}
+                            @elseif( !$Build['canBuild']['errors'] )
+                                <i class="bi bi-arrow-up-short"></i>
+                                {{--                            <i class="bi bi-arrow-up-short" title="{{ print_r($Build['canBuild']) }}"></i>--}}
                             @else
                                 <i class="bi bi-x"></i>
+                                {{--                            <i class="bi bi-x" title="{{ print_r($Build['canBuild']) }}"></i>--}}
                             @endif
                         </span>
                     </div>

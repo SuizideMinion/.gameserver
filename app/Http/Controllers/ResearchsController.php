@@ -20,18 +20,14 @@ class ResearchsController extends Controller
     {
         $Researchs = Researchs::with('getData')
             ->join('researchs_data', 'researchs_data.research_id', 'researchs.id')
-            ->where('researchs_data.key', 'group')
+            ->where('researchs_data.key', '1.group')
             ->orderBy('researchs_data.value')
             ->get()
             ->groupBy('value');
 
         $ResearchActive = UserResearchs::where('user_id', auth()->user()->id)->where('value', '1')->first();
 
-        $Columns = new Researchs;
-        $Columns = $Columns->getTableColumns();
-        $Columns = array_diff($Columns, ['created_at', 'updated_at']);
-
-        return view('Researchs.index', compact('Researchs', 'Columns', 'ResearchActive'));
+        return view('Researchs.index', compact('Researchs', 'ResearchActive'));
     }
 
     /**
@@ -59,50 +55,49 @@ class ResearchsController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
         $Researchs = Researchs::with('getData')
             ->join('researchs_data', 'researchs_data.research_id', 'researchs.id')
             ->select('researchs_data.value as researchs_data.research_id', 'researchs.*')
-            ->where('researchs_data.key', 'group')
+            ->where('researchs_data.key', '1.group')
             ->where('value', $id)
 //            ->with('getData')
             ->get();
 
-//        dd($Researchs);
-
         $array = [];
-//        $Researchs -> test = $Researchs -> getData -> keyBy('research_id');
-//        $Researchs -> addVisible('getData');
-//        $Researchs->setRelation('test', $Researchs->getData->keyBy('research_id'));
-//        $ResearchData = ;
+        $uT = 'UserResearchs';
+        $T = 'Research';
+        $ids = 2;
+
         foreach ($Researchs AS $Research)
         {
-            $ResearchData = $Research->getData->pluck('value', 'key');
-//            dd($ResearchData);
 
+            $getData = $Research->getData->pluck('value', 'key');
             $array[$Research->id] = [
-                'name' => Lang('Research.name.'. $Research->id),
-                'desc' => Lang('Research.desc.'. $Research->id),
-                'disable' => ($ResearchData['disable'] ?? 0),
                 'id' => $Research->id,
-                'art' => 2,
-                'level' => 1,
-                'build_need' => ($ResearchData['build_need'] ?? ''),
-                'group' => ($ResearchData['group'] ?? ''),
-                'build_time' => ($ResearchData['tech_build_time'] ?? ''),
-                'ress1' => ($ResearchData['ress1'] ?? '0'),
-                'ress2' => ($ResearchData['ress2'] ?? '0'),
-                'ress3' => ($ResearchData['ress3'] ?? '0'),
-                'ress4' => ($ResearchData['ress4'] ?? '0'),
-                'ress5' => ($ResearchData['ress5'] ?? '0'),
-                'image' => 'research/' . ($ResearchData['image'] ?? '0'),
-                'hasBuilds' => hasBuildNeed($Research->id)
+                'name' => Lang($T. '.name.' . $Research->id),
+                'disable' => ($getData['1.disable'] ?? 0),
+                'level' => (session($uT)[$Research->id]->level ?? 0) + 1,
+                'desc' => Lang($T. '.desc.' . $Research->id),
+                'max_level' => ($getData['1.max_level'] ?? ''),
+                'art' => $ids,
+                'kordX' => ($getData['1.kordx'] ?? ''),
+                'kordY' => ($getData['1.kordy'] ?? ''),
+                'image' => ( $ids == 1 ? 'technologies':'research') .'/'. ($getData['1.image'] ?? ''),
+                'ress1' => ($getData[( session($uT)[$Research->id]->level ?? 1 ). '.ress1'] ?? '0'),
+                'ress2' => ($getData[( session($uT)[$Research->id]->level ?? 1 ). '.ress2'] ?? '0'),
+                'ress3' => ($getData[( session($uT)[$Research->id]->level ?? 1 ). '.ress3'] ?? '0'),
+                'ress4' => ($getData[( session($uT)[$Research->id]->level ?? 1 ). '.ress4'] ?? '0'),
+                'ress5' => ($getData[( session($uT)[$Research->id]->level ?? 1 ). '.ress5'] ?? '0'),
+                'build_time' => ($getData[( session($uT)[$Research->id]->level ?? 1 ). '.tech_build_time'] ?? ''),
+                'canBuild' => canTechnik($ids, $Research['id'], (session($uT)[$Research->id]->level ?? 0) + 1),
+                //'canTech' => canTech(2, $Building['id'], (session($uT)[$Building->id]->level ?? 0) + 1),
+                'hasBuilds' => hasBuildNeed($Research->id, $ids, level: (session($uT)[$Research->id]->level ?? 0) + 1)
             ];
         }
-//        dd($array);
 
         return view('Researchs.show', compact('array'));
     }
@@ -121,10 +116,9 @@ class ResearchsController extends Controller
         {
             $Research = Researchs::where('id', $id)->with('getData')->first();
 
-            if( canTech(2, $id) )
+            if( !canTechnik(2, $Research->id, (session('UserBuildings')[$Research->id]->level ?? 0) + 1)['errors'] )
             {
-                if( !hasTech(2, $id) ) {
-                    $getData = $Research->getData->pluck('value', 'key');
+                $getData = $Research->getData->pluck('value', 'key');
 
                     UserResearchs::updateOrCreate(
                         [
@@ -133,20 +127,19 @@ class ResearchsController extends Controller
                         ],
                         [
                             'level' => 0,
-                            'time' => time() + ($getData['tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value),
+                            'time' => time() + ($getData[((session('UserResearchs')[$Research->id]->level ?? 0) + 1) . '.tech_build_time'] / 100 * session('ServerData')['Tech.Speed.Percent']->value),
                             'value' => 1,
                         ]
                     );
                     UserData::where('user_id', auth()->user()->id)->where('key', 'ress')->update([
                         'value' => json_encode([
-                            'ress1' => uRess()->ress1 - ($getData['ress1'] ?? 0),
-                            'ress2' => uRess()->ress2 - ($getData['ress2'] ?? 0),
-                            'ress3' => uRess()->ress3 - ($getData['ress3'] ?? 0),
-                            'ress4' => uRess()->ress4 - ($getData['ress4'] ?? 0),
-                            'ress5' => uRess()->ress5 - ($getData['ress5'] ?? 0),
+                            'ress1' => uRess()->ress1 - ($getData[((session('UserResearchs')[$Research->id]->level ?? 0) + 1) . '.ress1'] ?? 0),
+                            'ress2' => uRess()->ress2 - ($getData[((session('UserResearchs')[$Research->id]->level ?? 0) + 1) . '.ress2'] ?? 0),
+                            'ress3' => uRess()->ress3 - ($getData[((session('UserResearchs')[$Research->id]->level ?? 0) + 1) . '.ress3'] ?? 0),
+                            'ress4' => uRess()->ress4 - ($getData[((session('UserResearchs')[$Research->id]->level ?? 0) + 1) . '.ress4'] ?? 0),
+                            'ress5' => uRess()->ress5 - ($getData[((session('UserResearchs')[$Research->id]->level ?? 0) + 1) . '.ress5'] ?? 0),
                         ])
                     ]);
-                } else return back()->with('error', 'Du hast die blaupause schon');
             } else return back()->with('error', 'Dir Fehlen Vorraussetzungen für dieses Gebäude!');
         } else return back()->with('error', 'Du Baust gerade was anderes');
 

@@ -1,24 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layout.local')
 
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <title>test DE:r ingame</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-
-    <!-- Favicons -->
-    <link href="/assets/img/favicon.ico" rel="icon">
-    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-    <!-- Template Main CSS File -->
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="/assets/css/style.css" rel="stylesheet">
-    <link href="/assets/css/{{ uData('race') }}.css" rel="stylesheet">
-    <link href="/assets/css/responsive.css" rel="stylesheet">
+@section('styles')
     <style type="text/css">
         img {
             max-width: 100%;
@@ -119,9 +101,9 @@
             width: 100%;
         }
     </style>
-<body>
-<!------ Include the above in your HEAD tag ---------->
+@endsection
 
+@section('content')
     <div class="messaging">
         <div class="inbox_msg">
             <div class="inbox_people">
@@ -142,45 +124,44 @@
         </div>
     </div>
 
-<script src="/assets/js/jquery.js"></script>
-<script type="text/javascript">
-    function showResearch(id)
-    {
-        $(".mesgs").html(
-            '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
-        $(document).ready(function() {
-            $('.mesgs').load(id);
-        })
-    }
-</script>
+@endsection
 
-<script>
-    $('.m').each(function () {
-        if ($(this).text() > {{ uRess()->ress1 }}) {
-            $(this).css("color", "red");
+@section('scripts')
+    <script type="text/javascript">
+        function showResearch(id) {
+            $(".mesgs").html(
+                '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+            $(document).ready(function () {
+                $('.mesgs').load(id);
+            })
         }
-    });
-    $('.d').each(function () {
-        if ($(this).text() > {{ uRess()->ress2 }}) {
-            $(this).css("color", "red");
-        }
-    });
-    $('.i').each(function () {
-        if ($(this).text() > {{ uRess()->ress3 }}) {
-            $(this).css("color", "red");
-        }
-    });
-    $('.e').each(function () {
-        if ($(this).text() > {{ uRess()->ress4 }}) {
-            $(this).css("color", "red");
-        }
-    });
-    $('.t').each(function () {
-        if ($(this).text() > {{ uRess()->ress5 }}) {
-            $(this).css("color", "red");
-        }
-    });
-</script>
+    </script>
 
-</body>
-</html>
+    <script>
+        $('.m').each(function () {
+            if ($(this).text() > {{ uRess()->ress1 }}) {
+                $(this).css("color", "red");
+            }
+        });
+        $('.d').each(function () {
+            if ($(this).text() > {{ uRess()->ress2 }}) {
+                $(this).css("color", "red");
+            }
+        });
+        $('.i').each(function () {
+            if ($(this).text() > {{ uRess()->ress3 }}) {
+                $(this).css("color", "red");
+            }
+        });
+        $('.e').each(function () {
+            if ($(this).text() > {{ uRess()->ress4 }}) {
+                $(this).css("color", "red");
+            }
+        });
+        $('.t').each(function () {
+            if ($(this).text() > {{ uRess()->ress5 }}) {
+                $(this).css("color", "red");
+            }
+        });
+    </script>
+@endsection

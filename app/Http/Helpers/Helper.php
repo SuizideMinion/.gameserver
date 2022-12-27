@@ -22,6 +22,15 @@ function timerHTML($id, $time)
 
         if (hours < '10') { hours = '0' + hours; }
         if (minutes < '10') { minutes = '0' + minutes; }
+        if (days == '0') {
+            days = '';
+            if (hours == '00') {
+                hours = '';
+                if (minutes == '00') {
+                minutes = '';
+                }
+            }
+        }
         if (seconds < '10') { seconds = '0' + seconds; }
         if (timeLeft <= 0)
         {
@@ -29,10 +38,12 @@ function timerHTML($id, $time)
             clearInterval(". $id ."Timer);
         }
         else
-            $('#timer". $id ."').html(days + ':'+
-                   hours + ':'+
-                   minutes + ':' +
-                   seconds);
+            $('#timer". $id ."').html(
+                (days !== '' ? days + ':':'') +
+                (hours !== '' ? hours + ':':'') +
+                (minutes !== '' ? minutes + ':':'') +
+                seconds
+                );
 	}
 	let ". $id ."Timer = setInterval(function() { make". $id ."Timer(); }, 1000);
 </script>
@@ -41,7 +52,7 @@ function timerHTML($id, $time)
 }
 
 
-function hasBuildNeed($id, $art = 2)
+function hasBuildNeed($id, $art = 2, $level = 1)
 {
 //    $getData = ResearchsData::where('research_id', $id)->where('key', 'build_need')->first();
     if( $art == 2 ) $getData = session('Researchs')[$id]->getData->pluck('value', 'key');
@@ -49,12 +60,11 @@ function hasBuildNeed($id, $art = 2)
 
     $array = [];
 
-    if ( isset($getData['build_need']) OR isset($getData['1.build_need']) ) {
-        $values = json_decode(($getData['build_need'] ?? $getData['1.build_need'] ));
+    if ( isset($getData[$level. '.build_need']) ) {
+        $values = json_decode(($getData[$level. '.build_need'] ));
 
         foreach ($values as $value) {
             if ($value[0]->art == 1) {
-//                $getDataBuild = \App\Models\BuildingsData::where('build_id', $value[0]->id)->get()->pluck('value', 'key');
                 $getDataBuild = session('Buildings')[$value[0]->id]->getData->pluck('value', 'key');
                 $array[$value[0]->art . '_' . $value[0]->id] = [
                     'name' => Lang('Building.name.' . $value[0]->id),
@@ -70,6 +80,7 @@ function hasBuildNeed($id, $art = 2)
                     'ress4' => ($getDataBuild[$value[0]->level . '.ress4'] ?? '0'),
                     'ress5' => ($getDataBuild[$value[0]->level . '.ress5'] ?? '0'),
                     'image' => 'technologies/' . ($getDataBuild['1.image'] ?? '0'),
+                    'canBuild' => canTechnik($value[0]->art, $value[0]->id, $value[0]->level)
 //                    'hasBuilds' => hasBuildNeed($value[0]->id)
                 ];
             }
@@ -83,15 +94,16 @@ function hasBuildNeed($id, $art = 2)
                     'id' => $value[0]->id,
                     'level' => $value[0]->level,
                     'art' => $value[0]->art,
-                    'build_need' => ($getDataResearch['build_need'] ?? ''),
-                    'group' => ($getDataResearch['group'] ?? ''),
-                    'build_time' => ($getDataResearch['tech_build_time'] ?? ''),
-                    'ress1' => ($getDataResearch['ress1'] ?? '0'),
-                    'ress2' => ($getDataResearch['ress2'] ?? '0'),
-                    'ress3' => ($getDataResearch['ress3'] ?? '0'),
-                    'ress4' => ($getDataResearch['ress4'] ?? '0'),
-                    'ress5' => ($getDataResearch['ress5'] ?? '0'),
-                    'image' => 'research/' . ($getDataResearch['image'] ?? '0'),
+                    'build_need' => ($getDataResearch['1.build_need'] ?? ''),
+                    'group' => ($getDataResearch['1.group'] ?? ''),
+                    'build_time' => ($getDataResearch['1.tech_build_time'] ?? ''),
+                    'ress1' => ($getDataResearch['1.ress1'] ?? '0'),
+                    'ress2' => ($getDataResearch['1.ress2'] ?? '0'),
+                    'ress3' => ($getDataResearch['1.ress3'] ?? '0'),
+                    'ress4' => ($getDataResearch['1.ress4'] ?? '0'),
+                    'ress5' => ($getDataResearch['1.ress5'] ?? '0'),
+                    'image' => 'research/' . ($getDataResearch['1.image'] ?? '0'),
+                    'canBuild' => canTechnik($value[0]->art, $value[0]->id, $value[0]->level)
 //                    'hasBuilds' => hasBuildNeed($value[0]->id)
                 ];
             }
@@ -229,15 +241,15 @@ function canTech($tech, $id, $level = 1, $user_id = 0, $ress = 1)
         }
     }
     if ( $ress = 1 ) {
-        if ((int)uRess()->ress1 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress1'])
+        if ((int)uRess()->ress1 < (int)$getData['1.ress1'])
             return false;
-        if ((int)uRess()->ress2 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress2'])
+        if ((int)uRess()->ress2 < (int)$getData['1.ress2'])
             return false;
-        if ((int)uRess()->ress3 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress3'])
+        if ((int)uRess()->ress3 < (int)$getData['1.ress3'])
             return false;
-        if ((int)uRess()->ress4 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress4'])
+        if ((int)uRess()->ress4 < (int)$getData['1.ress4'])
             return false;
-        if ((int)uRess()->ress5 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress5'])
+        if ((int)uRess()->ress5 < (int)$getData['1.ress5'])
             return false;
     }
 
@@ -246,61 +258,81 @@ function canTech($tech, $id, $level = 1, $user_id = 0, $ress = 1)
 }
 function canTechnik($tech, $id, $level = 1, $user_id = 0, $ress = 1)
 {
-    $c = 1;
-    if ($tech == 1) {
-        $select = 'UserBuildings';
-        $getData = session('Buildings')[$id]->getData->pluck('value', 'key');
-        if ((session($select)[$id]->value ?? 0) == 2) {
-            if (($getData['1.max_level'] ?? '1') <= $level) return false;
-        }
-    }
-    if ($tech == 2) {
-        $select = 'UserResearchs';
-        $getData = session('Researchs')[$id]->getData->pluck('value', 'key');
-        if ((session($select)[$id]->value ?? 0) == 1) {
-            return false;
-        }
+    $return['errors'] = [];
+    $return['show'] = 'true';
+    $return['Ausgebaut'] = 'false';
+    $return['Gebaut'] = 'false';
+
+    if ( $tech == 1 )
+    {
+        $uT = 'UserBuildings';
+        $T = 'Buildings';
+    } else {
+        $uT = 'UserResearchs';
+        $T = 'Researchs';
     }
 
-    if (isset($getData[($select == 'UserBuildings' ? $level . '.' : '') . 'build_need'])) {
-        $keys = json_decode($getData[($select == 'UserBuildings' ? $level . '.' : '') . 'build_need']);
+    if ( isset(session($uT)[$id]) ) {
+        // Check ob in Bau
+        if (session($uT)[$id]->value == 1) {
+            $return['imBau'] = (session($uT)[$id]->value == 1 ? 'true' : null);
+            $return['errors'][] = 'Ist im bau';
+        }
 
-        foreach ($keys as $array) {
-            $id = $array[0]->id;
-            if ($array[0]->art == 1) {
-                // Gebäude
-                if (isset(session('UserBuildings')[$id])) {
-                    if (session('UserBuildings')[$id]->value == 2) {
-                        if (session('UserBuildings')[$id]->level < $array[0]->level) return false;
-                    }
-                } else return false;
+        // Check ob schon Gebaut
+        if (session($uT)[$id]->level >= $level) {
+            $return['Gebaut'] = 'true';
+            $return['errors'][] = 'Gebaut';
+        }
 
-            } elseif ($array[0]->art == 2) {
-                // Research
-                if (isset(session('UserResearchs')[$id])) {
-                    if (session('UserResearchs')[$id]->value != 2) {
-                        return false;
-                        //
+        // Check ob es maxlevel ist
+        if (session($T)[$id]->getData->pluck('value', 'key')['1.max_level']
+            ==
+            session($uT)[$id]->level) {
+            $return['Ausgebaut'] = 'true';
+            $return['Gebaut'] = 'true';
+            $return['errors'][] = 'Max bau';
+        }
+    }
+        //Check ob es baubar ist
+        $bNeed = ( session($T)[$id]->getData->pluck('value', 'key')[$level .'.build_need'] ?? 0 );
+        if ( $bNeed != 0 ) {
+            foreach ( json_decode($bNeed) as $Need )
+            {
+                if ($Need[0]->art == 1) {
+                    if ((session('UserBuildings')[$Need[0]->id]->level ?? 0) < $Need[0]->level) {
+                        $return['errors'][] = 'fehlendes Gebäude';
+                        $return['show'] = 'false';
                     }
-                } else return false;
+                }
+                if ($Need[0]->art == 2) {
+                    if ((session('UserResearchs')[$Need[0]->id]->level ?? 0) < $Need[0]->level) {
+                        $return['errors'][] = 'fehlende Forschung';
+                        $return['show'] = 'false';
+                    }
+                }
             }
-        }
-    }
-    if ( $ress = 1 ) {
-        if ((int)uRess()->ress1 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress1'])
-            return false;
-        if ((int)uRess()->ress2 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress2'])
-            return false;
-        if ((int)uRess()->ress3 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress3'])
-            return false;
-        if ((int)uRess()->ress4 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress4'])
-            return false;
-        if ((int)uRess()->ress5 < (int)$getData[($select == 'UserBuildings' ? $c . '.' : '') . 'ress5'])
-            return false;
     }
 
-    return true;
-//        return ['notDisplay' => true, 'value' => 'lol10'];
+
+    if ( $ress = 1  AND !$return['Ausgebaut'] == 'true' ) {
+        if ((int)uRess()->ress1 < (int)session($T)[$id]->getData->pluck('value', 'key')[$level . '.ress1']) {
+            $return['errors'][] = 'Fehlende Ressurce M';
+        }
+        if ((int)uRess()->ress2 < (int)session($T)[$id]->getData->pluck('value', 'key')[$level . '.ress2']) {
+            $return['errors'][] = 'Fehlende Ressurce D';
+        }
+        if ((int)uRess()->ress3 < (int)session($T)[$id]->getData->pluck('value', 'key')[$level . '.ress3']) {
+            $return['errors'][] = 'Fehlende Ressurce I';
+        }
+        if ((int)uRess()->ress4 < (int)session($T)[$id]->getData->pluck('value', 'key')[$level . '.ress4']) {
+            $return['errors'][] = 'Fehlende Ressurce E';
+        }
+        if ((int)uRess()->ress5 < (int)session($T)[$id]->getData->pluck('value', 'key')[$level . '.ress5']) {
+            $return['errors'][] = 'Fehlende Ressurce T';
+        }
+    }
+    return $return;
 }
 
 function hasTech($tech, $id, $level = 1, $user_id = 0)
