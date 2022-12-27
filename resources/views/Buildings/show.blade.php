@@ -144,7 +144,7 @@
                         <p>{{ Lang('global_ress3_name') }}: <span class='i'>{{ $Building['ress3'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress4_name') }}: <span class='e'>{{ $Building['ress4'] ?? 0 }}</span></p>
                         <p>{{ Lang('global_ress5_name') }}: <span class='t'>{{ $Building['ress5'] ?? 0 }}</span></p>
-                        <p>{{ Lang('Buildtime') }} {{ timeconversion(($Building['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
+                        <p>{{ Lang('Buildtime') }} {{ timeconversion(((int)$Building['build_time'] ?? 0 ) / 100 * session('ServerData')['Tech.Speed.Percent']->value) }}</p>
                              <b>{{ $Building['desc'] }}</b>
                         <br>">
                     <span class="span-icon-show">

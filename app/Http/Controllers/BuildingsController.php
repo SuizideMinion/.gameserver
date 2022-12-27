@@ -91,7 +91,6 @@ class BuildingsController extends Controller
         $Building = Buildings::where('id', $id)->with('getData')->first();
         $getData = $Building->getData->pluck('value', 'key');
 
-        if ( ($getData['1.disable'] ?? 0) != 1 ) {
             $array[$Building->id] = [
                 'id' => $Building->id,
                 'disable' => '0',
@@ -113,7 +112,6 @@ class BuildingsController extends Controller
                 //'canTech' => canTech(2, $Building['id'], (session($uT)[$Building->id]->level ?? 0) + 1),
                 'hasBuilds' => hasBuildNeed($Building->id, $idg, level: (session($uT)[$Building->id]->level ?? 0) + 1)
             ];
-        }
 //        dd($array);
         return view('Buildings.show', compact('array'));
     }

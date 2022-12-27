@@ -302,13 +302,13 @@ function canTechnik($tech, $id, $level = 1, $user_id = 0, $ress = 1)
                 if ($Need[0]->art == 1) {
                     if ((session('UserBuildings')[$Need[0]->id]->level ?? 0) < $Need[0]->level) {
                         $return['errors'][] = 'fehlendes Gebäude';
-                        $return['show'] = 'false';
+                        $return['show'] = ($level == 1 ? 'false':'true');
                     }
                 }
                 if ($Need[0]->art == 2) {
                     if ((session('UserResearchs')[$Need[0]->id]->level ?? 0) < $Need[0]->level) {
                         $return['errors'][] = 'fehlende Forschung';
-                        $return['show'] = 'false';
+                        $return['show'] = ($level == 1 ? 'false':'true');
                     }
                 }
             }
