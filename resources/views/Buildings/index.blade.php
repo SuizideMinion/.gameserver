@@ -95,6 +95,20 @@
         .bi-x {
             color: red;
         }
+        .dynamic {
+            width: 8px;
+            height: 6px;
+            position: absolute;
+            background-image: url("{{ getImage('kollie.gif', 'ressurcen') }}");
+            background-size: contain;
+        }
+        #dyn {
+            position: absolute;
+            top: 4052px;
+            left: 9022px;
+            width: 1975px;
+            height: 1975px;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
 @endsection
@@ -144,23 +158,27 @@
             @endforeach
         </div>
     </div>
-    <div class="navi"></div>
 @endsection
 
 
 @section('scripts')
+
     <script>
-        $(document).ready(navigation());
-
-        function navigation() {
-            $.ajax({
-                url: "/Navigation/",
-                success: function (res) {
-                    $('.navi').html(res);
-                }
-            });
+        function createCircleOfDivs(num, radius, offsetX, offsetY, className) {
+            var x, y;
+            for (var n = 0; n < num; n++) {
+                x = radius * Math.cos(n / num * 2 * Math.PI);
+                y = radius * Math.sin(n / num * 2 * Math.PI);
+                // let dyn = document.getElementById("dyn");
+                let div = document.createElement("div");
+                div.className = className;
+                div.style.left = (x + offsetX) + "px";
+                div.style.top = (y + offsetY) + "px";
+                document.getElementById("dyn").append(div)
+                // document.body.appendChild(div);
+            }
         }
-
+        createCircleOfDivs({{ (uData('kollektoren') > 1000 ? 1000:uData('kollektoren')) }}, 1000, 1100, 1100, "dynamic");
     </script>
     <script>
 

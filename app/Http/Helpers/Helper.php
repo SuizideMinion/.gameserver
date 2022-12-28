@@ -540,3 +540,24 @@ function intoLogs($text, $user_id = 0, $link = 0, $previous = 0, $post = 0)
     ]);
 }
 
+function getUserSkillTime($id)
+{
+    $max = (\App\Models\UserSkills::where('user_id', auth()->user()->id)->where('skill_id', $id)->first()->level ?? 0) + 1;
+    $temp = 1;
+    $plus = 2;
+    $speed = session('ServerData')['Tech.Speed.Percent']->value;
+
+    for ($i = 0; $i < $max; $i++) {
+        $time = ceil($temp * ($speed / 25));
+
+        $temp += $plus;
+
+        if ($i % 5 === 4) {
+            $temp++;
+        }
+        if ($i % 5 === 0) {
+            $plus++;
+        }
+    }
+    return $time * 3;
+}

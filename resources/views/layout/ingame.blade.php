@@ -25,136 +25,7 @@
 <body>
 
 @yield('content')
-<div class="ressMain">
-    <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-         title="<b>{{ Lang('global_ress1_name') }}</b><br>{{number_format(uRess()->ress1, 0, '', '.') }} <br><br><em>{{ Lang('global_ress1_desc') }}</em>">
-        <img src="{{ getImage('_1.png', 'ressurcen', uData('race')) }}">
-        <p>{{ number_shorten( uRess()->ress1, 0) }}</p>
-    </div>
-    <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-         title="<b>{{ Lang('global_ress2_name') }}</b><br>{{ number_format(uRess()->ress2, 0, '', '.') }} <br><br><em>{{ Lang('global_ress2_desc') }}</em>">
-        <img src="{{ getImage('_2.png', 'ressurcen', uData('race')) }}">
-        <p>{{ number_shorten( uRess()->ress2, 0) }}</p>
-    </div>
-    <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-         title="<b>{{ Lang('global_ress3_name') }}</b><br>{{ number_format(uRess()->ress3, 0, '', '.') }} <br><br><em>{{ Lang('global_ress3_desc') }}</em>">
-        <img src="{{ getImage('_3.png', 'ressurcen', uData('race')) }}">
-        <p>{{ number_shorten( uRess()->ress3, 0) }}</p>
-    </div>
-    <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-         title="<b>{{ Lang('global_ress4_name') }}</b><br>{{ number_format(uRess()->ress4, 0, '', '.') }} <br><br><em>{{ Lang('global_ress4_desc') }}</em>">
-        <img src="{{ getImage('_4.png', 'ressurcen', uData('race')) }}">
-        <p>{{ number_shorten( uRess()->ress4, 0) }}</p>
-    </div>
-    <div class="ress" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-         title="<b>{{ Lang('global_ress5_name') }}</b><br>{{ number_format(uRess()->ress5, 0, '', '.') }} <br><br><em>{{ Lang('global_ress5_desc') }}</em>">
-        <img src="{{ getImage('_5.png', 'ressurcen', uData('race')) }}">
-        <p>{{ number_shorten( uRess()->ress5, 0) }}</p>
-    </div>
-</div>
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-        class="bi bi-arrow-up-short"></i></a>
-<div class="bottom_navi">
 
-    @if(session()->has('error'))
-        <div style="display: flex;bottom: 10px;left: 10px;position: fixed;z-index: 99">
-            <div>
-                <div class="arrow_box"
-                     style="max-width: 150px;color: white;text-align: -webkit-center;">{{ session()->get('error') }}</div>
-                <img src="/assets/img/berater/berater{{ rand(1,11) }}.png" style="width: 100px;margin-top: 20px"></div>
-        </div>
-    @endif
-
-    <div class="race-footerl" style=""></div>
-    <div class="race-footerr" style=""></div>
-
-    <div class="Navigation">
-        <div class="race-head" style="z-index: 1000"></div>
-        <div class="race-icon race-icona" style="z-index: 1000"
-             onclick="window.location.href = '{{ route('buildings.index') }}';">
-            <i class="bi bi-globe" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-               title="<b>{{ Lang('global_planet_name') }}</b> <br><br><em>{{ Lang('global_planet_desc') }}</em>"></i>
-        </div>
-        <div class="race-icon race-iconb" style="z-index: 1000"
-             onclick="window.location.href = '{{ route('map.index') }}';">
-            <i class="bi bi-stars" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-               title="<b>{{ Lang('global_map_name') }}</b> <br><br><em>{{ Lang('global_map_desc') }}</em>"></i>
-        </div>
-        <div class="race-icon race-iconc" style="z-index: 1000"
-             onclick="window.location.href = '{{ route('units.index') }}';">
-            <i class="bi bi-chevron-double-up" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-               title="<b>{{ Lang('global_military_name') }}</b> <br><br><em>{{ Lang('global_military_desc') }}</em>"></i>
-        </div>
-        <div class="race-icon race-icond" style="z-index: 1000"
-             onclick="window.location.href = '{{ route('ranking.index') }}';">
-            <i class="bi bi-ladder" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom"
-               title="<b>{{ Lang('global_ranking_name') }}</b> <br><br><em>{{ Lang('global_ranking_desc') }}</em>"></i>
-        </div>
-        {{--        <div class="race-icon race-icone" style="color: gray"><i class="bi bi-star-fill"></i></div>--}}
-        {{--        <div class="race-icon race-iconf" style="color: gray"><i class="bi bi-star-fill"></i></div>--}}
-    </div>
-        <li class="nav-item dropdown pe-3"
-            style="position: fixed;right: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">
-
-            <a class="nav-link nav-icon" href="/bugs" style="margin-right: 10px">
-                <i class="bi bi-bug"></i>
-            </a><!-- End Bugs Icon -->
-
-            <a class="nav-link nav-icon" href="/Race" style="margin-right: 10px">
-                <i class="bi bi-bootstrap-reboot"></i>
-            </a><!-- End Bugs Icon -->
-
-            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false"
-               style="margin-right: 10px">
-                <i class="bi bi-chat-left-text"></i>
-            </a><!-- End Messages Icon -->
-            <ul class="dropdown-menu messages" style="background-color: black;width: 350px">
-            </ul><!-- End Messages Dropdown Items -->
-
-
-            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                <i class="bi bi-gear"></i>
-            </a>
-
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                <li>
-                    <a class="dropdown-item d-flex align-items-center" onclick="notify.authorize()">
-                        <i class="bi bi-person"></i>
-                        <span>Benarichtigungen bei Gebäude/Forschungen</span>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center">
-                        <i class="bi bi-person"></i>
-                        <span>{{time()}}</span>
-                    </a>
-                    @yield('settings')
-                </li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li>
-                    <a class="dropdown-item d-flex align-items-center">
-                        <i class="bi bi-person"></i>
-                        <span>
-                    @desktop
-                        Desktop
-                    @elsedesktop
-                        Mobile
-                    @enddesktop
-                </span>
-                    </a>
-                </li>
-
-            </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
-
-        <li class="nav-item dropdown pe-3"
-            style="position: fixed;left: 10px;bottom: 4px;color: aliceblue;list-style: none;display: flex;">
-
-            <a class="nav-link nav-icon" href="/logout" style="margin-right: 10px">
-                <i class="bi bi-door-open-fill"></i>
-            </a><!-- End logout Icon -->
-        </li><!-- End Profile Nav -->
-</div>
 
 <!-- Modal -->
 <div class="modal  modal-xl" id="showDialog" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showDialog"
@@ -173,12 +44,30 @@
     </div>
 </div>
 <div id="modifiersDiv"></div>
+<div class="navi"></div>
 <!-- Template Main JS File -->
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
 <script src="/assets/js/jquery.js"></script>
 <script src="/assets/js/main.js"></script>
 @yield('scripts')
+
+<script>
+    $(document).ready(navigation());
+
+    function navigation() {
+        $.ajax({
+            url: "/Navigation/",
+            success: function (res) {
+                $('.navi').html(res);
+                // setTimeout(function(){
+                //     navigation();
+                // }, 6000);
+            }
+        });
+    }
+
+</script>
 <script>
     $.get('/api/message/{{ uData('token') }}', function (data) {
         let obj = JSON.parse(data);

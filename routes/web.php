@@ -58,6 +58,9 @@ Route::group(['middleware' => ['web', 'checker']], function () {
         Route::resource('unitsdata', '\App\Http\Controllers\Admin\UnitDataController', ["as" => "admin"]);
         Route::get('unitsadd', '\App\Http\Controllers\Admin\UnitController@getDataCsv');
         Route::get('/planets', '\App\Http\Controllers\Admin\PlanetsCreateController@index');
+        Route::resource('skills', '\App\Http\Controllers\Admin\skillsController', ["as" => "admin"]);
+//        Route::resource('researchsdata', '\App\Http\Controllers\Admin\ResearchsDataController', ["as" => "admin"]);
+        Route::get('skillsadd', '\App\Http\Controllers\Admin\SkillsController@getDataCsv');
     });
     Route::resource('map', \App\Http\Controllers\MapController::class);
 
@@ -69,6 +72,7 @@ Route::group(['middleware' => ['web', 'checker']], function () {
     Route::resource('messages', 'App\Http\Controllers\MessageController');
     Route::resource('ranking', 'App\Http\Controllers\RankingController');
     Route::resource('units', 'App\Http\Controllers\UnitsController');
+    Route::resource('skills', 'App\Http\Controllers\Commander\UserSkillsController');
     Route::resource('military/fleet', 'App\Http\Controllers\Military\FleetController');
     Route::resource('bugs', 'App\Http\Controllers\Server\BugController');
     Route::resource('Navigation', 'App\Http\Controllers\Server\NavigationController');

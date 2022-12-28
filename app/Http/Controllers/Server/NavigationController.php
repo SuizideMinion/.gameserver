@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Buildings;
 use App\Models\UserBuildings;
 use App\Models\UserResearchs;
+use App\Models\UserSkills;
 use App\Models\UserUnitsBuild;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,7 @@ class NavigationController extends Controller
 
         $BuildingActive = UserBuildings::where('user_id', auth()->user()->id)->where('value', '1')->first();
         $ResearchActive = UserResearchs::where('user_id', auth()->user()->id)->where('value', '1')->first();
+        $SkillActive = UserSkills::where('user_id', auth()->user()->id)->where('value', '1')->first();
         $userUnitsBuilds = UserUnitsBuild::where('user_id', auth()->user()->id)->where('unit_id', 1)->sum('quantity');
 //        dd($userUnitsBuilds);
 
@@ -53,7 +55,7 @@ class NavigationController extends Controller
         $Columns = $Columns->getTableColumns();
         $Columns = array_diff($Columns, ['created_at', 'updated_at']);
 
-        return view('Server.Navigation.index', compact('Builds', 'Columns', 'BuildingActive', 'ResearchActive', 'userUnitsBuilds'));
+        return view('Server.Navigation.index', compact('Builds', 'Columns', 'BuildingActive', 'ResearchActive', 'userUnitsBuilds', 'SkillActive'));
     }
 
     /**

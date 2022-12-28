@@ -55,7 +55,7 @@ class MapController extends Controller
         $Planet = Planet::with('getUser', 'getData', 'getUserData')->where('id', $id)->first();
         $UserData = $Planet->getUserData->pluck('value', 'key');
         $PlanetData = $Planet->getData->where('user_id', auth()->user()->id)->pluck('value', 'key');
-//dd($Planet);
+//dd($PlanetData);
         $array = [
             'name' => $Planet->name,
             'y' => $Planet->y,

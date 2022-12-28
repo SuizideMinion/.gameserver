@@ -51,10 +51,10 @@
         <div id="map" class="draggable">
             <div style="width: 100%; height: 100%;position:relative;">
                 @foreach($Planets as $Planet)
-{{--                    @php $getData = (isset($Planet) ? $Planet->getData->where('user_id', auth()->user()->id)->pluck('value', 'key'):false); @endphp--}}
-                    <div data-id="{{$Planet->id}}" class="planet"
-                         style="{{ $Planet->x == uData('x') && $Planet->y == uData('y') ? 'box-shadow: red 0px 0px 22px;border-radius: 22px;':'' }}cursor: pointer;top:{{$Planet->x * 40}}px;left:{{$Planet->y * 40}}px;background-image: url('{{ getImage($Planet->img, 'planets/ai') }}');background-size: {{$Planet->size}}px;background-position:{{$Planet->posAtMap}};">
-{{--                        @if($getData) <div>TETS</div> @endif--}}
+                    <div data-id="{{$Planet->id}}" class="planet" style="{{ $Planet->x == uData('x') && $Planet->y == uData('y') ? 'box-shadow: red 0px 0px 22px;border-radius: 22px;':'' }}cursor: pointer;top:{{$Planet->x * 40}}px;left:{{$Planet->y * 40}}px;background-image: url('{{ getImage($Planet->img, 'planets/ai') }}');background-size: {{$Planet->size}}px;background-position:{{$Planet->posAtMap}};" title="{{ session('PlanetData')->where('planet_id', $Planet->id)->where('key', 'sonde') }}">
+                        @if ( isset(session('PlanetData')->where('planet_id', $Planet->id)->where('key', 'sonde')->first()->id) )
+                            sonde
+                        @endif
                     </div>
                 @endforeach
             </div>

@@ -11,6 +11,7 @@ use App\Models\UserBuildings;
 use App\Models\UserData;
 use App\Models\UserDatas;
 use App\Models\UserResearchs;
+use App\Models\UserSkills;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +42,15 @@ class Checker
         {
             UserResearchs::where('id', $UserResearch->id)->update([
                 'value' => 2,
-                'level' => 1
+                'level' => $UserResearch->level + 1
+            ]);
+        }
+        $UserSkills = UserSkills::where('value', 1)->where('time', '<', time())->get();
+        foreach($UserSkills AS $UserSkill )
+        {
+            UserSkills::where('id', $UserSkill->id)->update([
+                'value' => 2,
+                'level' => $UserSkill->level + 1
             ]);
         }
 
@@ -143,6 +152,7 @@ class Checker
 
             $UserBuildings = \App\Models\UserBuildings::where('user_id', Auth::user()->id)->get()->keyBy('build_id');
             $UserResearchs = \App\Models\UserResearchs::where('user_id', Auth::user()->id)->get()->keyBy('research_id');
+            $PlanetData = \App\Models\PlanetData::where('user_id', Auth::user()->id)->get();
             $Researchs = \App\Models\Researchs::with('getData')->get()->keyBy('id');
             $Buildings = \App\Models\Buildings::with('getData')->get()->keyBy('id');
             $Lang = Translations::where('lang', 'DE')->where('race', $UsersData['race']->value)->orWhere('race', 0)->get()->keyBy('key');
@@ -154,11 +164,12 @@ class Checker
                 'uData' => $UsersData,
                 'ServerData' => $ServerData,
                 'Researchs' => $Researchs,
-                'Buildings' => $Buildings
+                'Buildings' => $Buildings,
+                'PlanetData' => $PlanetData
             ]);
 
 //            dd($Researchs['3']);
-//            dd(session('Researchs')[3]->getData->pluck('value','key'));
+//            dd(session('PlanetData')->where('planet_id', 1280)->where('key', 'sonde')->first());
             UserData::updateOrCreate(
                 [
                     'user_id' => Auth::user()->id,
