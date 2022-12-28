@@ -58,7 +58,7 @@ Route::group(['middleware' => ['web', 'checker']], function () {
         Route::resource('unitsdata', '\App\Http\Controllers\Admin\UnitDataController', ["as" => "admin"]);
         Route::get('unitsadd', '\App\Http\Controllers\Admin\UnitController@getDataCsv');
         Route::get('/planets', '\App\Http\Controllers\Admin\PlanetsCreateController@index');
-        Route::resource('skills', '\App\Http\Controllers\Admin\skillsController', ["as" => "admin"]);
+        Route::resource('skills', '\App\Http\Controllers\Admin\SkillsController', ["as" => "admin"]);
 //        Route::resource('researchsdata', '\App\Http\Controllers\Admin\ResearchsDataController', ["as" => "admin"]);
         Route::get('skillsadd', '\App\Http\Controllers\Admin\SkillsController@getDataCsv');
     });
